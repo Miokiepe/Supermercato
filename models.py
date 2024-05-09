@@ -5,3 +5,7 @@ class User(BaseModel):
     cognome: str
     email: str
     password: str
+    
+class Old_New_User(BaseModel):
+    old: User
+    new: User
