@@ -72,5 +72,28 @@ def get():
     close_db_connection(conn)
     return {"items": items}         
 
+#Aggiunta di un prodotto nel carrello
+@app.post('/api/add_cart', status_code=201)
+def add(item: Cart_Item):
+    conn, cursor = open_db_connection()
+    #Se l'elemento esiste, incerementa la quantità, altrimenti aggiungilo
+    cursor.execute("SELECT * FROM carrello WHERE id_prodotto = %s AND id_utente = %s", (item.id_prodotto, item.id_utente))
+    value = cursor.fetchone()
+    if item == None:
+        cursor.execute("INSERT INTO carrello(id_prodotto, id_utente, quantità_richiesta) VALUES (%s, %s, %s)", (item.id_prodotto, item.id_utente, item.quantità))
+    else:
+        #TODO Aggiustare
+        cursor.execute("UPDATE carrello SET id_prodotto = %s WHERE id_utente = %s",(value.quantità_richiesta + item.quantità, item.id_utente))
+    close_db_connection(conn)
+
+#Restituzione degli elementi nel carrello
+@app.post('/api/get_cart')
+def get(user_id: User_id):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT * FROM prodotti JOIN carrello ON prodotti.id_prodotto = carrello.id_prodotto JOIN utenti ON carrello.id_utente = %s",(user_id.id_utente,))
+    items = cursor.fetchall()
+    close_db_connection(conn)
+    return {"items": items}
+
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")

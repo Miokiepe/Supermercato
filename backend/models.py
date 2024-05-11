@@ -21,3 +21,11 @@ class Item(BaseModel):
 class Old_New_Item(BaseModel):
     old: Item
     new: Item
+    
+class Cart_Item(BaseModel):
+    id_utente: int
+    id_prodotto: int
+    quantità: int
+
+class User_id(BaseModel):
+    id_utente: int
