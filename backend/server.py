@@ -76,14 +76,27 @@ def get():
 @app.post('/api/add_cart', status_code=201)
 def add(item: Cart_Item):
     conn, cursor = open_db_connection()
-    #Se l'elemento esiste, incerementa la quantità, altrimenti aggiungilo
+    #Se l'elemento non esiste aggiungilo, altrimenti incerementa la quantità esistente
     cursor.execute("SELECT * FROM carrello WHERE id_prodotto = %s AND id_utente = %s", (item.id_prodotto, item.id_utente))
     value = cursor.fetchone()
-    if item == None:
+    if value == None:
         cursor.execute("INSERT INTO carrello(id_prodotto, id_utente, quantità_richiesta) VALUES (%s, %s, %s)", (item.id_prodotto, item.id_utente, item.quantità))
     else:
-        #TODO Aggiustare
-        cursor.execute("UPDATE carrello SET id_prodotto = %s WHERE id_utente = %s",(value.quantità_richiesta + item.quantità, item.id_utente))
+        cursor.execute("UPDATE carrello SET quantità_richiesta = %s WHERE id_utente = %s AND id_prodotto = %s",(value["quantità_richiesta"] + item.quantità, item.id_utente, item.id_prodotto))
+    close_db_connection(conn)
+
+#Modifica della quantità di un prodotto nel carrello
+@app.put("/api/update_cart")
+def update(item: Cart_Item):
+    conn, cursor = open_db_connection()
+    cursor.execute("UPDATE carrello SET quantità_richiesta = %s WHERE id_utente = %s AND id_prodotto = %s",(item.quantità, item.id_utente, item.id_prodotto))
+    close_db_connection(conn)
+
+#Rimozione di un prodotto nel carrello
+@app.delete('/api/delete_cart', status_code=200)
+def delete(item: Cart_Item):
+    conn, cursor = open_db_connection()
+    cursor.execute("DELETE from CARRELLO WHERE id_prodotto = %s AND id_utente = %s",(item.id_prodotto, item.id_utente))
     close_db_connection(conn)
 
 #Restituzione degli elementi nel carrello

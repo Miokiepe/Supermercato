@@ -14,7 +14,7 @@ def open_db_connection():
     return conn, cursor
     
 #Chiusura della connessione al db
-def close_db_connection(conn: mysql.connector.MySQLConnection):
+def close_db_connection(conn: mysql.connector.MySQLConnection) -> None:
     conn.commit()
     conn.close()
     
