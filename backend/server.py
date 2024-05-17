@@ -108,5 +108,19 @@ def get(user_id: User_id):
     close_db_connection(conn)
     return {"items": items}
 
+#Acquisto dei prodotti nel carrello
+@app.put('/api/buy_cart', status_code=200)
+def buy(items: Cart_Items):
+    conn, cursor = open_db_connection()
+    for item in items.items:
+        cursor.execute("SELECT * FROM prodotti WHERE id_prodotto = %s",(item.id_prodotto,))
+        old_quantity = cursor.fetchone()["disponibilità"]
+        if(old_quantity < item.quantità):
+            raise HTTPException(status_code=409)
+        else:
+            cursor.execute("UPDATE prodotti SET disponibilità = %s WHERE id_prodotto = %s",(old_quantity - item.quantità, item.id_prodotto))
+            cursor.execute("DELETE from carrello WHERE id_utente = %s AND id_prodotto = %s",(item.id_utente, item.id_prodotto))
+    close_db_connection(conn)
+
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")

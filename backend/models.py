@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class User(BaseModel):
     id: int
@@ -26,6 +27,9 @@ class Cart_Item(BaseModel):
     id_utente: int
     id_prodotto: int
     quantità: int
+
+class Cart_Items(BaseModel):
+    items: List[Cart_Item]
 
 class User_id(BaseModel):
     id_utente: int
