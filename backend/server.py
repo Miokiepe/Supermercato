@@ -1,4 +1,5 @@
 from fastapi import FastAPI,HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from models import *
@@ -42,6 +43,29 @@ def delete(utente: User):
     cursor.execute("DELETE FROM utenti WHERE id_utente = '%s'",(utente.id))
     close_db_connection(conn)
 
+#Log-in dell'utente
+#Ogni utente ha un valore login booleano che indica la sessione
+#Se la sessione è attiva, quando si accede alla pagina /home il server verifica la sessione
+#Se la sessione è true, restituisce tutti i dati all'utente
+#Se la sessione è false (scaduta) esegue il redirect alla pagina di login/registrazione
+
+@app.post('/api/login', status_code=301)
+def login(login: Login):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT * FROM utenti WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    exists = cursor.fetchone()
+    if exists == None:
+        raise HTTPException(status_code=400)
+    cursor.execute("UPDATE utenti SET autenticato = true WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    close_db_connection(conn)
+    return RedirectResponse(url="/home",status_code=401)
+
+#TODO Aggiungere la rotta /home che verifica la autenticazione
+#La pagina html invia al server l'oggetto Login salvato in localstorage dopo il caricamento della pagina.
+#Quindi la rotta verifica che se l'utente è autenticato ok
+#Se non è autenticato, si esegue un redirect alla pagina di login
+
+#TODO aggiungere la rotta logout
 #Aggiunta di un prodotto
 @app.post('/api/add_item', status_code=201)
 def add(item: Item):

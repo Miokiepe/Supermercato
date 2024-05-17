@@ -2,9 +2,13 @@ from pydantic import BaseModel
 from typing import List
 
 class User(BaseModel):
-    id: int
+    id: int | None
     nome: str
     cognome: str
+    email: str
+    password: str
+
+class Login(BaseModel):
     email: str
     password: str
     
