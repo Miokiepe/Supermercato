@@ -32,30 +32,39 @@ toggler.addEventListener('click',() => {
 const button = document.querySelector('#submit')
 const loader = document.querySelector('#loader')
 const error = document.querySelector('#message')
+
 button.addEventListener('click',() => {
-    button.disabled = true
-    const email = document.querySelector('#email').value, password = document.querySelector('#password').value
-    if(!email.trim()  || !password.trim()) {
-        console.log("ENTROO")
-        error.innerHTML = "Uno o più campi vuoti!"
-        error.style.display = "block"
-        button.disabled = false
+    button.disabled = true;
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
+    if (!email.trim() || !password.trim()) {
+        error.innerHTML = "Uno o più campi vuoti!";
+        error.style.display = "block";
+        button.disabled = false;
         return;
     }
-    fetch('http://localhost:5000/api/login',{
+    fetch('http://localhost:5000/api/login', {
         method: "POST",
-        body: JSON.stringify({email: email, password: password})
-    }).then(res => {
-        if(res.status == 401) {
-            error.innerHTML = "Credenziali inserite errate"
-            return
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, password: password })
+    }).then(async res => {
+        if (res.status == 401) {
+            error.innerHTML = "Credenziali inserite errate";
+            error.style.display = "block";
+            button.disabled = false;
+            return;
         }
         localStorage.setItem('email', email);
-        localStorage.setItem('pass',password);
-        window.location.href = res.url
-    }).catch(res=>{
-        button.disabled = false
-        error.style.display = 'block'
-        error.innerHTML = "Errore con il server. Riprova più tardi"
+        localStorage.setItem('pass', password);
+        const link = await res.json()
+        window.location.replace("./Pages/home.html")
     })
-})
+    .catch(error => {
+        console.error('Error:', error);
+        button.disabled = false;
+        error.style.display = 'block';
+        error.innerHTML = "Errore con il server. Riprova più tardi";
+    });
+});
