@@ -55,10 +55,10 @@ def login(login: Login):
     cursor.execute("SELECT * FROM utenti WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
     exists = cursor.fetchone()
     if exists == None:
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=401)
     cursor.execute("UPDATE utenti SET autenticato = true WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
     close_db_connection(conn)
-    return RedirectResponse(url="/home",status_code=401)
+    return RedirectResponse(url="/home",status_code=301)
 
 #TODO Aggiungere la rotta /home che verifica la autenticazione
 #La pagina html invia al server l'oggetto Login salvato in localstorage dopo il caricamento della pagina.
