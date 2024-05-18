@@ -1,5 +1,5 @@
 #image {
-    background-color: green;
+    background:linear-gradient(45deg, #4D194D, #006466);
     width: 40vw;
     height: 100vh;
 }
@@ -7,4 +7,33 @@
     background-color: whitesmoke;
     width: 60vw;
     height: 100vh;
+}
+
+
+#select {
+    display: none;
+}
+
+#loader {
+   display: none;
+}
+
+@media screen and (max-width: 600px) {
+    #image {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 0;
+    }
+    #login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        z-index: 1;
+        color: white;
+        margin-left: 25%;
+    }
 }
