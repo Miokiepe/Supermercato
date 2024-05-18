@@ -52,25 +52,14 @@ def login(login: Login):
     exists = cursor.fetchone()
     if exists == None:
         raise HTTPException(status_code=401)
-    token = generate_token()
-    cursor.execute("UPDATE utenti SET autenticato = %s WHERE email = %s AND password = %s",(token,login.email, crypt(login.password)))
+    cursor.execute("UPDATE utenti SET autenticato = true WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
     close_db_connection(conn)
-    return  {
-            "link":"./Pages/home.html",
-            "token": token
-            }
+    return RedirectResponse(url="/home",status_code=301)
 
-#Quando si accede a home.html si effettua una richiesta a questa rotta per verificare il token (e quindi se la sessione è attiva)
-@app.post('/api/home',status_code=200)
-def home(token: User_token):
-    #Se il token è corretto, 200
-    #Altrimenti vuol dire che la sessione non è attiva
-    conn, cursor = open_db_connection()
-    cursor.execute("SELECT autenticato FROM utenti WHERE autenticato = %s",(token.token, ))
-    tokeno = cursor.fetchone()
-    if tokeno == None:
-        raise HTTPException(status_code=301)   
-    close_db_connection(conn)
+#TODO Aggiungere la rotta /home che verifica la autenticazione
+#La pagina html invia al server l'oggetto Login salvato in localstorage dopo il caricamento della pagina.
+#Quindi la rotta verifica che se l'utente è autenticato ok
+#Se non è autenticato, si esegue un redirect alla pagina di login
 
 #TODO aggiungere la rotta logout
 #Aggiunta di un prodotto
