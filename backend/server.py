@@ -26,14 +26,14 @@ def create(utente: User):
         #Restituiamo 409 se la mail usata nella registrazione è gia presente nel db
         raise HTTPException(status_code=409) 
     else:
-        cursor.execute("INSERT INTO utenti (nome, cognome, email, password) VALUES (%s, %s, %s, %s)", (utente.nome, utente.cognome, utente.email, crypt(utente.password)))
+        cursor.execute("INSERT INTO utenti (nome, cognome, email, password, autenticato, genere, cap, città, via, prefisso, numero) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (utente.nome, utente.cognome, utente.email, crypt(utente.password), utente.autenticato, utente.genere, utente.cap, utente.città, utente.via, utente. prefisso, utente.numero))
         close_db_connection(conn)
 
-#Aggiornamento di un utente
+#Aggiornamento di un utente 
 @app.put('/api/update_account',status_code=200)
 def update(utente: Old_New_User):
     conn, cursor = open_db_connection()
-    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s WHERE email = %s AND password = %s",(utente.new.nome, utente.new.cognome, utente.new.email, crypt(utente.new.password), utente.old.email, crypt(utente.old.password)))
+    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s, autenticato = %s, genere = %s, cap = %s, città = %s, via = %s, prefisso = %s, numero = %s WHERE email = %s AND password = %s",(utente.new.nome, utente.new.cognome, utente.new.email, crypt(utente.new.password),utente.new.autenticato, utente.new.genere, utente.new.cap, utente.new.città, utente.new.via, utente.new.prefisso, utente.new.numero, utente.old.email, crypt(utente.old.password)))
     close_db_connection(conn)
 
 #Cancellazzione di un utente
@@ -43,11 +43,7 @@ def delete(utente: User):
     cursor.execute("DELETE FROM utenti WHERE id_utente = '%s'",(utente.id))
     close_db_connection(conn)
 
-#Log-in dell'utente
-#Ogni utente ha un valore login booleano che indica la sessione
-#Se la sessione è attiva, quando si accede alla pagina /home il server verifica la sessione
-#Se la sessione è true, restituisce tutti i dati all'utente
-#Se la sessione è false (scaduta) esegue il redirect alla pagina di login/registrazione
+#Eseguendo il login viene generato un token.
 
 @app.post('/api/login', status_code=301)
 def login(login: Login):
@@ -55,15 +51,26 @@ def login(login: Login):
     cursor.execute("SELECT * FROM utenti WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
     exists = cursor.fetchone()
     if exists == None:
-        raise HTTPException(status_code=400)
-    cursor.execute("UPDATE utenti SET autenticato = true WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+        raise HTTPException(status_code=401)
+    token = generate_token()
+    cursor.execute("UPDATE utenti SET autenticato = %s WHERE email = %s AND password = %s",(token,login.email, crypt(login.password)))
     close_db_connection(conn)
-    return RedirectResponse(url="/home",status_code=401)
+    return  {
+            "link":"./Pages/home.html",
+            "token": token
+            }
 
-#TODO Aggiungere la rotta /home che verifica la autenticazione
-#La pagina html invia al server l'oggetto Login salvato in localstorage dopo il caricamento della pagina.
-#Quindi la rotta verifica che se l'utente è autenticato ok
-#Se non è autenticato, si esegue un redirect alla pagina di login
+#Quando si accede a home.html si effettua una richiesta a questa rotta per verificare il token (e quindi se la sessione è attiva)
+@app.post('/api/home',status_code=200)
+def home(token: User_token):
+    #Se il token è corretto, 200
+    #Altrimenti vuol dire che la sessione non è attiva
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT autenticato FROM utenti WHERE autenticato = %s",(token.token, ))
+    tokeno = cursor.fetchone()
+    if tokeno == None:
+        raise HTTPException(status_code=301)   
+    close_db_connection(conn)
 
 #TODO aggiungere la rotta logout
 #Aggiunta di un prodotto

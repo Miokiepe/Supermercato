@@ -7,6 +7,13 @@ class User(BaseModel):
     cognome: str
     email: str
     password: str
+    autenticato: str = "0"
+    genere: int
+    cap: str
+    città: str
+    via: str
+    prefisso: str
+    numero: str
 
 class Login(BaseModel):
     email: str
@@ -37,3 +44,6 @@ class Cart_Items(BaseModel):
 
 class User_id(BaseModel):
     id_utente: int
+    
+class User_token(BaseModel):
+    token: str
