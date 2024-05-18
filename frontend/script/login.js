@@ -31,16 +31,31 @@ toggler.addEventListener('click',() => {
 
 const button = document.querySelector('#submit')
 const loader = document.querySelector('#loader')
+const error = document.querySelector('#message')
 button.addEventListener('click',() => {
     button.disabled = true
-    loader.style.display = "block"
     const email = document.querySelector('#email').value, password = document.querySelector('#password').value
+    if(!email.trim()  || !password.trim()) {
+        console.log("ENTROO")
+        error.innerHTML = "Uno o più campi vuoti!"
+        error.style.display = "block"
+        button.disabled = false
+        return;
+    }
     fetch('http://localhost:5000/api/login',{
         method: "POST",
         body: JSON.stringify({email: email, password: password})
-    }).then(res => console.log(res)).catch(res=>{
-        alert("ERRORE")
+    }).then(res => {
+        if(res.status == 401) {
+            error.innerHTML = "Credenziali inserite errate"
+            return
+        }
+        localStorage.setItem('email', email);
+        localStorage.setItem('pass',password);
+        window.location.href = res.url
+    }).catch(res=>{
         button.disabled = false
-        loader.style.display = "none"
+        error.style.display = 'block'
+        error.innerHTML = "Errore con il server. Riprova più tardi"
     })
 })

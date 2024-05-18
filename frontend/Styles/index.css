@@ -9,13 +9,12 @@
     height: 100vh;
 }
 
-
 #select {
     display: none;
 }
 
-#loader {
-   display: none;
+#message {
+    display: none;
 }
 
 @media screen and (max-width: 600px) {
