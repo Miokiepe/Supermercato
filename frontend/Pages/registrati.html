@@ -49,16 +49,18 @@
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" id="città" placeholder="Città" aria-label="Numero telefonico dell'utente" aria-describedby="button-addon2">
                     <input type="number" class="form-control" id="cap" placeholder="CAP" aria-label="Numero telefonico dell'utente" aria-describedby="button-addon2">
-                    <select name="" id="genere">
-                        <option value="0">Genere</option>
-                        <option value="1">Uomo</option>
-                        <option value="2">Donna</option>
-                        <option value="3">Non specificato</option>
-                    </select>
+                    <input type="text" class="form-control" id="via" placeholder="Via" arial-label="Via dell'utente">
                 </div>
+                <select id="genere" class="form-select">
+                    <option value="0">Genere</option>
+                    <option value="1">Uomo</option>
+                    <option value="2">Donna</option>
+                    <option value="3">Non specificato</option>
+                </select>
                 <button class="btn btn-primary" id="registrati">Registrati</button>
                 <p>Hai già un account? <a href="../index.html">Accedi</a></p>
             </div>
+            <div class="alert alert-danger" id="message">Errore con il server. Riprova più tardi</div>
         </div>
     </div>
 </body>
