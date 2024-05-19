@@ -44,7 +44,6 @@ def delete(utente: User):
     close_db_connection(conn)
 
 #Eseguendo il login viene generato un token.
-
 @app.post('/api/login', status_code=301)
 def login(login: Login):
     conn, cursor = open_db_connection()
@@ -52,16 +51,22 @@ def login(login: Login):
     exists = cursor.fetchone()
     if exists == None:
         raise HTTPException(status_code=401)
-    cursor.execute("UPDATE utenti SET autenticato = true WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    token = generate_token()
+    cursor.execute("UPDATE utenti SET autenticato = %s WHERE email = %s AND password = %s", (token,login.email, crypt(login.password)))
     close_db_connection(conn)
-    return RedirectResponse(url="/home",status_code=301)
+    return {"token": token}
 
-#TODO Aggiungere la rotta /home che verifica la autenticazione
-#La pagina html invia al server l'oggetto Login salvato in localstorage dopo il caricamento della pagina.
-#Quindi la rotta verifica che se l'utente è autenticato ok
-#Se non è autenticato, si esegue un redirect alla pagina di login
-
+#Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione
+@app.post('/api/home', status_code=200)
+def home(token: User_token):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT id_utente FROM utenti WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
+    user = cursor.fetchone()
+    if user == None:
+        raise HTTPException(status_code=301)
+    close_db_connection(conn)
 #TODO aggiungere la rotta logout
+
 #Aggiunta di un prodotto
 @app.post('/api/add_item', status_code=201)
 def add(item: Item):

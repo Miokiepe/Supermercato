@@ -46,4 +46,6 @@ class User_id(BaseModel):
     id_utente: int
     
 class User_token(BaseModel):
+    email: str
+    password: str
     token: str
