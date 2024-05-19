@@ -37,6 +37,7 @@ button.addEventListener('click',() => {
     button.disabled = true;
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
+    const role = document.querySelector('#select').value == "0" ? "utente" : document.querySelector('#select').value == "1" ? "corriere" : "admin"
     if (!email.trim() || !password.trim()) {
         error.innerHTML = "Uno o più campi vuoti!";
         error.style.display = "block";
@@ -48,7 +49,7 @@ button.addEventListener('click',() => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email, password: password })
+        body: JSON.stringify({ email: email, password: password, role: role })
     }).then(async res => {
         if (res.status == 401) {
             error.innerHTML = "Credenziali inserite errate";
@@ -58,7 +59,10 @@ button.addEventListener('click',() => {
         }
         localStorage.setItem('email', email);
         localStorage.setItem('pass', password);
-        const link = await res.json()
+        const re = await res.json()
+        localStorage.setItem('email',email);
+        localStorage.setItem('password',password),
+        localStorage.setItem('token',re.token)
         window.location.replace("./Pages/home.html")
     })
     .catch(error => {
