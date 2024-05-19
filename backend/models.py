@@ -18,6 +18,7 @@ class User(BaseModel):
 class Login(BaseModel):
     email: str
     password: str
+    role: str
     
 class Old_New_User(BaseModel):
     old: User

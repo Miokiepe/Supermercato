@@ -47,7 +47,8 @@ def delete(utente: User):
 @app.post('/api/login', status_code=301)
 def login(login: Login):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT * FROM utenti WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    table = "utenti" if login.role == "utente" else "gestori"
+    cursor.execute(f"SELECT * FROM {table} WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
     exists = cursor.fetchone()
     if exists == None:
         raise HTTPException(status_code=401)
@@ -65,7 +66,13 @@ def home(token: User_token):
     if user == None:
         raise HTTPException(status_code=301)
     close_db_connection(conn)
-#TODO aggiungere la rotta logout
+
+@app.post('/api/logout', status_code=301)
+def logout(login: Login):
+    table = "utenti" if login.role == "utente" else "gestori"
+    conn, cursor = open_db_connection()
+    cursor.execute(f"UPDATE {table} SET autenticato = 0 WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    close_db_connection(conn)
 
 #Aggiunta di un prodotto
 @app.post('/api/add_item', status_code=201)
