@@ -1,4 +1,10 @@
-nav {
+#nav {
     background:linear-gradient(45deg, #4D194D, #006466);
     color: white;
+}
+
+@media screen and (max-width: 960px) {
+  ul li {
+    margin-top: 10px;
+  }   
 }
