@@ -61,11 +61,12 @@ def login(login: Login):
 @app.post('/api/home', status_code=200)
 def home(token: User_token):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT id_utente FROM utenti WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
+    cursor.execute("SELECT id_utente, nome FROM utenti WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
     user = cursor.fetchone()
-    if user == None:
+    if user.id_utente == None:
         raise HTTPException(status_code=301)
     close_db_connection(conn)
+    return {"nome":user.nome}
 
 @app.post('/api/logout', status_code=301)
 def logout(login: Login):
