@@ -58,6 +58,7 @@ def login(login: Login):
     return {"token": token}
 
 #Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione
+#TODO restituire tutto l'oggetto utente, oppure solo il nome per dare la scritta di benvenuto.
 @app.post('/api/home', status_code=200)
 def home(token: User_token):
     conn, cursor = open_db_connection()
