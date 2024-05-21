@@ -7,11 +7,13 @@ window.onload = () => {
             'Content-Type' : 'application/json'
         },
         body: JSON.stringify({email: email, password: password, token: token})
-    }).then(res => {
+    }).then(async res => {
         if(res.status === 301) {
             localStorage.clear()
             window.location.replace('../index.html')
         }
-    })
-    const title = localStorage.getItem('')
+        res = await res.json()
+        document.querySelector('#title').innerHTML = "Benvenuto " + res.nome;
+        localStorage.setItem('n', res.carrello.n)
+    }).catch(e => console.log(e))
 }

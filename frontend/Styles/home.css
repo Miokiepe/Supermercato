@@ -1,0 +1,10 @@
+#ordini {
+    margin: 10px;
+    padding: 10px;
+    background-color: #80808052;
+    border-radius: 20px;
+}
+#no_ordine {
+    text-align: center;
+    font-style: italic;
+}
