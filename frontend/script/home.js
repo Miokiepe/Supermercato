@@ -13,4 +13,5 @@ window.onload = () => {
             window.location.replace('../index.html')
         }
     })
+    const title = localStorage.getItem('')
 }
