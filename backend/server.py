@@ -67,8 +67,19 @@ def home(token: User_token):
     user = cursor.fetchone()
     if user[id] == None:
         raise HTTPException(status_code=301)
-    close_db_connection(conn)
-    return {"nome":user["nome"]}
+    if table == "utenti":
+        cursor.execute("SELECT COUNT(id_utente) as n FROM carrello WHERE id_utente = %s",(user[id],))
+        n = cursor.fetchone()
+        close_db_connection(conn)
+        return {
+                "nome":user["nome"],
+                "carrello":n
+               }
+    else:
+        close_db_connection(conn)
+        return {
+            "nome": user["nome"]
+        }
 
 @app.post('/api/logout', status_code=301)
 def logout(login: Login):
