@@ -38,6 +38,7 @@ button.addEventListener('click',() => {
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
     const role = document.querySelector('#select').value == "0" ? "utente" : document.querySelector('#select').value == "1" ? "corriere" : "admin"
+    console.log(role)
     if (!email.trim() || !password.trim()) {
         error.innerHTML = "Uno o più campi vuoti!";
         error.style.display = "block";
@@ -57,13 +58,17 @@ button.addEventListener('click',() => {
             button.disabled = false;
             return;
         }
+        localStorage.clear()
         localStorage.setItem('email', email);
         localStorage.setItem('pass', password);
         const re = await res.json()
         localStorage.setItem('email',email);
-        localStorage.setItem('password',password),
-        localStorage.setItem('token',re.token)
-        window.location.replace("./Pages/home.html")
+        localStorage.setItem('password',password);
+        localStorage.setItem('token',re.token);
+        localStorage.setItem('role',role);
+        if(role == "utente") window.location.replace("./Pages/home.html")
+        else if(role == "admin") window.location.replace("./Pages/admin.html")
+             else window.location.replace('./Pages/corriere.html')
     })
     .catch(error => {
         console.error('Error:', error);
