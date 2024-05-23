@@ -53,21 +53,22 @@ def login(login: Login):
     if exists == None:
         raise HTTPException(status_code=401)
     token = generate_token()
-    cursor.execute("UPDATE utenti SET autenticato = %s WHERE email = %s AND password = %s", (token,login.email, crypt(login.password)))
+    cursor.execute(f"UPDATE {table} SET autenticato = %s WHERE email = %s AND password = %s", (token,login.email, crypt(login.password)))
     close_db_connection(conn)
     return {"token": token}
 
 #Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione
-#TODO restituire tutto l'oggetto utente, oppure solo il nome per dare la scritta di benvenuto.
 @app.post('/api/home', status_code=200)
 def home(token: User_token):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT id_utente, nome FROM utenti WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
+    table = "utenti" if token.role == "utente" else "gestori"
+    id = "id_utente" if token.role == "utente" else "id_gestore"
+    cursor.execute(f"SELECT {id}, nome FROM {table} WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
     user = cursor.fetchone()
-    if user.id_utente == None:
+    if user[id] == None:
         raise HTTPException(status_code=301)
     close_db_connection(conn)
-    return {"nome":user.nome}
+    return {"nome":user["nome"]}
 
 @app.post('/api/logout', status_code=301)
 def logout(login: Login):
