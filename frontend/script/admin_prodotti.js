@@ -1,10 +1,14 @@
 const container = document.querySelector('#prodotti')
-
-/*fetch('http://localhost:5000/api/get_items').then(res => res.json()).then(res => {
-    res.items.foreach(elem => {
-        
+const card_t = document.getElementsByTagName('template')[0]
+fetch('http://localhost:5000/api/get_items').then(res => res.json()).then(res => {
+   
+    if(res.items) res.items.forEach(elem => {
+        const card = card_t.cloneNode(true)
+        card.querySelector('.title').textContent = elem.nome
+        container.appendChild(card)
     })
-})*/
+    else container.innerHTML = "<i>Nessun prodotto disponibile</i>"
+})
 
 const items = [{
     nome: "Arredamento",
@@ -37,7 +41,7 @@ document.getElementById('add').addEventListener('click', function () {
 
 const categoria_item = document.querySelector('#categoria')
 const icona = document.querySelector('#icona')
-let categoria;
+let categoria = categoria_item.value;
 
 categoria_item.addEventListener('change',() => {
     const index = categoria_item.value
@@ -56,17 +60,26 @@ document.querySelector('#add_item').addEventListener('click',() => {
         document.querySelector('#text').innerHTML = "Procedura di aggiunta annullata! Uno o più campi non sono stati compilati";
         return;
     } 
-    //TODO aggiungere la richiesta
-    /*fetch('',{
+    console.log({
+        id: 0,
+        nome: nome,
+        categoria: categoria,
+        costo: parseFloat(costo),
+        disponibilità: parseInt(disponibilità),
+        creazione: "0"
+    })
+    fetch('http://localhost:5000/api/add_item',{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            id: 0,
             nome: nome,
             categoria: categoria,
-            costo: costo,
-            disponibilità: disponibilità
+            costo: parseFloat(costo),
+            disponibilità: parseInt(disponibilità),
+            creazione: "0"
         })
-    })*/
+    }).then(window.location.reload())
 })
