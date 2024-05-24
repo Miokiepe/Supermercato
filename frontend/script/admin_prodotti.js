@@ -1,14 +1,22 @@
-const container = document.querySelector('#prodotti')
-const card_t = document.getElementsByTagName('template')[0]
-fetch('http://localhost:5000/api/get_items').then(res => res.json()).then(res => {
-   
-    if(res.items) res.items.forEach(elem => {
-        const card = card_t.cloneNode(true)
-        card.querySelector('.title').textContent = elem.nome
-        container.appendChild(card)
+const container = document.querySelector('#prodotti');
+const card_t = document.querySelector("template")
+/*fetch('http://localhost:5000/api/get_items')
+    .then(res => res.json())
+    .then(res => {
+        console.log(res);
+        if (res.items) {
+            res.items.forEach(elem => {
+            const card = card_t.content.cloneNode(true)
+            container.appendChild(card)
+            });
+        } else {
+            container.innerHTML = "Nessun prodotto disponibile";
+        }
     })
-    else container.innerHTML = "<i>Nessun prodotto disponibile</i>"
-})
+    .catch(() => {
+        error.style.display = "block"
+        error.innerHTML = "Server non raggiungibile!";
+    });*/
 
 const items = [{
     nome: "Arredamento",
@@ -49,7 +57,9 @@ categoria_item.addEventListener('change',() => {
     icona.innerHTML = items[index].icona
     icona.style.color = items[index].colore
 })
+
 const error = document.querySelector('#error')
+
 document.querySelector('#add_item').addEventListener('click',() => {
     const nome = document.querySelector('#nome').value,
           costo = document.querySelector('#costo').value,
@@ -60,14 +70,7 @@ document.querySelector('#add_item').addEventListener('click',() => {
         document.querySelector('#text').innerHTML = "Procedura di aggiunta annullata! Uno o più campi non sono stati compilati";
         return;
     } 
-    console.log({
-        id: 0,
-        nome: nome,
-        categoria: categoria,
-        costo: parseFloat(costo),
-        disponibilità: parseInt(disponibilità),
-        creazione: "0"
-    })
+
     fetch('http://localhost:5000/api/add_item',{
         method: "POST",
         headers: {
@@ -76,7 +79,7 @@ document.querySelector('#add_item').addEventListener('click',() => {
         body: JSON.stringify({
             id: 0,
             nome: nome,
-            categoria: categoria,
+            tipo: categoria,
             costo: parseFloat(costo),
             disponibilità: parseInt(disponibilità),
             creazione: "0"
