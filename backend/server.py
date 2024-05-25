@@ -73,6 +73,7 @@ def home(token: User_token):
         close_db_connection(conn)
         return {
                 "nome":user["nome"],
+                "id": user["id_utente"],
                 "carrello":n
                }
     else:
