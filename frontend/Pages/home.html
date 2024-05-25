@@ -13,15 +13,41 @@
 </head>
 <body>
     <nav id="nav"></nav>
-    <h1 id="title">Benevnuto Marioo</h1>
+    <div class="alert alert-danger" role="alert" id="error"></div>
+    <h1 id="title"></h1>
     <h5>Articoli recenti</h5>
-    <div id="prodotti_r"></div>
+    <div id="prodotti_r" class="d-flex flex-row gap-1 m-1"></div>
     <p>Vuoi visualizzare più prodotti? <a href="./prodotti.html">Tutti i prodotti</a></p>
     <div id="ordini">
         <h5>I tuoi ordini</h5>
         <p id="no_ordine">Nessun ordine effettuato</p>
     </div>
 </body>
+<template>
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <div class="d-flex align-baseline  justify-content-between ">
+          <h5 class="card-title"></h5>
+        </div>
+        <h6 class="card-subtitle mb-2 text-body-secondary category"></h6>
+          <div class="d-flex justify-content-between">
+            <span>Disponibilità: <b class="quantità"></b></span>
+            <span class="costo"></span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-baseline">
+              <div class="w-50">Quantità</div> 
+              <div class="input-group">
+                <select class="form-select select_q">
+                    <option value="1" selected>1</option>
+                </select>
+                <button class="btn btn-primary add_cart" style="background-color: #026266; border:none;"><i class="fa-solid fa-cart-shopping"></i></button>
+              </div>    
+          </div>
+        </div>
+    </div>
+</template> 
 <script src="../script/check_au.js"></script>
 <script src="../script/navbar_footer.js"></script>
+<script src="../script/home.js" type="module"></script>
 </html>

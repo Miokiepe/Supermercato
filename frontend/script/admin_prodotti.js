@@ -1,3 +1,4 @@
+import items from "../Components/data.js";
 const container = document.querySelector('#prodotti');
 const card_t = document.querySelector("template")
 //Cancellazione prodotto
@@ -51,7 +52,7 @@ document.querySelector('#mod_item').addEventListener('click',() => {
     }).then(res => res.json()).then(location.reload())
 })
 
-fetch('http://localhost:5000/api/get_items')
+fetch('http://localhost:5000/api/get_items/999')
     .then(res => res.json())
     .then(res => {//nome,tipo,costo,disponibilità
         if (res.items) {
@@ -77,28 +78,6 @@ fetch('http://localhost:5000/api/get_items')
         error.innerHTML = "Server non raggiungibile!";
     });
 
-const items = [{
-    nome: "Arredamento",
-    colore: "#f6511d",
-    icona: '<i class="fa-solid fa-couch"></i>'
-}, {
-    nome: "Alimentari",
-    colore: "#ffb400",
-    icona: '<i class="fa-solid fa-burger"></i>'
-}, {
-    nome: "Elettronica",
-    colore: "#00a6ed",
-    icona: ' <i class="fa-solid fa-mobile"></i>'
-}, {
-    nome: "Indumenti",
-    colore: "#7fb800",
-    icona: '<i class="fa-solid fa-shirt"></i>'
-}, {
-    nome: "Sport",
-    colore: "#0d2c54 ",
-    icona: '<i class="fa-solid fa-volleyball"></i>'
-}
-]
 
 const myModal = new bootstrap.Modal(document.getElementById("modal"));
 //Quando si preme il bottone +, appare il modale
@@ -146,7 +125,7 @@ document.querySelector('#add_item').addEventListener('click',() => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id: 0,
+            id_prodotto: 0,
             nome: nome,
             tipo: categoria,
             costo: parseFloat(costo),

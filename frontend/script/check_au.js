@@ -16,7 +16,8 @@ window.onload = () => {
             window.location.replace('../index.html')
         }
         res = await res.json()
-        document.querySelector('#title').innerHTML = "Benvenuto " + res.nome;
+        localStorage.setItem('nome', res.nome)
+        localStorage.setItem('id',res.id)
         localStorage.setItem('n', res.carrello.n)
     }).catch(e => console.log(e))
 }

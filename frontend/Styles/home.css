@@ -1,10 +1,19 @@
+#prodotti_r {
+    padding: 10px;
+    background-color: whitesmoke;
+}
 #ordini {
     margin: 10px;
     padding: 10px;
-    background-color: #80808052;
+    background-color: whitesmoke;
     border-radius: 20px;
 }
 #no_ordine {
     text-align: center;
     font-style: italic;
+}
+.alert {
+    position: absolute;
+    display: none;
+    width: 100vw;
 }
