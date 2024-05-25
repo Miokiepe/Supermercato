@@ -110,10 +110,10 @@ def delete(item: Item):
     close_db_connection(conn)
 
 #Restituzione di tutti prodotti 
-@app.get('/api/get_items')
-def get():
+@app.get('/api/get_items/{n}')
+def get(n):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT * FROM prodotti")
+    cursor.execute(f"SELECT * FROM prodotti ORDER BY creazione DESC LIMIT {n}")
     items = cursor.fetchall()
     close_db_connection(conn)
     return {"items": items}         
