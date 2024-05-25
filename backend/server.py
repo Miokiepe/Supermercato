@@ -106,7 +106,7 @@ def update(item: Old_New_Item):
 @app.delete('/api/delete_item', status_code=200)
 def delete(item: Item):
     conn, cursor = open_db_connection()
-    cursor.execute("DELETE FROM prodotti WHERE id_prodotto = '%s'", (item.id,))
+    cursor.execute("DELETE FROM prodotti WHERE id_prodotto = '%s'", (item.id_prodotto,))
     close_db_connection(conn)
 
 #Restituzione di tutti prodotti 
