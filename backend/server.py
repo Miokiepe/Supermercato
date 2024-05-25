@@ -99,7 +99,7 @@ def add(item: Item):
 @app.put('/api/update_item', status_code=200)
 def update(item: Old_New_Item):
     conn, cursor = open_db_connection()
-    cursor.execute("UPDATE prodotti SET nome = %s, tipo = %s, costo = %s, disponibilità = %s WHERE nome = %s AND tipo = %s",(item.new.nome, item.new.tipo, item.new.costo, item.new.disponibilità, item.old.nome, item.old.tipo))
+    cursor.execute("UPDATE prodotti SET nome = %s, tipo = %s, costo = %s, disponibilità = %s WHERE id_prodotto = %s",(item.new.nome, item.new.tipo, item.new.costo, item.new.disponibilità, item.old.id_prodotto))
     close_db_connection(conn)
 
 #Cancellazzione di un prodotto
