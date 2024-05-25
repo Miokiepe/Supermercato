@@ -27,7 +27,7 @@ class Old_New_User(BaseModel):
 class Item(BaseModel):
     id: int | None
     nome: str
-    tipo: str
+    tipo: int
     costo: float
     disponibilità: int
     creazione: str | None
