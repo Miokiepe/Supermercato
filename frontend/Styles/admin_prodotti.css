@@ -17,3 +17,11 @@
     position: absolute;
     display: none;
 }
+.fa-ellipsis-vertical {
+    display: none;
+}
+
+.card:hover .fa-ellipsis-vertical {
+    display: block;
+    cursor: pointer;
+}
