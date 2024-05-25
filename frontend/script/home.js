@@ -30,7 +30,7 @@ const add_cart = (prodotto) => {
             id_prodotto: prodotto.id_prodotto,
             quantità: parseInt(document.querySelector('#u' + prodotto.id_prodotto).value)
         })
-    }).then(res => {
+    }).then(() => {
         localStorage.setItem('alert','cart')
         location.reload()
     })

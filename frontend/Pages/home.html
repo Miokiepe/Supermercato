@@ -16,15 +16,16 @@
     <div class="alert alert-danger" role="alert" id="error"></div>
     <h1 id="title"></h1>
     <h5>Articoli recenti</h5>
-    <div id="prodotti_r" class="d-flex flex-row gap-1 m-1"></div>
-    <p>Vuoi visualizzare più prodotti? <a href="./prodotti.html">Tutti i prodotti</a></p>
+    <div id="prodotti_r" class="d-flex gap-1" style="overflow-x: auto; white-space: nowrap;"></div>
+    <p class="text-center">Vuoi visualizzare più prodotti? <a href="./prodotti.html">Tutti i prodotti</a></p>
     <div id="ordini">
         <h5>I tuoi ordini</h5>
         <p id="no_ordine">Nessun ordine effettuato</p>
     </div>
+    <footer id="footer"></footer>
 </body>
 <template>
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 18rem; flex: 0 0 auto;">
       <div class="card-body">
         <div class="d-flex align-baseline  justify-content-between ">
           <h5 class="card-title"></h5>

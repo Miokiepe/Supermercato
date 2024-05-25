@@ -49,7 +49,7 @@ document.querySelector('#mod_item').addEventListener('click',() => {
                 creazione: null
             }
         })
-    }).then(res => res.json()).then(location.reload())
+    }).then(() => location.reload())
 })
 
 fetch('http://localhost:5000/api/get_items/999')

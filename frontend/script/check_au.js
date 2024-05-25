@@ -1,4 +1,3 @@
-window.onload = () => {
     const email = localStorage.getItem('email'), 
           password = localStorage.getItem('password'), 
           token = localStorage.getItem('token'),
@@ -20,4 +19,3 @@ window.onload = () => {
         localStorage.setItem('id',res.id)
         localStorage.setItem('n', res.carrello.n)
     }).catch(e => console.log(e))
-}

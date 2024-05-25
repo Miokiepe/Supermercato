@@ -1,6 +1,22 @@
-#nav {
+#nav, footer {
     background:linear-gradient(45deg, #4D194D, #006466);
     color: white;
+}
+
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+
+#footer div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 5px;
+  gap: 10px;
+  padding-bottom: 10px;
 }
 
 @media screen and (max-width: 960px) {
