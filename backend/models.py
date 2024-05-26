@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List
 
 class User(BaseModel):
-    id: int | None
+    id_utente: int | None
     nome: str
     cognome: str
     email: str
