@@ -4,3 +4,8 @@ fetch('../Components/admin_navbar.html').then(res => res.text()).then(res => {
     navbar.setAttribute('data-bs-theme',"dark")
     navbar.innerHTML = res
 })
+
+fetch('../Components/footer.html').then(res => res.text()).then(res => { 
+    footer.innerHTML = res
+    document.querySelector('#year').innerHTML = (new Date().getFullYear())
+})

@@ -13,24 +13,57 @@
 </head>
 <body>
     <nav id="nav"></nav>
-    <div class="alert alert-danger alert-dismissible fade show" id="error" role="alert">
-        <span id="text"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div id="prodotti" class=" m-1 d-flex gap-1 flex-row flex-wrap"></div>
-
-    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <main>
+      <div class="alert alert-danger alert-dismissible fade show" id="error" role="alert">
+          <span id="text"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div id="prodotti" class=" m-1 d-flex gap-1 flex-row flex-wrap"></div>
+  
+      <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Aggiungi prodotto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <input type="text" class="form-control mb-3" id="nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
+                  <div class="input-group mb-3">
+                      <span class="input-group-text" id="icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
+                      <select id="categoria" class="form-select">
+                        <option value="0" selected>Arredamento</option>
+                        <option value="1">Alimentari</option>
+                        <option value="2">Elettronica</option>
+                        <option value="3">Indumenti</option>
+                        <option value="4">Sport</option>
+                      </select>     
+                  </div>
+                      <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">€</span>
+                          <input type="number" id="costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
+                      </div>
+                      <input type="number" id="disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
+                  </div>
+              <div class="modal-footer">
+                <button type="button" id="add_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-plus"></i> Aggiungi</button>
+              </div>
+            </div>
+          </div>
+      </div>
+  
+      <div class="modal fade " id="mod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Aggiungi prodotto</h1>
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Modifica prodotto</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="text" class="form-control mb-3" id="nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
+                <input type="text" class="form-control mb-3" id="m_nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
-                    <select id="categoria" class="form-select">
+                    <span class="input-group-text" id="m_icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
+                    <select id="m_categoria" class="form-select">
                       <option value="0" selected>Arredamento</option>
                       <option value="1">Alimentari</option>
                       <option value="2">Elettronica</option>
@@ -40,49 +73,19 @@
                 </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">€</span>
-                        <input type="number" id="costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
+                        <input type="number" id="m_costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
                     </div>
-                    <input type="number" id="disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
+                    <input type="number" id="m_disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
                 </div>
             <div class="modal-footer">
-              <button type="button" id="add_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-plus"></i> Aggiungi</button>
+              <button type="button" id="mod_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-pen"></i> Modifica</button>
             </div>
           </div>
         </div>
     </div>
-
-    <div class="modal fade " id="mod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modifica prodotto</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <input type="text" class="form-control mb-3" id="m_nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
-              <div class="input-group mb-3">
-                  <span class="input-group-text" id="m_icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
-                  <select id="m_categoria" class="form-select">
-                    <option value="0" selected>Arredamento</option>
-                    <option value="1">Alimentari</option>
-                    <option value="2">Elettronica</option>
-                    <option value="3">Indumenti</option>
-                    <option value="4">Sport</option>
-                  </select>     
-              </div>
-                  <div class="input-group mb-3">
-                      <span class="input-group-text" id="basic-addon1">€</span>
-                      <input type="number" id="m_costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
-                  </div>
-                  <input type="number" id="m_disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
-              </div>
-          <div class="modal-footer">
-            <button type="button" id="mod_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-pen"></i> Modifica</button>
-          </div>
-        </div>
-      </div>
-  </div>
-    <div id="add" role="button"><i class="fa-solid fa-plus"></i></div>
+      <div id="add" role="button"><i class="fa-solid fa-plus"></i></div>
+    </main>
+    <footer id="footer"></footer>
   </body>
    <template>
       <div class="card" style="width: 18rem;">
