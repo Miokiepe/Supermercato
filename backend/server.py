@@ -42,7 +42,17 @@ def delete(utente: User):
     conn,cursor = open_db_connection()
     cursor.execute("DELETE FROM utenti WHERE id_utente = '%s'",(utente.id))
     close_db_connection(conn)
-
+    
+#Restituzione dell'utente
+@app.post('/api/get_account')
+def get(utente: User_token):
+    conn,cursor = open_db_connection()
+    table = "utenti" if utente.role == "utente" else "gestori"
+    cursor.execute(f"SELECT * FROM {table} WHERE email = %s AND password = %s AND autenticato = %s",(utente.email, crypt(utente.password), utente.token))
+    user = cursor.fetchone()
+    close_db_connection(conn)
+    return {"user": user}
+    
 #Eseguendo il login viene generato un token.
 @app.post('/api/login', status_code=301)
 def login(login: Login):
