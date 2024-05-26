@@ -25,7 +25,7 @@ registrati.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id: 0,
+            id_utente: 0,
             nome: nome,
             cognome: cognome,
             email: email,
