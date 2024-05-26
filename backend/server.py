@@ -33,7 +33,7 @@ def create(utente: User):
 @app.put('/api/update_account',status_code=200)
 def update(utente: Old_New_User):
     conn, cursor = open_db_connection()
-    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s, autenticato = %s, genere = %s, cap = %s, città = %s, via = %s, prefisso = %s, numero = %s WHERE id_utente = %s",(utente.new.nome, utente.new.cognome, utente.new.email, crypt(utente.new.password),utente.new.autenticato, utente.new.genere, utente.new.cap, utente.new.città, utente.new.via, utente.new.prefisso, utente.new.numero, utente.old.id_utente))
+    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s, autenticato = %s, genere = %s, cap = %s, città = %s, via = %s, prefisso = %s, numero = %s WHERE id_utente = %s",(utente.new.nome, utente.new.cognome, utente.new.email, utente.new.password,utente.new.autenticato, utente.new.genere, utente.new.cap, utente.new.città, utente.new.via, utente.new.prefisso, utente.new.numero, utente.old.id_utente))
     close_db_connection(conn)
 
 #Cancellazzione di un utente
@@ -48,7 +48,7 @@ def delete(utente: User):
 def get(utente: User_token):
     conn,cursor = open_db_connection()
     table = "utenti" if utente.role == "utente" else "gestori"
-    cursor.execute(f"SELECT * FROM {table} WHERE email = %s AND password = %s AND autenticato = %s",(utente.email, crypt(utente.password), utente.token))
+    cursor.execute(f"SELECT * FROM {table} WHERE email = %s AND password = %s AND autenticato = %s",(utente.email, utente.password, utente.token))
     user = cursor.fetchone()
     close_db_connection(conn)
     return {"user": user}
