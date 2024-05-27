@@ -12,10 +12,49 @@
 </head>
 <body>
     <nav id="nav"></nav>
+    <div class="spinner-border" role="status" id="loader">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    <div class="alert alert-danger" role="alert" id="error"></div>
     <main>
-        <p>PAGINA Carrello</p>
+        <h1>Carrello</h1>
+        <div class="d-flex flex-row">
+            <div id="prodotti" class="d-flex flex-column"></div>
+            <div id="checkout" class="d-flex flex-column">
+                <span>Elementi nel carrello <b id="n_item"></b></span>
+                <span>Totale: <b id="costo_t"></b></span>
+                <button class="btn btn-primary">
+                    Acquista
+                </button>
+            </div>
+        </div>
     </main>
     <footer id="footer"></footer>
 </body>
+<template>
+    <div class="card" style="width: 18rem; flex: 0 0 auto;">
+        <div class="card-body">
+          <div class="d-flex align-baseline  justify-content-between ">
+            <h5 class="card-title"></h5>
+            <button class="btn btn-danger delete"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          <h6 class="card-subtitle mb-2 text-body-secondary category"></h6>
+            <div class="d-flex justify-content-between">
+              <span>Disponibilità: <span class="quantità"></span></span>
+              <span class="costo"></span>
+            </div>
+            <hr>
+            <label>Quantità</label>
+            <div class="d-flex align-items-baseline justify-content-between">
+                  <select class="form-select select_q" style="width: 50%;">
+                      <option value="1">1</option>
+                  </select>
+                  <b class="costo_d"></b>   
+            </div>
+        </div>
+    </div>
+</template>
+<script src="../script/check_au.js"></script>
 <script src="../script/navbar_footer.js"></script>
+<script src="../script/carrello.js" type="module"></script>
 </html>

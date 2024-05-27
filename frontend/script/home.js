@@ -1,4 +1,4 @@
-import items from "../Components/data.js"
+import {items, show_content, show_error} from '../Components/data.js'
 const prodotti_r = document.querySelector('#prodotti_r')
 const card_t = document.querySelector('template')
 const id = localStorage.getItem('id')
@@ -11,8 +11,7 @@ if(alert_t) {
     error.style.display = "block"
     switch(alert_t) {
         case 'cart':
-            error.className = "alert alert-success alert-dismissible fade show"
-            error.innerHTML = 'Elemento aggiunto al carrello! <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+            show_error('Elemento aggiunto al carrello! <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>','alert alert-success alert-dismissible fade show')
             break;
     }
 }
@@ -33,12 +32,13 @@ const add_cart = (prodotto) => {
     }).then(() => {
         localStorage.setItem('alert','cart')
         location.reload()
-    })
+    }).catch(() => show_error())
 }
 
 fetch('http://localhost:5000/api/get_items/10')
     .then(res => res.json())
     .then(res => {
+        show_content()
         console.log(res)
         if(!res.items) {
             prodotti_r.innerHTML = "<i>Nessun prodotto disponibile</i>"
@@ -63,9 +63,8 @@ fetch('http://localhost:5000/api/get_items/10')
             }
             card.querySelector('.add_cart').onclick = () => add_cart(elem)
             prodotti_r.appendChild(card)
+            //Quando si preme il bottone rosso, eseguire la cancellazzione
+            //Quando si cambia item, aggiornare la quantità
         })
     })
-    .catch(() => {
-        error.style.display = "block"
-        error.innerHTML = "Impossibile connettersi al server"
-    })
+    .catch(() => show_error())

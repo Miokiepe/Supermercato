@@ -13,8 +13,11 @@
 </head>
 <body>
     <nav id="nav"></nav>
+    <div class="spinner-border" role="status" id="loader">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="alert alert-danger" role="alert" id="error"></div>
     <main>
-      <div class="alert alert-danger" role="alert" id="error"></div>
       <h1 id="title"></h1>
       <h5>Articoli recenti</h5>
       <div id="prodotti_r" class="d-flex gap-1" style="overflow-x: auto; white-space: nowrap;"></div>

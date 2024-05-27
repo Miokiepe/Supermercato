@@ -1,4 +1,4 @@
-import items from "../Components/data.js";
+import {items, show_content, show_error} from '../Components/data.js'
 const container = document.querySelector('#prodotti');
 const card_t = document.querySelector("template")
 //Cancellazione prodotto
@@ -9,7 +9,7 @@ const delete_item = (prodotto) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(prodotto)
-    }).then(location.reload())
+    }).then(location.reload()).catch(() => show_error("Server non disponibile! Operazione anullata"))
 }
 let old_prodotto;
 const modify_item = (prodotto) => {
@@ -54,7 +54,8 @@ document.querySelector('#mod_item').addEventListener('click',() => {
 
 fetch('http://localhost:5000/api/get_items/999')
     .then(res => res.json())
-    .then(res => {//nome,tipo,costo,disponibilità
+    .then(res => {
+        show_content()
         if (res.items) {
             res.items.forEach(elem => {
             const card = card_t.content.cloneNode(true)
@@ -73,10 +74,7 @@ fetch('http://localhost:5000/api/get_items/999')
             container.innerHTML = "Nessun prodotto salvato";
         }
     })
-    .catch(() => {
-        error.style.display = "block"
-        error.innerHTML = "Server non raggiungibile!";
-    });
+    .catch(() => show_error());
 
 
 const myModal = new bootstrap.Modal(document.getElementById("modal"));

@@ -17,8 +17,10 @@ body {
 }
 
 main {
+  visibility: hidden;
   margin-left: 30px;
   margin-right: 30px;
+  margin-top: 76px;
   min-height: calc(100vh - 56px - 38px);
 }
 
@@ -31,11 +33,20 @@ main {
   gap: 10px;
   padding-bottom: 10px;
 }
+
 #error {
   width: calc(100vw - 40px);
   margin-top: 60px;
   position: absolute;
   display: none;
+}
+
+#loader {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 12px);
+  color: #006466;
 }
 
 @media screen and (max-width: 960px) {

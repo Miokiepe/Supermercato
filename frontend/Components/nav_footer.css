@@ -17,8 +17,10 @@ body {
 }
 
 main {
+  visibility: hidden;
   margin-left: 30px;
   margin-right: 30px;
+  margin-top: 76px;
   min-height: calc(100vh - 56px - 38px);
 }
 
@@ -42,4 +44,12 @@ main {
   ul li {
     margin-top: 10px;
   }   
+}
+
+#loader {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 12px);
+  color: #006466;
 }

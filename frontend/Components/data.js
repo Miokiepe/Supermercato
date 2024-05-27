@@ -1,4 +1,4 @@
-const items = [{
+export const items = [{
     nome: "Arredamento",
     colore: "#f6511d",
     icona: '<i class="fa-solid fa-couch"></i>'
@@ -19,5 +19,18 @@ const items = [{
     colore: "#0d2c54 ",
     icona: '<i class="fa-solid fa-volleyball"></i>'
 }]
+
+export const show_error = (message = "Impossibile connettersi al server", className = "") => {
+    const error = document.querySelector('#error')
+    if(className !== "") error.className = className
+    error.innerHTML = message
+    error.style.display = 'block'
+    document.querySelector('.spinner-border').style.display = 'none'
+}
+
+export const show_content = () => {
+    document.querySelector('.spinner-border').style.display = 'none'
+    document.querySelector('main').style.visibility = 'visible'
+}
 
 export default items

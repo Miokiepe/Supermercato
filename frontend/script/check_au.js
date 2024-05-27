@@ -2,7 +2,7 @@
           password = localStorage.getItem('password'), 
           token = localStorage.getItem('token'),
           role = localStorage.getItem('role')
-    if(!email || !password || !token) window.location.reload('../index.html')
+    if(!email || !password || !token) window.location.replace('../index.html')
     fetch("http://localhost:5000/api/home", {
         method: "POST",
         headers: {

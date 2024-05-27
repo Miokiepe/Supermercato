@@ -1,13 +1,10 @@
-#prodotti_r {
+#prodotti_r, #ordini {
     padding: 10px;
     background-color: whitesmoke;
+    border-radius: 16px;
+    margin-bottom: 10px;
 }
-#ordini {
-    margin: 10px;
-    padding: 10px;
-    background-color: whitesmoke;
-    border-radius: 20px;
-}
+
 #no_ordine {
     text-align: center;
     font-style: italic;

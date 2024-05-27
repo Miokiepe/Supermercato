@@ -60,10 +60,9 @@ button.addEventListener('click',() => {
         }
         localStorage.clear()
         localStorage.setItem('email', email);
-        localStorage.setItem('pass', password);
         const re = await res.json()
         localStorage.setItem('email',email);
-        localStorage.setItem('password',password);
+        localStorage.setItem('password',re.password);
         localStorage.setItem('token',re.token);
         localStorage.setItem('role',role);
         if(role == "utente") window.location.replace("./Pages/home.html")

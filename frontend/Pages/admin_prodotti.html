@@ -13,11 +13,11 @@
 </head>
 <body>
     <nav id="nav"></nav>
+    <div class="spinner-border" role="status" id="loader">
+      <span class="visually-hidden">Loading...</span>
+  </div>
+  <div id="error" class="alert alert-danger"></div>
     <main>
-      <div class="alert alert-danger alert-dismissible fade show" id="error" role="alert">
-          <span id="text"></span>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
       <div id="prodotti" class=" m-1 d-flex gap-1 flex-row flex-wrap"></div>
   
       <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
