@@ -38,7 +38,6 @@ button.addEventListener('click',() => {
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
     const role = document.querySelector('#select').value == "0" ? "utente" : document.querySelector('#select').value == "1" ? "corriere" : "admin"
-    console.log(role)
     if (!email.trim() || !password.trim()) {
         error.innerHTML = "Uno o più campi vuoti!";
         error.style.display = "block";
@@ -69,8 +68,8 @@ button.addEventListener('click',() => {
         else if(role == "admin") window.location.replace("./Pages/admin.html")
              else window.location.replace('./Pages/corriere.html')
     })
-    .catch(error => {
-        console.error('Error:', error);
+    .catch(e => {
+        console.error('Error:', e);
         button.disabled = false;
         error.style.display = 'block';
         error.innerHTML = "Errore con il server. Riprova più tardi";

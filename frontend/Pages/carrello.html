@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/74498d2afa.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../Components/nav_footer.css">
+    <link rel="stylesheet" href="../Styles/carrello.css">
     <title>Carrello</title>
 </head>
 <body>
@@ -18,12 +19,13 @@
     <div class="alert alert-danger" role="alert" id="error"></div>
     <main>
         <h1>Carrello</h1>
-        <div class="d-flex flex-row">
-            <div id="prodotti" class="d-flex flex-column"></div>
-            <div id="checkout" class="d-flex flex-column">
-                <span>Elementi nel carrello <b id="n_item"></b></span>
-                <span>Totale: <b id="costo_t"></b></span>
-                <button class="btn btn-primary">
+        <div class="d-flex flex-column flex-lg-row justify-content-center"> <!--Aggiustare, content-center non funziona-->
+            <div id="prodotti" class="d-flex flex-row gap-3 w-75 flex-wrap mb-2"></div>
+            <div class=" d-none d-lg-block vr"></div>
+            <div id="checkout" class="d-flex flex-column gap-3 text-center">
+                <h3><b id="n_item"></b> elementi nel carrello</h3>
+                <h3>Totale €<b id="costo_t"></b></h3>
+                <button class="btn btn-primary" style="background-color: #2a3c59; border:none">
                     Acquista
                 </button>
             </div>
