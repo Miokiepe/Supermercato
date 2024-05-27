@@ -163,7 +163,7 @@ def delete(item: Cart_Item):
 @app.post('/api/get_cart')
 def get(user_id: User_id):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT * FROM prodotti JOIN carrello ON prodotti.id_prodotto = carrello.id_prodotto JOIN utenti ON carrello.id_utente = %s",(user_id.id_utente,))
+    cursor.execute("SELECT utenti.id_utente, prodotti.id_prodotto ,prodotti.nome, prodotti.tipo, prodotti.costo, prodotti.disponibilità, carrello.quantità_richiesta FROM prodotti JOIN carrello ON prodotti.id_prodotto = carrello.id_prodotto JOIN utenti ON carrello.id_utente = %s",(user_id.id_utente,))
     items = cursor.fetchall()
     close_db_connection(conn)
     return {"items": items}
