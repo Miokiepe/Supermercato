@@ -65,7 +65,10 @@ def login(login: Login):
     token = generate_token()
     cursor.execute(f"UPDATE {table} SET autenticato = %s WHERE email = %s AND password = %s", (token,login.email, crypt(login.password)))
     close_db_connection(conn)
-    return {"token": token}
+    return {
+        "token": token,
+        "password": crypt(login.password)
+        }
 
 #Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione
 @app.post('/api/home', status_code=200)
@@ -73,7 +76,7 @@ def home(token: User_token):
     conn, cursor = open_db_connection()
     table = "utenti" if token.role == "utente" else "gestori"
     id = "id_utente" if token.role == "utente" else "id_gestore"
-    cursor.execute(f"SELECT {id}, nome FROM {table} WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,crypt(token.password)))
+    cursor.execute(f"SELECT {id}, nome FROM {table} WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,token.password))
     user = cursor.fetchone()
     if user[id] == None:
         raise HTTPException(status_code=301)
