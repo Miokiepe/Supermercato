@@ -40,7 +40,7 @@ def update(utente: Old_New_User):
 @app.delete('/api/delete_account',status_code=200)
 def delete(utente: User):
     conn,cursor = open_db_connection()
-    cursor.execute("DELETE FROM utenti WHERE id_utente = '%s'",(utente.id))
+    cursor.execute("DELETE FROM utenti WHERE id_utente = %s",(utente.id_utente,))
     close_db_connection(conn)
     
 #Restituzione dell'utente
