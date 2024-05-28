@@ -1,3 +1,14 @@
 #checkout {
-    
+    margin-left: 100px;
+}
+
+@media screen and (max-width: 960px) {
+    #checkout {
+        margin: initial;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .card {
+        width: calc(100vw - 60px) !important
+    }
 }
