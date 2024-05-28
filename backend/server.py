@@ -180,7 +180,15 @@ def buy(items: Cart_Items):
         else:
             cursor.execute("UPDATE prodotti SET disponibilità = %s WHERE id_prodotto = %s",(old_quantity - item.quantità, item.id_prodotto))
             cursor.execute("DELETE from carrello WHERE id_utente = %s AND id_prodotto = %s",(item.id_utente, item.id_prodotto))
+            #Aggiugere gli elementi alla tabella ordini
     close_db_connection(conn)
 
+#Restituzione di tutti gli ordini
+@app.post('/api/get_orders',status_code=200)
+def get(corriere: User_token):
+    pass
+#Tabella ordini:
+#id dell'utente
+#
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")
