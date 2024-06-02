@@ -172,15 +172,18 @@ def get(user_id: User_id):
 @app.put('/api/buy_cart', status_code=200)
 def buy(items: Cart_Items):
     conn, cursor = open_db_connection()
+    gruppo = 0
+    cursor.execute("SELECT gruppo FROM ordini ORDER BY gruppo DESC")
+    if cursor.fetchone() != None:
+        gruppo = cursor.fetchone() + 1
     for item in items.items:
         cursor.execute("SELECT * FROM prodotti WHERE id_prodotto = %s",(item.id_prodotto,))
         old_quantity = cursor.fetchone()["disponibilità"]
         if(old_quantity < item.quantità):
             raise HTTPException(status_code=409)
         else:
-            cursor.execute("UPDATE prodotti SET disponibilità = %s WHERE id_prodotto = %s",(old_quantity - item.quantità, item.id_prodotto))
-            cursor.execute("DELETE from carrello WHERE id_utente = %s AND id_prodotto = %s",(item.id_utente, item.id_prodotto))
-            #Aggiugere gli elementi alla tabella ordini
+            cursor.execute("INSERT INTO ordini VALUES (id_utente, id_prodotto, quantità, stato, gruppo) VALUES (%s, %s, %s, %s, %s)",(item.id_utente, item.id_prodotto,item.quantità, 0, gruppo))
+            cursor.execute("DELETE from carrello WHERE id_utente = %s",(item.id_utente,))
     close_db_connection(conn)
 
 #Restituzione di tutti gli ordini
