@@ -172,14 +172,15 @@ def get(user_id: User_id):
 @app.put('/api/buy_cart', status_code=200)
 def buy(items: Cart_Items):
     conn, cursor = open_db_connection()
+    cursor = conn.cursor(dictionary=True, buffered=True)
     gruppo = 0
     cursor.execute("SELECT gruppo FROM ordini ORDER BY gruppo DESC")
-    if cursor.fetchone() != None:
-        gruppo = cursor.fetchone() + 1
+    if g:=cursor.fetchone()["gruppo"] != None:
+        gruppo = g + 1
     for item in items.items:
         cursor.execute("SELECT * FROM prodotti WHERE id_prodotto = %s",(item.id_prodotto,))
         old_quantity = cursor.fetchone()["disponibilità"]
-        if(old_quantity < item.quantità):
+        if old_quantity < item.quantità :
             raise HTTPException(status_code=409)
         else:
             cursor.execute("INSERT INTO ordini(id_utente, id_prodotto, quantità, stato, gruppo) VALUES (%s, %s, %s, %s, %s)",(item.id_utente, item.id_prodotto,item.quantità, 0, gruppo))
