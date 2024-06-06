@@ -182,16 +182,26 @@ def buy(items: Cart_Items):
         if(old_quantity < item.quantità):
             raise HTTPException(status_code=409)
         else:
-            cursor.execute("INSERT INTO ordini VALUES (id_utente, id_prodotto, quantità, stato, gruppo) VALUES (%s, %s, %s, %s, %s)",(item.id_utente, item.id_prodotto,item.quantità, 0, gruppo))
-            cursor.execute("DELETE from carrello WHERE id_utente = %s",(item.id_utente,))
+            cursor.execute("INSERT INTO ordini(id_utente, id_prodotto, quantità, stato, gruppo) VALUES (%s, %s, %s, %s, %s)",(item.id_utente, item.id_prodotto,item.quantità, 0, gruppo))
+            cursor.execute("DELETE from carrello WHERE id_utente = %s AND id_prodotto = %s",(item.id_utente, item.id_prodotto))
+    close_db_connection(conn)
+
+#Modifica dello stato dell'ordine
+@app.put('/api/update_status')
+def update(item: Order_Items):
+    conn, cursor = open_db_connection()
+    cursor.execute("UPDATE ordini SET stato = %s WHERE id_ordine = %s",(item.stato, item.stato))
     close_db_connection(conn)
 
 #Restituzione di tutti gli ordini
 @app.post('/api/get_orders',status_code=200)
 def get(corriere: User_token):
-    pass
-#Tabella ordini:
-#id dell'utente
-#
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT * FROM ordini ORDER BY gruppo ASC")
+    items = cursor.fetchall()
+    close_db_connection(conn)
+    return {
+        "items":items
+    }
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")

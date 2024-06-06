@@ -44,6 +44,15 @@ class Cart_Item(BaseModel):
 class Cart_Items(BaseModel):
     items: List[Cart_Item]
 
+class Order_Items(BaseModel):
+    id_ordine: int | None
+    id_utente: int
+    id_prodotto: int
+    quantità: int
+    stato: int
+    gruppo: int
+    
+
 class User_id(BaseModel):
     id_utente: int
     
