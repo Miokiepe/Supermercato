@@ -2,6 +2,31 @@ import {items, show_content, show_error} from '../Components/data.js'
 const error = document.querySelector('#error')
 const card_t = document.querySelector('template')
 const container = document.querySelector('#prodotti')
+let items_g;
+
+document.querySelector('#acquista').addEventListener('click',() => {
+    const cart_item = {items: []}
+    items_g.items.forEach(elem => {
+        cart_item.items.push({
+            id_utente: elem.id_utente,
+            id_prodotto: elem.id_prodotto,
+            quantità: elem.quantità_richiesta
+        })
+    })
+    fetch('http://localhost:5000/api/buy_cart',{
+        method: "PUT",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(cart_item)
+    }).then(() => {
+        localStorage.setItem('alert',JSON.stringify({
+            message: "Ordine effettuato! Torna alla home per visualizzare il tuo ordine",
+            className: "alert alert-info"
+        }))
+        location.reload()
+    }).catch(() => show_error())
+})
 
 const delete_item = (prodotto) => {
     fetch('http://localhost:5000/api/delete_cart', {
@@ -30,6 +55,13 @@ const update_item = (prodotto, nuova_quantità) => {
       .catch(() => show_error())
 }
 
+const alert = JSON.parse(localStorage.getItem('alert'))
+if(alert) {
+    show_error(alert.message, alert.className)
+    localStorage.removeItem('alert')
+}
+
+
 fetch('http://localhost:5000/api/get_cart', {
     method: "POST",
     headers: {
@@ -40,8 +72,14 @@ fetch('http://localhost:5000/api/get_cart', {
     })
 }).then(res => res.json()).then(res => {
     show_content()
-    console.log(res)
     let n_elementi = 0, costo_t = 0;
+    if(res.items.length === 0) {
+        container.innerHTML = "Nessun prodotto nel carrello"
+        document.querySelector('#checkout').style.display = "none"
+        document.querySelector('#acquista').disabled = true
+        return;
+        }
+    items_g = res
     res.items.forEach(elem => {
         const card = card_t.content.cloneNode(true)
         card.querySelector('.card-title').innerHTML = elem.nome
