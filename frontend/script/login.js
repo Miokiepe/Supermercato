@@ -64,6 +64,7 @@ button.addEventListener('click',() => {
         localStorage.setItem('password',re.password);
         localStorage.setItem('token',re.token);
         localStorage.setItem('role',role);
+        localStorage.setItem('id',re.id_utente)
         if(role == "utente") window.location.replace("./Pages/home.html")
         else if(role == "admin") window.location.replace("./Pages/admin.html")
              else window.location.replace('./Pages/corriere.html')

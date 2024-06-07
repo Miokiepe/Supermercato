@@ -6,7 +6,7 @@ const password = localStorage.getItem('password')
 const error = document.querySelector('#error')
 const token = localStorage.getItem('token')
 const role = localStorage.getItem('role')
-
+const id = localStorage.getItem('id');
 const alert_t = localStorage.getItem('alert')
 localStorage.removeItem('alert')
 if(alert_t) {
@@ -27,13 +27,17 @@ const add_cart = (prodotto) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id_utente: id,
+            id_utente: parseInt(id),
             id_prodotto: prodotto.id_prodotto,
             quantità: parseInt(document.querySelector('#u' + prodotto.id_prodotto).value)
         })
-    }).then(() => {
-        localStorage.setItem('alert','cart')
-        location.reload()
+    }).then((res) => {
+        if(res.status === 201) {
+            localStorage.setItem('alert','cart')
+            location.reload()
+        }
+        else show_error()
+        
     }).catch(() => show_error())
 }
 
@@ -53,7 +57,17 @@ fetch('http://localhost:5000/api/get_items/10')
                 `<span style='color: ${items[elem.tipo].colore}'>
                     ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                 </span>`
-            card.querySelector('.quantità').innerHTML = elem.disponibilità
+            if(elem.disponibilità == 0) {
+                card.querySelector('.quantità').innerHTML = "<i>Non disponibile<i>"
+                card.querySelector('.quantità').style.color = "red"
+                card.querySelector(".add_cart").style.display = "none"
+                card.querySelector(".sep").style.visibility = "hidden"
+                card.querySelector("hr").style.visibility = "hidden"
+            }
+            else {
+                card.querySelector('.quantità').innerHTML = elem.disponibilità
+                card.querySelector('.add_cart').onclick = () => add_cart(elem)
+            }
             card.querySelector('.costo').innerHTML = "€" + elem.costo
             const select = card.querySelector('.select_q')
             select.id = "u" + elem.id_prodotto
@@ -63,7 +77,6 @@ fetch('http://localhost:5000/api/get_items/10')
                 option.innerHTML = i
                 select.appendChild(option)
             }
-            card.querySelector('.add_cart').onclick = () => add_cart(elem)
             prodotti_r.appendChild(card)
             //Quando si preme il bottone rosso, eseguire la cancellazzione
             //Quando si cambia item, aggiornare la quantità

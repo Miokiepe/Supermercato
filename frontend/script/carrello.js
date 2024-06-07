@@ -87,11 +87,12 @@ fetch('http://localhost:5000/api/get_cart', {
                 `<span style='color: ${items[elem.tipo].colore}'>
                     ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                 </span>`
+        //TODO Se l'elemnto non è disponibile, utilizzare un alert-info, non contarlo nel prezzo, disabilitare il bottone
         card.querySelector('.quantità').innerHTML = elem.disponibilità
         card.querySelector('.costo').innerHTML = "€" + elem.costo
         const select = card.querySelector('.select_q')
         select.id = "u" + elem.id_prodotto
-            for(let i = 2; i < elem.disponibilità && i < elem.disponibilità; i++) {
+            for(let i = 2; i <= elem.disponibilità; i++) {
                 const option = document.createElement('option')
                 option.value = i
                 option.innerHTML = i
