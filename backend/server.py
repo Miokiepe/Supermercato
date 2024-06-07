@@ -70,7 +70,8 @@ def login(login: Login):
         "password": crypt(login.password)
         }
 
-#Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione
+#Quando si accede a home.html il client invia il token ricevuto dal server per verificare la sessione.
+#Inoltre, l'utente riceve il suo nome, il suo ID, il numero di item nel carrello, gli ordini che ha effetuato
 @app.post('/api/home', status_code=200)
 def home(token: User_token):
     conn, cursor = open_db_connection()
@@ -87,7 +88,7 @@ def home(token: User_token):
         return {
                 "nome":user["nome"],
                 "id": user["id_utente"],
-                "carrello":n
+                "carrello":n,
                }
     else:
         close_db_connection(conn)
@@ -194,7 +195,7 @@ def update(item: Order_Items):
     cursor.execute("UPDATE ordini SET stato = %s WHERE id_ordine = %s",(item.stato, item.stato))
     close_db_connection(conn)
 
-#Restituzione di tutti gli ordini
+#Restituzione di tutti gli ordini per il corriere
 @app.post('/api/get_orders',status_code=200)
 def get(corriere: User_token):
     conn, cursor = open_db_connection()
@@ -204,5 +205,19 @@ def get(corriere: User_token):
     return {
         "items":items
     }
+
+#Restituzione di tutti gli ordini per l'utente   
+@app.post('/api/get_orders_user',status_code=200)
+def get(user: User_token):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT id_utente FROM utenti WHERE email = %s AND password = %s AND autenticato = %s",(user.email, user.password, user.token))
+    id = cursor.fetchone()
+    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.stato, ordini.gruppo FROM ordini JOIN prodotti ON ordini.id_prodotto = prodotti.id_prodotto WHERE id_utente = %s",(id['id_utente'],))
+    ordini = cursor.fetchall()
+    close_db_connection(conn)
+    return {
+        "ordini": ordini
+    }
+    
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")
