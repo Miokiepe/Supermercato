@@ -60,7 +60,7 @@ button.addEventListener('click',() => {
         localStorage.clear()
         localStorage.setItem('email', email);
         const re = await res.json()
-        localStorage.setItem('email',email);
+        localStorage.setItem('nome',re.nome);
         localStorage.setItem('password',re.password);
         localStorage.setItem('token',re.token);
         localStorage.setItem('role',role);

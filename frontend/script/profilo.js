@@ -56,6 +56,7 @@ const IDs = ["nome","cognome","città","cap","via","genere","prefisso","numero",
 modifica.addEventListener('click',() => {
     if(modifica.innerHTML.includes("Modifica")) {
         IDs.forEach(elem => document.querySelector('#' + elem).disabled = false)
+        document.querySelector('#password').disabled = false;
         modifica.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Salva'
     }
     else {

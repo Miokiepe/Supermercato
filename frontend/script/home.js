@@ -1,9 +1,11 @@
 import {items, show_content, show_error} from '../Components/data.js'
 const prodotti_r = document.querySelector('#prodotti_r')
 const card_t = document.querySelector('template')
-const id = localStorage.getItem('id')
+const email = localStorage.getItem('email')
+const password = localStorage.getItem('password')
 const error = document.querySelector('#error')
-localStorage.removeItem('id')
+const token = localStorage.getItem('token')
+const role = localStorage.getItem('role')
 
 const alert_t = localStorage.getItem('alert')
 localStorage.removeItem('alert')
@@ -68,3 +70,21 @@ fetch('http://localhost:5000/api/get_items/10')
         })
     })
     .catch(() => show_error())
+
+fetch('http://localhost:5000/api/get_orders_user', {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        email: email, 
+        password: password, 
+        token: token, 
+        role: role
+    })
+}).then(res => res.json())
+  .then(res => {
+    //Renderizzare gli ordini
+    console.log(res)
+})
+  .catch(() => show_error())
