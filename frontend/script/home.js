@@ -58,17 +58,19 @@ fetch('http://localhost:5000/api/get_items/10')
                     ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                 </span>`
             if(elem.disponibilità == 0) {
+                card.querySelector('.ddesc').innerHTML = ""
                 card.querySelector('.quantità').innerHTML = "<i>Non disponibile<i>"
                 card.querySelector('.quantità').style.color = "red"
                 card.querySelector(".add_cart").style.display = "none"
+                card.querySelector('.costo').style.visibility = "hidden"
                 card.querySelector(".sep").style.visibility = "hidden"
                 card.querySelector("hr").style.visibility = "hidden"
             }
             else {
                 card.querySelector('.quantità').innerHTML = elem.disponibilità
                 card.querySelector('.add_cart').onclick = () => add_cart(elem)
+                card.querySelector('.costo').innerHTML = "€" + elem.costo
             }
-            card.querySelector('.costo').innerHTML = "€" + elem.costo
             const select = card.querySelector('.select_q')
             select.id = "u" + elem.id_prodotto
             for(let i = 2; i < elem.disponibilità && i < 10; i++) {
@@ -78,8 +80,6 @@ fetch('http://localhost:5000/api/get_items/10')
                 select.appendChild(option)
             }
             prodotti_r.appendChild(card)
-            //Quando si preme il bottone rosso, eseguire la cancellazzione
-            //Quando si cambia item, aggiornare la quantità
         })
     })
     .catch(() => show_error())
@@ -97,7 +97,39 @@ fetch('http://localhost:5000/api/get_orders_user', {
     })
 }).then(res => res.json())
   .then(res => {
-    //Renderizzare gli ordini
-    console.log(res)
+      const container = document.querySelector('#ordini_cards')
+      
+      if(!res.ordini) {
+        container.innerHTML = "Nessun ordine effetuato"
+        return;
+      }
+
+    //riordinare l'arry in base al tipo
+    const res_sorted = res.ordini.sort((a, b) => a.gruppo - b.gruppo)
+
+    //Creazione di x array per quanti sono i gruppi ordine
+    const gruppi = [];
+    let gruppo = [], n_gruppo = res_sorted[0].gruppo;
+    res_sorted.forEach(elem => {
+        if(n_gruppo != elem.gruppo) {
+            gruppi.push(gruppo)
+            gruppo = []
+        }
+        gruppo.push(elem)
+        n_gruppo = elem.gruppo
+    })
+    gruppi.push(gruppo)
+
+    //Renderizzazzione degli ordini
+    gruppi.forEach(array => {
+        const div = document.createElement('div')
+        div.style.border = "2px solid black"
+        array.forEach(elem => {
+            const card = document.createElement('p')
+            card.innerHTML = elem.nome
+            div.appendChild(card)
+        })
+        container.appendChild(div)
+    })
 })
   .catch(() => show_error())

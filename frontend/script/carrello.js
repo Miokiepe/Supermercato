@@ -87,25 +87,34 @@ fetch('http://localhost:5000/api/get_cart', {
                 `<span style='color: ${items[elem.tipo].colore}'>
                     ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                 </span>`
-        //TODO Se l'elemnto non è disponibile, utilizzare un alert-info, non contarlo nel prezzo, disabilitare il bottone
-        card.querySelector('.quantità').innerHTML = elem.disponibilità
-        card.querySelector('.costo').innerHTML = "€" + elem.costo
-        const select = card.querySelector('.select_q')
-        select.id = "u" + elem.id_prodotto
-            for(let i = 2; i <= elem.disponibilità; i++) {
-                const option = document.createElement('option')
-                option.value = i
-                option.innerHTML = i
-                select.appendChild(option)
-            }
-        select.value = elem.quantità_richiesta
-        select.onchange = () => update_item(elem, select.value)
         const costo = elem.quantità_richiesta * elem.costo
-        costo_t += costo
-        card.querySelector('.costo_d').innerHTML = "€" + costo
+        //TODO Se l'elemnto non è disponibile, utilizzare un alert-info, non contarlo nel prezzo, disabilitare il bottone
+        if(elem.disponibilità == 0) {
+            show_error("Uno o più elementi non sono più disponibili","alert alert-info")
+            card.querySelector('.quantità').innerHTML = "<i>Non disponibile<i>"
+            card.querySelector('.quantità').style.color = "red"
+            card.querySelector('.sep').style.visibility = "hidden"
+        }
+        else {
+            card.querySelector('.quantità').innerHTML = elem.disponibilità
+            card.querySelector('.costo').innerHTML = "€" + elem.costo
+            const select = card.querySelector('.select_q')
+            select.id = "u" + elem.id_prodotto
+                for(let i = 2; i <= elem.disponibilità; i++) {
+                    const option = document.createElement('option')
+                    option.value = i
+                    option.innerHTML = i
+                    select.appendChild(option)
+                }
+            select.value = elem.quantità_richiesta
+            select.onchange = () => update_item(elem, select.value)
+            
+            costo_t += costo
+            n_elementi += elem.quantità_richiesta
+            }
         card.querySelector('.delete').onclick = () => delete_item({id_utente: elem.id_utente, id_prodotto: elem.id_prodotto, quantità: elem.quantità_richiesta})
+        card.querySelector('.costo_d').innerHTML = "€" + costo
         container.appendChild(card)
-        n_elementi += elem.quantità_richiesta
     })
     document.querySelector('#n_item').innerHTML =  n_elementi
     document.querySelector('#costo_t').innerHTML = costo_t.toFixed(2)
