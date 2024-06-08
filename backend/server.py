@@ -164,7 +164,7 @@ def delete(item: Cart_Item):
 @app.post('/api/get_cart')
 def get(user_id: User_id):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT utenti.id_utente, prodotti.id_prodotto ,prodotti.nome, prodotti.tipo, prodotti.costo, prodotti.disponibilità, carrello.quantità_richiesta FROM prodotti JOIN carrello ON prodotti.id_prodotto = carrello.id_prodotto JOIN utenti ON carrello.id_utente = %s",(user_id.id_utente,))
+    cursor.execute("SELECT utenti.id_utente, prodotti.id_prodotto ,prodotti.nome, prodotti.tipo, prodotti.costo, prodotti.disponibilità, carrello.quantità_richiesta FROM prodotti JOIN carrello ON prodotti.id_prodotto = carrello.id_prodotto JOIN utenti ON carrello.id_utente = utenti.id_utente WHERE carrello.id_utente = %s;",(user_id.id_utente,))
     items = cursor.fetchall()
     close_db_connection(conn)
     return {"items": items}
@@ -173,10 +173,11 @@ def get(user_id: User_id):
 @app.put('/api/buy_cart', status_code=200)
 def buy(items: Cart_Items):
     conn, cursor = open_db_connection()
-    cursor = conn.cursor(dictionary=True, buffered=True)
+    cursor = conn.cursor(dictionary=True)
     gruppo = 0
-    cursor.execute("SELECT gruppo FROM ordini ORDER BY gruppo DESC")
-    if g:=cursor.fetchone()["gruppo"] != None:
+    cursor.execute("SELECT gruppo FROM ordini ORDER BY gruppo DESC LIMIT 1")
+    g = cursor.fetchone()["gruppo"]
+    if g != None:
         gruppo = g + 1
     for item in items.items:
         cursor.execute("SELECT * FROM prodotti WHERE id_prodotto = %s",(item.id_prodotto,))
@@ -186,6 +187,7 @@ def buy(items: Cart_Items):
         else:
             cursor.execute("INSERT INTO ordini(id_utente, id_prodotto, quantità, stato, gruppo) VALUES (%s, %s, %s, %s, %s)",(item.id_utente, item.id_prodotto,item.quantità, 0, gruppo))
             cursor.execute("DELETE from carrello WHERE id_utente = %s AND id_prodotto = %s",(item.id_utente, item.id_prodotto))
+            cursor.execute("UPDATE prodotti SET disponibilità = %s WHERE id_prodotto = %s",(old_quantity - item.quantità,item.id_prodotto))
     close_db_connection(conn)
 
 #Modifica dello stato dell'ordine
