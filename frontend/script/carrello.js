@@ -77,6 +77,7 @@ fetch('http://localhost:5000/api/get_cart', {
         container.innerHTML = "Nessun prodotto nel carrello"
         document.querySelector('#checkout').style.display = "none"
         document.querySelector('#acquista').disabled = true
+        document.querySelector('#sep').style.visibility = "hidden"
         return;
         }
     items_g = res

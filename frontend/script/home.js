@@ -41,9 +41,10 @@ const add_cart = (prodotto) => {
             location.reload()
             }
             else show_error()
-            
-            }).catch(() => show_error())
-            }
+            })
+            .catch(() => show_error())
+}
+
 //Renderizzazzione degli ultimi 10 item disponibili
 fetch('http://localhost:5000/api/get_items/10')
     .then(res => res.json())
@@ -61,6 +62,7 @@ fetch('http://localhost:5000/api/get_items/10')
                 `<span style='color: ${items[elem.tipo].colore}'>
                     ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                 </span>`
+
             if(elem.disponibilità == 0) {
                 card.querySelector('.ddesc').innerHTML = ""
                 card.querySelector('.quantità').innerHTML = "<i>Non disponibile<i>"
@@ -85,8 +87,9 @@ fetch('http://localhost:5000/api/get_items/10')
                 }
                 prodotti_r.appendChild(card)
                 })
-                })
-                .catch(() => show_error())
+            })
+            .catch(() => show_error())
+    
 //Renderizzazzione degli ordini
 fetch('http://localhost:5000/api/get_orders_user', {
     method: "POST",
@@ -94,19 +97,18 @@ fetch('http://localhost:5000/api/get_orders_user', {
         'Content-Type': 'application/json'
         },
     body: JSON.stringify({
-        email: email, 
-        password: password, 
-        token: token, 
-        role: role
-        })
+                email: email, 
+                password: password, 
+                token: token, 
+                role: role
+            })
         }).then(res => res.json())
-        .then(res => {
-            const container = document.querySelector('#ordini_cards')
-            
+          .then(res => {
+                const container = document.querySelector('#ordini_cards')
             if(!res.ordini) {
                 container.innerHTML = "Nessun ordine effetuato"
-        return;
-        }
+                return;
+            }
 
         //riordinare l'arry in base al tipo
         const res_sorted = res.ordini.sort((a, b) => a.gruppo - b.gruppo)
@@ -114,27 +116,34 @@ fetch('http://localhost:5000/api/get_orders_user', {
     //Creazione di x array per quanti sono i gruppi ordine
     const gruppi = [];
     let gruppo = [], n_gruppo = res_sorted[0].gruppo;
+    
     res_sorted.forEach(elem => {
         if(n_gruppo != elem.gruppo) {
             gruppi.push(gruppo)
             gruppo = []
-            }
+        }
             gruppo.push(elem)
             n_gruppo = elem.gruppo
-            })
-            gruppi.push(gruppo)
+        })
+
+    gruppi.push(gruppo)
     const ordini = document.querySelector('#ordini')
     //Renderizzazzione degli ordini
+    let n_ordine, data;
     gruppi.forEach(array => {
         const container = document.createElement('div')
+        container.style = "background-color: white; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px; display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; flex-direction: column; padding: 10px; border-radius: 12px;"
+        
         const container_ordine = document.createElement('div')
         container_ordine.style = "display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap;"
-        const n_ordine = document.createElement('h3')
+        
+        n_ordine = document.createElement('h3')
         n_ordine.innerHTML = "N. ordine #"
         container.appendChild(n_ordine)
-        container.style = "background-color: white; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px; display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; flex-direction: column; padding: 10px; border-radius: 12px;"
-        console.log(array)
+
+        let item_consegnati = 0
         array.forEach(elem => {
+
             const ordine = ordini_t.content.cloneNode(true)
             ordine.querySelector('.card-title').innerHTML = elem.nome
             ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: ${items[elem.tipo].colore}'>
@@ -142,24 +151,39 @@ fetch('http://localhost:5000/api/get_orders_user', {
                                                                 </span>`
             ordine.querySelector('.ddesc').innerHTML = "Quantità: "  + elem.quantità
             ordine.querySelector('.costo').innerHTML = '€' + elem.costo
+            
             const btn = ordine.querySelector('.btn')
-            btn.innerHTML = stati[elem.stato].icona
-            btn.setAttribute('data-bs-title', stati[elem.stato].titolo)
-            btn.setAttribute('data-bs-content', stati[elem.stato].desc)
+            const stato = stati[elem.stato]
+            btn.innerHTML = stato.icona
+            btn.setAttribute('data-bs-title', stato.titolo)
+            btn.setAttribute('data-bs-content', stato.desc)
             btn.setAttribute('data-bs-toggle','popover')
-            btn.className = "btn btn-" + (stati[elem.stato].colore ? stati[elem.stato].colore : 'primary')
-            ordine.querySelector('.nome').innerHTML = stati[elem.stato].nome
-            ordine.querySelector('.progress-bar').style.width = stati[elem.stato].perc
-            ordine.querySelector('.progress-bar').innerHTML = stati[elem.stato].perc
-            ordine.querySelector('.progress-bar').classList.add("bg-" + (stati[elem.stato].colore ? stati[elem.stato].colore : 'primary'))
+            btn.className = "btn btn-" + (stato.colore ? stato.colore : 'primary')
+
+            ordine.querySelector('.nome').innerHTML = stato.nome
+            ordine.querySelector('.progress-bar').style.width = stato.perc
+            ordine.querySelector('.progress-bar').innerHTML = stato.perc
+            ordine.querySelector('.progress-bar').classList.add("bg-" + (stato.colore ? stato.colore : 'primary'))
+            
             if(elem.stato == 4) {
                 ordine.querySelector('.progress-bar').classList.remove("progress-bar-animated")
                 ordine.querySelector('.progress-bar').classList.remove("progress-bar-striped")
+                item_consegnati++
             }
+
             container_ordine.appendChild(ordine)
             n_ordine.innerHTML += elem.id_ordine
             container.appendChild(container_ordine)
+            
+            if(item_consegnati == array.length) {
+                const consegnato = document.createElement('div')
+                consegnato.innerHTML = '<i class="fa-solid fa-circle-check"></i> Consegnato'
+                consegnato.style.color = "green"
+                container.appendChild(consegnato)
+            }
+            data = elem.creazione
         })
+        n_ordine.innerHTML = `<div class='d-flex flex-row justify-content-between'>${n_ordine.innerHTML} <span>${data}</span></div>`
         ordini.appendChild(container)
         })
 }).then(() => {
@@ -167,4 +191,4 @@ fetch('http://localhost:5000/api/get_orders_user', {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 })
-.catch((err) => show_error())
+.catch(() => show_error())

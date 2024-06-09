@@ -22,8 +22,10 @@
       <h1 id="title"></h1>
       <h5>Articoli recenti</h5>
       <div id="prodotti_r" class="d-flex gap-1" style="overflow-x: auto; white-space: nowrap; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;"></div>
-      <p class="text-center">Vuoi visualizzare più prodotti? <a href="./prodotti.html">Tutti i prodotti</a></p>
-      <h5>I tuoi ordini</h5>
+      <div class="d-flex flex-row aling-items-between justify-content-between mt-4 mb-1">
+        <h5>I tuoi ordini</h5>
+        <button class="btn"><i class="fa-solid fa-filter" style="color: cornflowerblue;"></i> Filtra</button>
+      </div>
       <div id="ordini" class="d-flex flex-column gap-1 flex-wrap" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;">
           <div id="ordini_cards"></div>
       </div>
@@ -39,7 +41,10 @@
         </div>
         <h6 class="card-subtitle mb-2 text-body-secondary category"></h6>
           <div class="d-flex justify-content-between">
-            <span class="ddesc">Disponibilità:</span><b class="quantità"></b>
+            <div>
+              <span class="ddesc">Disponibilità:</span>
+              <b class="quantità"></b>
+            </div>
             <span class="costo"></span>
           </div>
           <hr>

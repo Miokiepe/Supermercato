@@ -22,7 +22,7 @@ export const items = [{
 
 export const stati = [
     {
-        icona: '<i class="fa-solid fa-spinner"></i>',
+        icona: '<i class="fa-solid fa-hourglass-start"></i>',
         nome: "In preparazione",
         perc: "0%",
         titolo: "Pacco in preparazione",
