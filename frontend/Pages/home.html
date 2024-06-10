@@ -24,13 +24,49 @@
       <div id="prodotti_r" class="d-flex gap-1" style="overflow-x: auto; white-space: nowrap; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;"></div>
       <div class="d-flex flex-row aling-items-between justify-content-between mt-4 mb-1">
         <h5>I tuoi ordini</h5>
-        <button class="btn"><i class="fa-solid fa-filter" style="color: cornflowerblue;"></i> Filtra</button>
+        <button class="btn" id="filtro_b"><i class="fa-solid fa-filter" style="color: cornflowerblue;"></i> Filtra</button>
       </div>
       <div id="ordini" class="d-flex flex-column gap-1 flex-wrap" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;">
           <div id="ordini_cards"></div>
       </div>
     </main>
     <footer id="footer"></footer>
+    <div class="modal fade" tabindex="-1" id="filtro_m">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filtri</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input class="form-check-input check" checked type="checkbox" id="con">
+            <label class="form-check-label" for="con">
+              Ordini consegnati
+            </label><br>
+            <b>Filtra per periodo</b><br>
+            <input class="form-check-input check" checked type="checkbox" id="m1">
+            <label class="form-check-label" for="m1">
+              Ultimo mese
+            </label><br>
+            <input class="form-check-input check" checked type="checkbox" id="m2">
+            <label class="form-check-label" for="m2">
+              Ultimi 3 mesi
+            </label><br>
+            <input class="form-check-input check" checked type="checkbox" id="m3">
+            <label class="form-check-label" for="m3">
+              Ultimi 6 mesi
+            </label><br>
+            <input class="form-check-input check" checked type="checkbox" id="m4">
+            <label class="form-check-label" for="m4">
+              Ultimi 9 mesi
+            </label><br>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 <!--Template item-->
 <template>

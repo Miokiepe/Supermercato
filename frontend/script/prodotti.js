@@ -23,29 +23,39 @@ const f_cerca = () => {
         .then(res => res.json())
         .then(res => {
             show_content('.se','#items')
+            prodotti_g = res.items;
             render_prodotti(filtra())
         })
 }
 cerca.addEventListener('click',f_cerca)
 const filtra = () => {
     const 
-        non_disponibili = document.querySelector('#dis').value,
+        non_disponibili = document.querySelector('#dis').checked,
         nuovo = document.querySelector('#nuovo').checked,
-        arr = document.querySelector('#arr').value,
-        ali = document.querySelector('#ali').value,
-        ele = document.querySelector('#ele').value,
-        ind = document.querySelector('#ind').value,
-        spo = document.querySelector('#spo').value,
-        r1 = document.querySelector('#r1').value,
-        r2 = document.querySelector('#r2').value,
-        r3 =  document.querySelector('#r3').value,
-        r4 = document.querySelector('#r4').value
+        categorie = [
+            document.querySelector('#arr').checked,
+            document.querySelector('#ali').checked,
+            document.querySelector('#ele').checked,
+            document.querySelector('#ind').checked,
+            document.querySelector('#spo').checked
+        ],
+        r1 = document.querySelector('#r1').checked,
+        r2 = document.querySelector('#r2').checked,
+        r3 =  document.querySelector('#r3').checked,
+        r4 = document.querySelector('#r4').checked
 
     let filtered_array = prodotti_g
-    
+    if(!non_disponibili) filtered_array = filtered_array.filter(elem => elem.disponibilità != 0)
     if(!nuovo) filtered_array = filtered_array.filter(elem => elem.creazione != (new Date().toISOString().split('T')[0]))
-    //TODO continua, hai solo altri 10 filtri :) *:(
-        console.log(filtered_array)
+    categorie.forEach((elem, index) => {
+        if(!elem)
+            filtered_array = filtered_array.filter(e => e.tipo != index)
+        })
+    if(!r1) filtered_array = filtered_array.filter(elem => elem.costo > 9.99 )
+    if(!r2) filtered_array = filtered_array.filter(elem => elem.costo < 10.00 || elem.costo > 24.99)
+    if(!r3) filtered_array = filtered_array.filter(elem => elem.costo < 25.00 || elem.costo > 49.99 )
+    if(!r4) filtered_array = filtered_array.filter(elem => elem.costo < 50.00)
+    console.log(filtered_array)
     myModal.hide()
     return filtered_array;
 }
@@ -84,12 +94,13 @@ const add_cart = (prodotto) => {
 
 //Funzione che renderizza i prodotti
 const render_prodotti = (prodotti) => {
+    console.log(prodotti)
     items_div.innerHTML = ""
-    if(!prodotti) {
+    if(prodotti.length == 0) {
         items_div.innerHTML = "<i>Nessun prodotto trovato</i>"
-        return
+        return;
         }
-
+        
         prodotti.forEach(elem => {
             const card = card_t.content.cloneNode(true)
             card.querySelector(".card-title").innerHTML = elem.nome;
