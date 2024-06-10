@@ -46,7 +46,7 @@ main {
   position: absolute;
   top: 50%;
   left: calc(50% - 12px);
-  color: #006466;
+  color: #555280;
 }
 
 @media screen and (max-width: 960px) {

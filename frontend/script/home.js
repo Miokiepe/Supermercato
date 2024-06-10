@@ -37,7 +37,7 @@ const add_cart = (prodotto) => {
             })
     }).then((res) => {
         if(res.status === 201) {
-            localStorage.setItem('alert','cart')
+            localStorage.setItem('alert_t','cart')
             location.reload()
             }
             else show_error()
@@ -104,11 +104,11 @@ fetch('http://localhost:5000/api/get_orders_user', {
             })
         }).then(res => res.json())
           .then(res => {
-                const container = document.querySelector('#ordini_cards')
-            if(!res.ordini) {
-                container.innerHTML = "Nessun ordine effetuato"
-                return;
-            }
+        const container = document.querySelector('#ordini_cards')
+        if(!res.ordini) {
+            container.innerHTML = "Nessun ordine effetuato"
+            return;
+        }
 
         //riordinare l'arry in base al tipo
         const res_sorted = res.ordini.sort((a, b) => a.gruppo - b.gruppo)
