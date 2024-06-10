@@ -165,7 +165,7 @@ fetch('http://localhost:5000/api/get_orders_user', {
             ordine.querySelector('.progress-bar').innerHTML = stato.perc
             ordine.querySelector('.progress-bar').classList.add("bg-" + (stato.colore ? stato.colore : 'primary'))
             
-            if(elem.stato == 4) {
+            if(elem.stato == 4 || elem.stato == 7) {
                 ordine.querySelector('.progress-bar').classList.remove("progress-bar-animated")
                 ordine.querySelector('.progress-bar').classList.remove("progress-bar-striped")
                 item_consegnati++

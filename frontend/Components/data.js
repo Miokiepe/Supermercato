@@ -72,6 +72,14 @@ export const stati = [
         titolo: "Pacco smarrito",
         desc: "Il pacco è stato smarrito. Rivolgiti all'area clienti per assistenza.",
         colore: "secondary"
+    },
+    {   
+        icona: '<i class="fa-solid fa-xmark"></i>',
+        nome: "Anullato",
+        perc: "100%",
+        titolo: "Pacco anullato",
+        desc: "Dopo due tentativi di consegna fallimentari, abbiamo anullato l'ordine. Otterrai il rimborso nelle prossime ore.",
+        colore: "secondary"
     }
 ]
 
@@ -83,9 +91,14 @@ export const show_error = (message = "Impossibile connettersi al server", classN
     document.querySelector('.spinner-border').style.display = 'none'
 }
 
-export const show_content = () => {
-    document.querySelector('.spinner-border').style.display = 'none'
-    document.querySelector('main').style.visibility = 'visible'
+export const show_content = (spinner = '.spinner-border', content = 'main') => {
+    document.querySelector(spinner).style.display = 'none'
+    document.querySelector(content).style.visibility = 'visible'
+}
+
+export const hide_content = (spinner = '.spinner-border', content = 'main') => {
+    document.querySelector(spinner).style.display = 'block'
+    document.querySelector(content).style.visibility = 'hidden'
 }
 
 export default items

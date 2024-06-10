@@ -1,11 +1,13 @@
-import {items, show_content, show_error} from '../Components/data.js'
+import {items, show_content, show_error, hide_content} from '../Components/data.js'
 const items_div = document.querySelector('#items'),
       card_t = document.querySelector('template'),
       id = localStorage.getItem('id'),
       alert_t = localStorage.getItem('alert_t'),
       cerca = document.querySelector('#cerca')
-let prodotti_g;
 
+
+let prodotti_g;
+localStorage.removeItem('alert_t')
 //Apertura del modale
 const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
 const myInput = document.getElementById('filtro_b')
@@ -14,10 +16,40 @@ myInput.addEventListener('click', () => {
 })
 
 //Funzione di ricerca
-cerca.addEventListener('click',() => {
+const f_cerca = () => {
+    const word = document.querySelector('#nome_p').value
+    hide_content('.se','#items')
+    fetch(`http://localhost:5000/api/search_items/${word}`)
+        .then(res => res.json())
+        .then(res => {
+            show_content('.se','#items')
+            render_prodotti(filtra())
+        })
+}
+cerca.addEventListener('click',f_cerca)
+const filtra = () => {
+    const 
+        non_disponibili = document.querySelector('#dis').value,
+        nuovo = document.querySelector('#nuovo').checked,
+        arr = document.querySelector('#arr').value,
+        ali = document.querySelector('#ali').value,
+        ele = document.querySelector('#ele').value,
+        ind = document.querySelector('#ind').value,
+        spo = document.querySelector('#spo').value,
+        r1 = document.querySelector('#r1').value,
+        r2 = document.querySelector('#r2').value,
+        r3 =  document.querySelector('#r3').value,
+        r4 = document.querySelector('#r4').value
 
-})
-
+    let filtered_array = prodotti_g
+    
+    if(!nuovo) filtered_array = filtered_array.filter(elem => elem.creazione != (new Date().toISOString().split('T')[0]))
+    //TODO continua, hai solo altri 10 filtri :) *:(
+        console.log(filtered_array)
+    myModal.hide()
+    return filtered_array;
+}
+document.querySelector('#app').addEventListener('click',() => {render_prodotti(filtra())})
 //Mostra eventuali messaggi
 if(alert_t) {
     error.style.display = "block"
@@ -50,17 +82,15 @@ const add_cart = (prodotto) => {
             .catch(() => show_error())
 }
 
-//Renderizzazzione degli elementi
-fetch('http://localhost:5000/api/get_items/999')
-    .then(res => res.json())
-    .then(res => {
-        show_content()
-        if(!res.items) {
-            items_div.innerHTML = "<i>Nessun prodotto disponibile</i>"
-            return
-            }
-        prodotti_g = res.items
-        res.items.forEach(elem => {
+//Funzione che renderizza i prodotti
+const render_prodotti = (prodotti) => {
+    items_div.innerHTML = ""
+    if(!prodotti) {
+        items_div.innerHTML = "<i>Nessun prodotto trovato</i>"
+        return
+        }
+
+        prodotti.forEach(elem => {
             const card = card_t.content.cloneNode(true)
             card.querySelector(".card-title").innerHTML = elem.nome;
             card.querySelector(".card-subtitle").innerHTML = 
@@ -96,4 +126,13 @@ fetch('http://localhost:5000/api/get_items/999')
             
             items_div.appendChild(card)
         })
+}
+//Richiesta per la raccolta di prodotti
+fetch('http://localhost:5000/api/get_items/999')
+    .then(res => res.json())
+    .then(res => {
+        show_content()
+        prodotti_g = res.items
+        render_prodotti(res.items)
+       
 }).catch(() => show_error())

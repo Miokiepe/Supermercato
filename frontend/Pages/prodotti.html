@@ -36,6 +36,9 @@
         </div>
       </div>
         <div id="items" class="d-flex flex-wrap flex-row gap-4"></div>
+        <div class="spinner-border se" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
     </main>
     <footer id="footer"></footer>
     <div class="modal fade" tabindex="-1" id="filtro_m">
@@ -46,6 +49,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
+            <input class="form-check-input check" checked type="checkbox" id="dis">
+            <label class="form-check-label" for="dis">
+              Non disponibili
+            </label><br>
             <input class="form-check-input check" checked type="checkbox" id="nuovo">
             <label class="form-check-label" for="nuovo">
               Nuovi items
@@ -92,7 +99,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
+            <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
           </div>
         </div>
       </div>
