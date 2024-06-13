@@ -1,9 +1,8 @@
-window.onload = () => {
     const email = localStorage.getItem('email'), 
           password = localStorage.getItem('password'), 
           token = localStorage.getItem('token'),
           role = localStorage.getItem('role')
-    if(!email || !password || !token) window.location.reload('../index.html')
+    if(!email || !password || !token) window.location.replace('../index.html')
     fetch("http://localhost:5000/api/home", {
         method: "POST",
         headers: {
@@ -18,4 +17,3 @@ window.onload = () => {
         res = await res.json()
         document.querySelector('#title').innerHTML = "Benvenuto " + res.nome;
     }).catch(e => console.log(e))
-}

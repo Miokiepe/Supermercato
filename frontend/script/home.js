@@ -206,7 +206,7 @@ const myInput = document.getElementById('filtro_b')
 myInput.addEventListener('click', () => {
   myModal.show()
 })
-//Filtraggio degli ordini
+//Filtraggio degli ordini 
 document.querySelector('#app').addEventListener('click',() => {
     let filtered_array = ordini_g, consegnato_index = -1
     const 
@@ -214,16 +214,43 @@ document.querySelector('#app').addEventListener('click',() => {
         m1 = document.querySelector('#m1').checked,
         m2 = document.querySelector('#m2').checked,
         m3 = document.querySelector('#m3').checked,
-        m4 = document.querySelector('#m4').checked;
+        m4 = document.querySelector('#m4').checked,
+        m5 = document.querySelector('#m5').checked
     
     if(!con) {
+        console.log(m5)
         for(let i = 0; i < filtered_array.length; i++) {
             for(let j = 0; j < filtered_array[i].length - 1; j++) 
-                if(filtered_array[i][j].stato == filtered_array[i][j+1].stato && filtered_array[i][j].stato == 4) consegnato_index = i
+                if(filtered_array[i][j].stato == 4 && filtered_array[i][j].stato == filtered_array[i][j+1].stato) consegnato_index = i
         }
     filtered_array = filtered_array.filter((elem, index) => index != consegnato_index)
     }
-    
+
+    if(m1) {console.log("ENTRO QUAAAA")
+            filtered_array = filtered_array.filter(elem => elem[0].creazione.substring(5,7) == (new Date().getMonth() + 1))
+    }
+        else if(m2) {
+        filtered_array = filtered_array.filter(elem => {
+            const data_ordine = new Date(elem[0].creazione.substring(0,4),(elem[0].creazione.substring(5,7) - 1),elem[0].creazione.substring(8,10)), oggi = new Date()
+            oggi.setMonth(oggi.getMonth() - 3)
+            return data_ordine.valueOf() > oggi.valueOf()   
+        })
+    }
+    else if(m3) {
+        filtered_array = filtered_array.filter(elem => {
+            const data_ordine = new Date(elem[0].creazione.substring(0,4),(elem[0].creazione.substring(5,7) - 1),elem[0].creazione.substring(8,10)), oggi = new Date()
+            oggi.setMonth(oggi.getMonth() - 6)
+            return data_ordine.valueOf() > oggi.valueOf()   
+        })
+    }
+    else if(m4) {
+        filtered_array = filtered_array.filter(elem => {
+            const data_ordine = new Date(elem[0].creazione.substring(0,4),(elem[0].creazione.substring(5,7) - 1),elem[0].creazione.substring(8,10)), oggi = new Date()
+            oggi.setMonth(oggi.getMonth() - 9)
+            return data_ordine.valueOf() > oggi.valueOf()   
+        })
+    }
+    else if(m5) location.reload()
     myModal.hide()
     render_ordini(filtered_array)    
 })  
