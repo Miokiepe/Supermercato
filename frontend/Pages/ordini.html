@@ -36,6 +36,7 @@
       </main>
       <footer id="footer"></footer>
       </body>
+      <!--Modale di aggiornamento stato-->
       <div class="modal fade " id="mod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -77,7 +78,72 @@
             </div>
           </div>
         </div>
-    </div>
+        </div>
+      </div>
+      <!--Modale di filtro-->
+      <div class="modal fade" tabindex="-1" id="filtro_m">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Filtri</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input class="form-check-input check" checked type="checkbox" id="dis">
+              <label class="form-check-label" for="dis">
+                Non disponibili
+              </label><br>
+              <input class="form-check-input check" checked type="checkbox" id="nuovo">
+              <label class="form-check-label" for="nuovo">
+                Nuovi items
+              </label>
+              <div class="mt-1">
+                <b>Categorie</b><br>
+                <input class="form-check-input check" checked type="checkbox" id="arr">
+                <label class="form-check-label" for="arr">
+                  Arredamento
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="ali">
+                <label class="form-check-label" for="ali">
+                  Alimentari
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="ele">
+                <label class="form-check-label" for="ele">
+                  Elettronica
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="ind">
+                <label class="form-check-label" for="ind">
+                  Indumenti
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="spo">
+                <label class="form-check-label" for="spo">
+                  Sport
+                </label><br>
+                <b>Prezzo</b><br>
+                <input class="form-check-input check" checked type="checkbox" id="r1">
+                <label class="form-check-label" for="r1">
+                  0.01€ - 9.99€
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="r2">
+                <label class="form-check-label" for="r2">
+                  10.00€ - 24.99€
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="r3">
+                <label class="form-check-label" for="r3">
+                  25.00€ - 49.99€
+                </label><br>
+                <input class="form-check-input check" checked type="checkbox" id="r4">
+                <label class="form-check-label" for="r4">
+                  50.00€ - illimitato
+                </label><br>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--Template ordini--> 
       <template>
           <div class="card" style="width: 20rem; flex: 0 0 auto; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);">

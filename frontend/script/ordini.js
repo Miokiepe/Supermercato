@@ -5,11 +5,35 @@ const cerca = document.querySelector('#cerca')
 
 //Aggiornamento dello stato dell'ordine
 const update_ordine = (ordine) => {
+
+    const change_status = () => {
+        const new_index = document.querySelector('#m_stato').value
+        modal.querySelector('#m_icona').innerHTML = `<button class="btn btn-${stati[new_index].colore ? stati[new_index].colore : "primary"}">${stati[new_index].icona}</button >`
+        modal.querySelector('#desc').innerHTML = stati[new_index].desc
+    }
+
+    const update_server = (o) => {
+       o.stato = modal.querySelector('#m_stato').value
+
+       fetch('http://localhost:5000/api/update_status',{
+        method: "PUT",
+        headers: {
+            'content-type' : 'application/json'
+        },
+        body: JSON.stringify(o)
+       })
+            .then(() => location.reload())
+            .catch(() => show_error())
+    }
+
     const modal = document.querySelector('#mod')
     modal.querySelector('#m_nome').value = "#" + ordine.id_ordine + ordine.id_prodotto
     modal.querySelector('#m_quantità').value = ordine.quantità
     modal.querySelector('#m_stato').value = ordine.stato
+    modal.querySelector('#m_stato').onchange = () => change_status()
     modal.querySelector('#desc').innerHTML = stati[ordine.stato].desc
+    modal.querySelector('#m_icona').innerHTML = `<button class="btn btn-${stati[ordine.stato].colore ? stati[ordine.stato].colore : "primary"}">${stati[ordine.stato].icona}</button >`
+    modal.querySelector('#mod_item').onclick = () => update_server(ordine)
     const myModal = new bootstrap.Modal(document.getElementById("mod"));
     myModal.show();
 }
@@ -130,4 +154,11 @@ const search = () => {
 cerca.addEventListener('click',search)
 document.addEventListener('keydown',(e) => {
     if(e.key === 'Enter') cerca.click()
+})
+
+//Filtro. PER DEFAULT GLI ORDINI CONSEGNATI NON SONO RENDERIZZATI
+document.querySelector('#filtro_b').addEventListener('click',() => {
+    const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
+    myModal.show();
+    //NON FUNZIONA 
 })
