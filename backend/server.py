@@ -95,7 +95,7 @@ def home(token: User_token):
         return {
             "nome": user["nome"]
         }
-
+#Log out utenti, gestori
 @app.post('/api/logout', status_code=301)
 def logout(login: Login):
     table = "utenti" if login.role == "utente" else "gestori"
@@ -132,6 +132,17 @@ def get(n):
     items = cursor.fetchall()
     close_db_connection(conn)
     return {"items": items}         
+
+#Ricerca di un prodotto per nome
+@app.get('/api/search_items/{nome}')
+def search(nome):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT * FROM prodotti WHERE nome LIKE %s",("%" + nome + "%",))
+    items = cursor.fetchall()
+    close_db_connection(conn)
+    return {
+        "items":items
+    }
 
 #Aggiunta di un prodotto nel carrello
 @app.post('/api/add_cart', status_code=201)
@@ -208,13 +219,37 @@ def get(corriere: User_token):
         "items":items
     }
 
+#Ricerca di un ordine
+@app.get('/api/search_orders/{id}',status_code=200)
+def search(id: str):
+    conn, cursor = open_db_connection()
+    ordini = []
+    ids = id.split('-')
+    for char in ids:
+        cursor.execute("SELECT * FROM ordini where id_ordine = %s",(char, ))
+        ordini.append(cursor.fetchone())
+    close_db_connection(conn)
+    if(len(ordini) > 1):
+        i = 0
+        while(i < len(ordini) - 1 and i != -1):
+            if ordini[i]["gruppo"] != ordini[i+1]["gruppo"]:
+                    i = -1
+            else:
+                i+=1
+    
+        if i == -1:
+            raise HTTPException(404)
+    return {
+        "ordini": list(ordini)
+    }
+
 #Restituzione di tutti gli ordini per l'utente   
 @app.post('/api/get_orders_user',status_code=200)
 def get(user: User_token):
     conn, cursor = open_db_connection()
     cursor.execute("SELECT id_utente FROM utenti WHERE email = %s AND password = %s AND autenticato = %s",(user.email, user.password, user.token))
     id = cursor.fetchone()
-    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.stato, ordini.gruppo FROM ordini JOIN prodotti ON ordini.id_prodotto = prodotti.id_prodotto WHERE id_utente = %s",(id['id_utente'],))
+    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.id_ordine, ordini.quantità, ordini.stato, ordini.gruppo, ordini.creazione FROM ordini JOIN prodotti ON ordini.id_prodotto = prodotti.id_prodotto WHERE id_utente = %s",(id['id_utente'],))
     ordini = cursor.fetchall()
     close_db_connection(conn)
     return {
