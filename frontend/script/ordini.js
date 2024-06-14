@@ -2,6 +2,42 @@ import {show_content, show_error, stati, items} from '../Components/data.js'
 const ordini = document.querySelector('#container')
 const ordini_t = document.querySelector('template')
 const cerca = document.querySelector('#cerca')
+const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
+let ordini_g;
+
+const filtra = () => {
+    myModal.hide()
+    const non_disponibili = document.querySelector('#dis').checked
+    const data = document.querySelector('#date').value
+    console.log(data)
+    let filtri = false
+    let filtered_array = [...ordini_g]
+    if(!non_disponibili) {
+        filtri = true;
+        const indici = [];
+        ordini_g.forEach((array, i) => {
+            let consegnati = 0;
+            array.forEach((elem) => {
+                if(elem.stato === 4 || elem.stato === 7) {
+                    consegnati++
+                }
+            })
+            if(consegnati === array.length) indici.push(i)
+        })
+        // Ordinamento  degli indici in ordine decrescente
+        indici.sort((a, b) => b - a)
+        indici.forEach(index => {
+            filtered_array.splice(index, 1)
+        })
+    }
+
+    if(data) {
+        filtri = true;
+        filtered_array = filtered_array.filter(elem => elem[0].creazione == data)
+    }
+
+    return filtri ? filtered_array : ordini_g;
+}
 
 //Aggiornamento dello stato dell'ordine
 const update_ordine = (ordine) => {
@@ -45,15 +81,16 @@ const render_ordini = (gruppi) => {
         ordini.innerHTML = "Nessun prodotto trovato"
         return;
     }
-    let n_ordine, data;
+    let n_ordine, data, luogo;
     gruppi.forEach(array => {
+        
         const container = document.createElement('div')
         container.style = "background-color: white; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px; display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; flex-direction: column; padding: 10px; border-radius: 12px;"
         
         const container_ordine = document.createElement('div')
         container_ordine.style = "display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap;"
         
-        n_ordine = document.createElement('h3')
+        n_ordine = document.createElement('h4')
         n_ordine.innerHTML = "N. ordine #"
         container.appendChild(n_ordine)
 
@@ -91,10 +128,18 @@ const render_ordini = (gruppi) => {
                 consegnato.style.color = "green"
                 container.appendChild(consegnato)
             }
+            luogo = [elem.città, elem.cap, elem.via]
             data = elem.creazione
         })
         n_ordine.innerHTML = n_ordine.innerHTML.substring(0, n_ordine.innerHTML.length - 1)
-        n_ordine.innerHTML = `<div class='d-flex flex-row justify-content-between'>${n_ordine.innerHTML}<span>${data}</span></div>`
+        n_ordine.innerHTML = `
+            <div class='d-flex flex-row justify-content-between'>
+                <div class='d-flex flex-column'>
+                    ${n_ordine.innerHTML}
+                    <i style='color: gray; font-size: smaller;'>${luogo[0]} - ${luogo[1]} - ${luogo[2]}</i>
+                </div>
+               <span>Emissione ${data}</span>
+            </div>`
         ordini.appendChild(container)
         })
 }
@@ -136,10 +181,12 @@ fetch('http://localhost:5000/api/get_orders',{
             })
 
         gruppi.push(gruppo)
-        render_ordini(gruppi)
+        document.querySelector('#app').addEventListener('click',() => render_ordini(filtra()))
+        ordini_g = gruppi
+        render_ordini(filtra())
         show_content()
     })
-    .catch((ee) => show_error(), console.log(ee))
+    .catch(() => show_error())
 
 //Ricerca di un ordine
 const search = () => {
@@ -147,8 +194,11 @@ const search = () => {
     if(!id_ordine) location.reload()
     fetch(`http://localhost:5000/api/search_orders/${id_ordine}`)
         .then(res => res.json())
-        .then(res => render_ordini(Array(res.ordini)))
-        .catch((e) => show_error(), console.log(e))
+        .then(res => {
+            ordini_g = Array(res.ordini)
+            render_ordini(filtra())
+        })
+        .catch(() => show_error(), console.log())
     }
 
 cerca.addEventListener('click',search)
@@ -157,8 +207,4 @@ document.addEventListener('keydown',(e) => {
 })
 
 //Filtro. PER DEFAULT GLI ORDINI CONSEGNATI NON SONO RENDERIZZATI
-document.querySelector('#filtro_b').addEventListener('click',() => {
-    const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
-    myModal.show();
-    //NON FUNZIONA 
-})
+document.querySelector('#filtro_b').addEventListener('click',() => myModal.show())

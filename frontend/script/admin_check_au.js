@@ -15,5 +15,5 @@
             window.location.replace('../index.html')
         }
         res = await res.json()
-        document.querySelector('#title').innerHTML = "Benvenuto " + res.nome;
+        localStorage.setItem('nome',res.nome)
     }).catch(e => console.log(e))

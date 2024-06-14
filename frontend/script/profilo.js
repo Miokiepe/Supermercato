@@ -5,6 +5,7 @@ const modifica = document.querySelector('#modifica')
 const myModal = new bootstrap.Modal(document.getElementById("modal"));
 let old_user;
 iconEye.addEventListener('click',() => {
+    const password = document.querySelector('#password')
         if(password.type === "password") {
             password.type = "text"
             iconEye.innerHTML = '<i class="bi bi-eye"></i>'
@@ -61,17 +62,16 @@ modifica.addEventListener('click',() => {
     }
     else {
         //Esegui la richiesta per aggiornare l'account
-        modifica.innerHTML = '<i class="fa-solid fa-pen"></i> Modifica'
         let c = 0
         IDs.forEach(elem => document.querySelector('#' + elem).value === "" && c++)
         if(c != 0) {
             show_error("Uno o più campi sono vuoti. Compilali")
             return;
-        }
+            }
         const new_user = {}
         IDs.forEach(elem => new_user[elem] = document.querySelector('#' + elem).value)
         new_user['genere'] = parseInt(document.querySelector('#genere').value)
-        new_user['password'] = document.querySelector('#password').value == "" ? old_user.user.password : document.querySelector('#password').value
+        new_user['password'] = document.querySelector('#password').value
         new_user['autenticato'] = old_user.user.autenticato
         new_user['id_utente'] = old_user.user.id_utente
         fetch('http://localhost:5000/api/update_account',{
@@ -90,10 +90,7 @@ modifica.addEventListener('click',() => {
             localStorage.setItem('token',new_user.autenticato)
             location.reload()
         })
-          .catch(() => {
-            error.style.display = "block"
-            error.innerHTML = "Qualcosa è andato storto!"
-        })
+          .catch(() => show_error("Qualcosa è andato storto"))
     }
 })
 

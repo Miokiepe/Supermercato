@@ -14,11 +14,58 @@
     <nav id="nav"></nav>
     <div class="spinner-border" role="status" id="loader">
         <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="alert alert-danger" role="alert" id="error"></div>
+    <main>
+        <h1>Impostazione profilo</h1>
+        <div class="d-flex gap-3 flex-column">
+            <div class="d-flex gap-3">
+                <div class="input-group">
+                    <span class="input-group-text">Nome</span>
+                    <input type="text" id="nome" disabled aria-label="Nome" class="form-control">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Cognome</span>
+                    <input type="text" id="cognome" disabled aria-label="Cognome" class="form-control">
+                </div>
+            </div>
+            <h5>Dati digitali</h5>
+            <div class="input-group">
+                <span class="input-group-text">Email</span>
+                <input type="text" id="email" disabled aria-label="Email" class="form-control">
+            </div>
+            <label for="password">In caso tu voglia cambiare password, questo è il posto giusto</label>
+            <div class="input-group">
+                <span class="input-group-text">Nuova password</span>
+                <input type="password" id="password" disabled class="form-control" aria-label="Password dell'utente" aria-describedby="button-addon2">
+                <span class="btn btn-outline-primary" type="button" role="button" id="toggle"><i class="bi bi-eye-slash"></i></span>
+            </div>
+            <div class="d-flex justify-content-end mt-3 gap-3">
+                <button class="btn btn-primary" id="logout" style="background-color: #491d4f; border: none">Log-out</button>
+                <button class="btn btn-danger" id="delete">Cancella account</button>
+                <button class="btn btn-primary" id="modifica" style="background-color: #026265; border: none"><i class="fa-solid fa-pen"></i> Modifica</button>
+            </div>
+        </div>
+    </main>
+    <div class="modal" tabindex="-1" id="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Eliminazione account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Attenzione! Questa operazione è irreversibile</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" id="delete_BBB">Elimina permanentemente</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="alert alert-danger" role="alert" id="error"></div>
-      <main></main>
-      <footer id="footer"></footer>
+    <footer id="footer"></footer>
 </body>
 <script src="../script/admin_check_au.js"></script>
 <script src="../script/courier_navbar_footer.js"></script>
+<script src="../script/courier_profilo.js" type="module"></script>
 </html>

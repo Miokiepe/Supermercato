@@ -44,6 +44,7 @@ button.addEventListener('click',() => {
         button.disabled = false;
         return;
     }
+    console.log({ email: email, password: password, role: role })
     fetch('http://localhost:5000/api/login', {
         method: "POST",
         headers: {
