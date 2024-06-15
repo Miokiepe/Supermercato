@@ -15,7 +15,7 @@
     <div class="spinner-border" role="status" id="loader">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="alert alert-danger" role="alert" id="error"></div>
+    <div class="alert alert-danger " role="alert" id="error"></div>
     <main>
         <style>
         </style>
@@ -33,11 +33,31 @@
             <tbody id="gestori"></tbody>
           </table>
           <div class="d-flex justify-content-end gap-3">
-            <button class="btn" style="background-color: #4c5885; color: white; display: none;" id="modifica"><i class="fa-solid fa-pen"></i> Modifica</button>
-            <button class="btn btn-danger" style="display: none;" id="elimina"><i class="fa-solid fa-trash" id="elimina"></i> Elimina</button>
+            <button class="btn" style="background: linear-gradient(to left,#B7094C,#0091AD); border:none; color: white; display: none;" id="modifica_a"><i class="fa-solid fa-pen"></i> Modifica</button>
+            <button class="btn btn-danger" style="display: none;" id="elimina_a"><i class="fa-solid fa-trash" id="elimina"></i> Elimina</button>
+          </div>
+          <h4 class="mt-4">Utenti</h4>
+          <table class="table">
+            <thead>
+              <tr class="riga">
+                <th scope=""></th>
+                <th scope="col">Nome</th>
+                <th scope="col">Cognome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Genere</th>
+                <th scope="col">Città</th>
+                <th scope="col">Numero di telefono</th>
+              </tr>
+            </thead>
+            <tbody id="utenti"></tbody>
+          </table>
+          <div class="d-flex justify-content-end gap-3">
+            <button class="btn" style="background: linear-gradient(to left, #4D194D, #006466); border:none; color: white; display: none;" id="modifica_u"><i class="fa-solid fa-pen"></i> Modifica</button>
+            <button class="btn btn-danger" style="display: none;" id="elimina_u"><i class="fa-solid fa-trash" id="elimina"></i> Elimina</button>
           </div>
     </main>
     <footer id="footer"></footer>
+    <!--Modale per modificare gestori-->
     <div class="modal" tabindex="-1" id="modifica_m">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -49,17 +69,18 @@
                 <div class="d-flex flex-row gap-3">
                     <div class="input-group mb-3">
                         <span class="input-group-text">Nome</span>
-                        <input type="text" class="form-control" id="nome" placeholder="Nome" aria-label="Nome" aria-describedby="Nome del gestore">
+                        <input type="text" class="form-control" id="nome_a" placeholder="Nome" aria-label="Nome" aria-describedby="Nome del gestore">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Cognome</span>
-                        <input type="text" class="form-control" id="cognome" placeholder="Cognome" aria-label="Cognome" aria-describedby="Cognome del gestore">
+                        <input type="text" class="form-control" id="cognome_a" placeholder="Cognome" aria-label="Cognome" aria-describedby="Cognome del gestore">
                     </div>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Email</span>
-                    <input type="email" class="form-control" id="email" placeholder="Email" aria-label="Email" aria-describedby="Email del gestore">
+                    <input type="email" class="form-control" id="email_a" placeholder="Email" aria-label="Email" aria-describedby="Email del gestore">
                 </div>
+                <span class="badge mb-3" id="ruolo_a"></span>
                 <div class="modal-footer">
                   <button type="button" id="salva" class="btn btn-primary" style="background-color: #713D71; border: none;">
                     <i class="fa-solid fa-floppy-disk"></i> Salva
@@ -69,7 +90,7 @@
           </div>
         </div>
     </div>
-
+    <!--Modale per eliminare gestori-->
     <div class="modal" tabindex="-1" id="elimina_m">
         <div class="modal-dialog">
           <div class="modal-content">

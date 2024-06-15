@@ -96,10 +96,11 @@ export const badges = [
     }
 ]
 
-export const show_error = (message = "Impossibile connettersi al server", className = "") => {
+export const show_error = (message = "Impossibile connettersi al server", className = "", dismissible = false) => {
     const error = document.querySelector('#error')
     if(className !== "") error.className = className
     error.innerHTML = message
+    if(dismissible) error.innerHTML += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
     error.style.display = 'block'
     document.querySelector('.spinner-border').style.display = 'none'
 }
