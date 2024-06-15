@@ -2,6 +2,8 @@ import {show_content, show_error, badges} from "../Components/data.js"
 const admin_selezionati = []
 const elimina = document.querySelector('#elimina')
 const modifica = document.querySelector('#modifica')
+const modifica_m = new bootstrap.Modal(document.getElementById("modifica_m"));
+const elimina_m = new bootstrap.Modal(document.getElementById("elimina_m"));
 const manage_user = (user, check) => {
     
     if(check.checked) {
@@ -48,11 +50,35 @@ const render_admin = (gestori) => {
         const ruolo = document.createElement('td')
         const badge = elem.ruolo == "Admin" ? badges[0] : badges[1]
         ruolo.innerHTML = `<span class="badge" style="background-color: ${badge.colore}; color: white;">${badge.icona} ${badge.nome}</span>`
+        if(elem.email ==  localStorage.getItem('email') && elem.nome == localStorage.getItem('nome')) ruolo.innerHTML += " <span style='color: #664577;'>Profilo corrente</span>"
         tr.appendChild(ruolo)
        
         gestori_t.appendChild(tr)
     })
 }
+
+//Modifica di un admin selezionato
+modifica.addEventListener('click',() => {
+    document.querySelector('#nome').value = admin_selezionati[0].nome
+    document.querySelector('#cognome').value = admin_selezionati[0].cognome
+    document.querySelector('#email').value = admin_selezionati[0].email
+    modifica_m.show()
+})
+
+//Effetuiamo il salvataggio sul server
+document.querySelector('#salva').addEventListener('click',() => {
+    //old: admin_selezionati[0]
+    //new: querySelector(#nome) ... 
+})
+
+document.querySelector('#elimina').addEventListener('click',() => {
+    document.querySelector('#xaccount').innerHTML = admin_selezionati.length
+    elimina_m.show()
+})
+
+document.querySelector('#elimina_def').addEventListener('click',() => {
+    //Query per la eliminazione dell'account
+})
 
 //Ottenimento di tutti gli utenti
 fetch('http://localhost:5000/api/get_users',{

@@ -38,6 +38,56 @@
           </div>
     </main>
     <footer id="footer"></footer>
+    <div class="modal" tabindex="-1" id="modifica_m">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modifica account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-row gap-3">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Nome</span>
+                        <input type="text" class="form-control" id="nome" placeholder="Nome" aria-label="Nome" aria-describedby="Nome del gestore">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Cognome</span>
+                        <input type="text" class="form-control" id="cognome" placeholder="Cognome" aria-label="Cognome" aria-describedby="Cognome del gestore">
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Email</span>
+                    <input type="email" class="form-control" id="email" placeholder="Email" aria-label="Email" aria-describedby="Email del gestore">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="salva" class="btn btn-primary" style="background-color: #713D71; border: none;">
+                    <i class="fa-solid fa-floppy-disk"></i> Salva
+                </button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="elimina_m">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Eliminazione account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Stai per eliminare <b id="xaccount"></b> account. Questa azione è irreversibile</p>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" id="elimina_def">
+                    Elimina
+                </button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </body>
 <script src="../script/admin_check_au.js"></script>
 <script src="../script/admin_navbar_footer.js"></script>
