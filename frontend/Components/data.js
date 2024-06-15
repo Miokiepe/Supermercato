@@ -83,6 +83,19 @@ export const stati = [
     }
 ]
 
+export const badges = [
+    {
+        nome: "Admin",
+        colore: "#ad1151",
+        icona: '<i class="fa-solid fa-user-tie"></i>'
+    },
+    {
+        nome: "Corriere",
+        colore: "#088ca9",
+        icona: '<i class="fa-solid fa-user-tag"></i>'
+    }
+]
+
 export const show_error = (message = "Impossibile connettersi al server", className = "") => {
     const error = document.querySelector('#error')
     if(className !== "") error.className = className
