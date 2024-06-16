@@ -208,7 +208,7 @@ myInput.addEventListener('click', () => {
 })
 //Filtraggio degli ordini 
 document.querySelector('#app').addEventListener('click',() => {
-    let filtered_array = ordini_g, consegnato_index = -1
+    let filtered_array = [...ordini_g]
     const 
         con = document.querySelector('#con').checked,
         m1 = document.querySelector('#m1').checked,
@@ -219,21 +219,29 @@ document.querySelector('#app').addEventListener('click',() => {
     
     if(!con) {
         console.log(m5)
-        for(let i = 0; i < filtered_array.length; i++) {
-            for(let j = 0; j < filtered_array[i].length - 1; j++) 
-                if(filtered_array[i][j].stato == 4 && filtered_array[i][j].stato == filtered_array[i][j+1].stato) consegnato_index = i
-        }
-    filtered_array = filtered_array.filter((elem, index) => index != consegnato_index)
-    }
+        const indici = [];
+        ordini_g.forEach((array, i) => {
+            let consegnati = 0;
+            array.forEach((elem) => {
+                if(elem.stato === 4 || elem.stato === 7) 
+                    consegnati++  
+            })
 
-    if(m1) {console.log("ENTRO QUAAAA")
-            filtered_array = filtered_array.filter(elem => elem[0].creazione.substring(5,7) == (new Date().getMonth() + 1))
+            if(consegnati === array.length) indici.push(i)
+        })
+        // Ordinamento  degli indici in ordine decrescente
+        indici.sort((a, b) => b - a)
+        indici.forEach(index => {
+            filtered_array.splice(index, 1)
+        })
     }
-        else if(m2) {
+    if(m1) 
+        filtered_array = filtered_array.filter(elem => elem[0].creazione.substring(5,7) == (new Date().getMonth() + 1))
+    else if(m2) {
         filtered_array = filtered_array.filter(elem => {
-            const data_ordine = new Date(elem[0].creazione.substring(0,4),(elem[0].creazione.substring(5,7) - 1),elem[0].creazione.substring(8,10)), oggi = new Date()
-            oggi.setMonth(oggi.getMonth() - 3)
-            return data_ordine.valueOf() > oggi.valueOf()   
+        const data_ordine = new Date(elem[0].creazione.substring(0,4),(elem[0].creazione.substring(5,7) - 1),elem[0].creazione.substring(8,10)), oggi = new Date()
+        oggi.setMonth(oggi.getMonth() - 3)
+        return data_ordine.valueOf() > oggi.valueOf()   
         })
     }
     else if(m3) {
@@ -250,7 +258,7 @@ document.querySelector('#app').addEventListener('click',() => {
             return data_ordine.valueOf() > oggi.valueOf()   
         })
     }
-    else if(m5) location.reload()
+    //IMPLEMENTARE IL CAZZO DI INPUT 'TUTTI GLI ORDINI'
     myModal.hide()
     render_ordini(filtered_array)    
 })  

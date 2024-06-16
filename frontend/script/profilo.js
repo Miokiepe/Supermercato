@@ -1,9 +1,18 @@
-import {show_content, show_error} from '../Components/data.js'
+import {show_content, show_error, prefixes} from '../Components/data.js'
 const iconEye = document.querySelector('#toggle')
 const error = document.querySelector('#error')
 const modifica = document.querySelector('#modifica')
 const myModal = new bootstrap.Modal(document.getElementById("modal"));
 let old_user;
+
+const prefissi = document.querySelector('#prefisso')
+prefixes.forEach(prefix => {
+    const opt = document.createElement('option')
+    opt.value = prefix.prefisso
+    opt.innerHTML =prefix.emoji +  " +" + prefix.prefisso
+    prefissi.appendChild(opt)
+})
+
 iconEye.addEventListener('click',() => {
     const password = document.querySelector('#password')
         if(password.type === "password") {

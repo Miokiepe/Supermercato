@@ -96,6 +96,58 @@ export const badges = [
     }
 ]
 
+export const prefixes = [
+    { prefisso: '1', emoji: '🇺🇸' },     // Stati Uniti
+    { prefisso: '20', emoji: '🇪🇬' },    // Egitto
+    { prefisso: '27', emoji: '🇿🇦' },    // Sudafrica
+    { prefisso: '30', emoji: '🇬🇷' },    // Grecia
+    { prefisso: '31', emoji: '🇳🇱' },    // Paesi Bassi
+    { prefisso: '32', emoji: '🇧🇪' },    // Belgio
+    { prefisso: '33', emoji: '🇫🇷' },    // Francia
+    { prefisso: '34', emoji: '🇪🇸' },    // Spagna
+    { prefisso: '36', emoji: '🇭🇺' },    // Ungheria
+    { prefisso: '39', emoji: '🇮🇹' },    // Italia
+    { prefisso: '40', emoji: '🇷🇴' },    // Romania
+    { prefisso: '41', emoji: '🇨🇭' },    // Svizzera
+    { prefisso: '43', emoji: '🇦🇹' },    // Austria
+    { prefisso: '44', emoji: '🇬🇧' },    // Regno Unito
+    { prefisso: '45', emoji: '🇩🇰' },    // Danimarca
+    { prefisso: '46', emoji: '🇸🇪' },    // Svezia
+    { prefisso: '47', emoji: '🇳🇴' },    // Norvegia
+    { prefisso: '48', emoji: '🇵🇱' },    // Polonia
+    { prefisso: '49', emoji: '🇩🇪' },    // Germania
+    { prefisso: '51', emoji: '🇵🇪' },    // Perù
+    { prefisso: '52', emoji: '🇲🇽' },    // Messico
+    { prefisso: '54', emoji: '🇦🇷' },    // Argentina
+    { prefisso: '55', emoji: '🇧🇷' },    // Brasile
+    { prefisso: '56', emoji: '🇨🇱' },    // Cile
+    { prefisso: '60', emoji: '🇲🇾' },    // Malesia
+    { prefisso: '62', emoji: '🇮🇩' },    // Indonesia
+    { prefisso: '63', emoji: '🇵🇭' },    // Filippine
+    { prefisso: '64', emoji: '🇳🇿' },    // Nuova Zelanda
+    { prefisso: '64', emoji: '🇨🇦' },    // Canada
+    { prefisso: '65', emoji: '🇸🇬' },    // Singapore
+    { prefisso: '66', emoji: '🇹🇭' },    // Thailandia
+    { prefisso: '81', emoji: '🇯🇵' },    // Giappone
+    { prefisso: '82', emoji: '🇰🇷' },    // Corea del Sud
+    { prefisso: '86', emoji: '🇨🇳' },    // Cina
+    { prefisso: '90', emoji: '🇹🇷' },    // Turchia
+    { prefisso: '91', emoji: '🇮🇳' },    // India
+    { prefisso: '98', emoji: '🇮🇷' },    // Iran
+    { prefisso: '212', emoji: '🇲🇦' },   // Marocco
+    { prefisso: '234', emoji: '🇳🇬' },   // Nigeria
+    { prefisso: '256', emoji: '🇺🇬' },   // Uganda
+    { prefisso: '258', emoji: '🇲🇿' },   // Mozambico
+    { prefisso: '354', emoji: '🇮🇸' },   // Islanda
+    { prefisso: '358', emoji: '🇫🇮' },   // Finlandia
+    { prefisso: '420', emoji: '🇨🇿' },   // Repubblica Ceca
+    { prefisso: '43', emoji: '🇦🇹' },    // Austria (doppio, ma corretto)
+    { prefisso: '48', emoji: '🇵🇱' },    // Polonia (doppio, ma corretto)
+    { prefisso: '64', emoji: '🇳🇿' },    // Nuova Zelanda (doppio, ma corretto)
+    { prefisso: '971', emoji: '🇦🇪' },   // Emirati Arabi Uniti
+    { prefisso: '964', emoji: '🇮🇶' }    // Iraq
+  ];
+
 export const show_error = (message = "Impossibile connettersi al server", className = "", dismissible = false) => {
     const error = document.querySelector('#error')
     if(className !== "") error.className = className

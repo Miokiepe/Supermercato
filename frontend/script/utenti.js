@@ -1,11 +1,11 @@
-import {show_content, show_error, badges} from "../Components/data.js"
+import {show_content, show_error, badges, prefixes} from "../Components/data.js"
 const admin_selezionati = [], utenti_selezionati = []
 const elimina = document.querySelector('#elimina_a')
 const modifica = document.querySelector('#modifica_a')
-const modifica_u = document.querySelector('#modifica_u')
 const elimina_u = document.querySelector('#elimina_u')
 const modifica_m = new bootstrap.Modal(document.getElementById("modifica_m"));
 const elimina_m = new bootstrap.Modal(document.getElementById("elimina_m"));
+const elimina_m_u = new bootstrap.Modal(document.getElementById("elimina_m_u"));
 
 //Mostriamo eventuali alert
 const alert = localStorage.getItem('alert')
@@ -15,6 +15,9 @@ switch(alert) {
         break;
     case 'delete_admin':
             show_error('Account gestori selezionati eliminati','alert alert-info alert-dismissible fade show', true)
+            break;
+    case 'delete_user':
+            show_error('Account selezionati eliminati','alert alert-info alert-dismissible fade show', true)
             break;
         }
 localStorage.removeItem('alert')
@@ -45,7 +48,7 @@ const render_admin = (gestori) => {
         const checkbox_td = document.createElement('td')
         const checkbox = document.createElement('input')
         checkbox.type = 'checkbox'
-        checkbox.className = "form-check-input"
+        checkbox.className = "form-check-input check"
         checkbox.onclick = () => manage_admin(elem, checkbox)
         checkbox_td.appendChild(checkbox) 
         tr.appendChild(checkbox_td)
@@ -114,13 +117,20 @@ document.querySelector('#salva').addEventListener('click',() => {
     })
 })
 
+
 //Mostriamo il modale per eliminare gli account gestori
 document.querySelector('#elimina_a').addEventListener('click',() => {
     document.querySelector('#xaccount').innerHTML = admin_selezionati.length
     elimina_m.show()
 })
 
-//Eliminazione dell'account nel server
+//Mostriamo il modale per eliminare gli account utente
+document.querySelector('#elimina_u').addEventListener('click',() => {
+    document.querySelector('#xaccount_u').innerHTML = utenti_selezionati.length
+    elimina_m_u.show()
+})
+
+//Eliminazione dell'account gestore nel server
 document.querySelector('#elimina_def').addEventListener('click',async () => {
    admin_selezionati.forEach(async admin => {
     await fetch('http://localhost:5000/api/delete_admin',{
@@ -135,17 +145,33 @@ document.querySelector('#elimina_def').addEventListener('click',async () => {
    location.reload()
 })
 
+//Eliminazione dell'account utente nel server
+document.querySelector('#elimina_def_utenti').addEventListener('click',async () => {
+    utenti_selezionati.forEach(async user => {
+     user.id_utente = 0
+     user.via = "" 
+     user.autenticato = ""
+     user.cap = "" 
+     console.log(user)
+     await fetch('http://localhost:5000/api/delete_account',{
+         method: "DELETE",
+         headers: {
+             "content-type" : "application/json"
+         },
+         body: JSON.stringify(user)
+     })
+    })
+    localStorage.setItem('alert','delete_user')
+    location.reload()
+ })
+
 const manage_user = (user, check) => {
     if(check.checked) {
         utenti_selezionati.push(user)
-        if(utenti_selezionati.length == 1) modifica_u.style.display = "block"
-        else modifica_u.style.display = "none"
         elimina_u.style.display = "block"
     }
     else {
         utenti_selezionati.splice(utenti_selezionati.at(user),1)
-        if(utenti_selezionati.length == 1) modifica_u.style.display = "block"
-        else modifica_u.style.display = "none"
         if(utenti_selezionati.length == 0) elimina_u.style.display = "none"
     }
     console.log(utenti_selezionati)
@@ -160,7 +186,7 @@ const render_utenti = (utenti) => {
         const checkbox_td = document.createElement('td')
         const checkbox = document.createElement('input')
         checkbox.type = "checkbox"
-        checkbox.className = "form-check-input"
+        checkbox.className = "form-check-input check_u"
         checkbox.onclick = () => manage_user(elem, checkbox)
         checkbox_td.appendChild(checkbox)
         tr.appendChild(checkbox_td)

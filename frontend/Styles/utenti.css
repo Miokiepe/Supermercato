@@ -1,0 +1,10 @@
+.check_u {
+    accent-color: #006466;
+    border-color: #006466;
+}
+  
+.check_u:checked {
+    background-color: #006466;
+    border-color: #006466;
+    border: none;
+}

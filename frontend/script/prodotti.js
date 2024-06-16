@@ -15,7 +15,7 @@ myInput.addEventListener('click', () => {
   myModal.show()
 })
 
-//Funzione di ricerca
+//Funzione di ricerca //IMPLEMENTARE LE FUNZIONI DI RICERCA
 const f_cerca = () => {
     const word = document.querySelector('#nome_p').value
     hide_content('.se','#items')

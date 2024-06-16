@@ -49,6 +49,16 @@ main {
   color: #555280;
 }
 
+.check {
+  accent-color: #e91e63;
+  border-color: #e91e63;
+}
+.check:checked {
+  background-color: #e91e63;
+  border-color: #e91e63;
+  border: none;
+}
+
 @media screen and (max-width: 960px) {
   ul li {
     margin-top: 10px;

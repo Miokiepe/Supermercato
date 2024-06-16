@@ -1,12 +1,21 @@
+import { prefixes } from "../Components/data.js"
 const registrati = document.querySelector('#registrati')
 const error = document.querySelector('#message')
+
+const prefisso = document.querySelector('#prefisso')
+prefixes.forEach(prefix => {
+    const opt = document.createElement('option')
+    opt.value = prefix.prefisso
+    opt.innerHTML =prefix.emoji +  " +" + prefix.prefisso
+    prefisso.appendChild(opt)
+})
+
 registrati.addEventListener('click', () => {
     const 
      nome = document.querySelector('#nome').value,
      cognome = document.querySelector('#cognome').value,
      email = document.querySelector('#email').value,
      password = document.querySelector('#password').value,
-     prefisso = document.querySelector('#prefisso').value,
      numero = document.querySelector('#numero').value,
      genere = document.querySelector('#genere').value,
      citta = document.querySelector('#città').value,
@@ -30,7 +39,7 @@ registrati.addEventListener('click', () => {
             cognome: cognome,
             email: email,
             password: password,
-            prefisso: prefisso, 
+            prefisso: prefisso.value, 
             numero: numero,
             genere: genere,
             città: citta,

@@ -53,3 +53,13 @@ main {
   left: calc(50% - 12px);
   color: #006466;
 }
+
+.check {
+  accent-color: #4D194D;
+  border-color: #4D194D;
+}
+.check:checked {
+  background-color: #4D194D;
+  border-color: #4D194D;
+  border: none;
+}
