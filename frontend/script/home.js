@@ -208,7 +208,7 @@ myInput.addEventListener('click', () => {
 })
 //Filtraggio degli ordini 
 document.querySelector('#app').addEventListener('click',() => {
-    let filtered_array = [...ordini_g]
+    let filtered_array = [...ordini_g], non_disp = [...ordini_g];
     const 
         con = document.querySelector('#con').checked,
         m1 = document.querySelector('#m1').checked,
@@ -234,6 +234,7 @@ document.querySelector('#app').addEventListener('click',() => {
         indici.forEach(index => {
             filtered_array.splice(index, 1)
         })
+        non_disp = filtered_array;
     }
     if(m1) 
         filtered_array = filtered_array.filter(elem => elem[0].creazione.substring(5,7) == (new Date().getMonth() + 1))
@@ -258,6 +259,7 @@ document.querySelector('#app').addEventListener('click',() => {
             return data_ordine.valueOf() > oggi.valueOf()   
         })
     }
+    else filtered_array = non_disp
     //IMPLEMENTARE IL CAZZO DI INPUT 'TUTTI GLI ORDINI'
     myModal.hide()
     render_ordini(filtered_array)    

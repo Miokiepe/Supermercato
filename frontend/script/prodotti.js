@@ -8,14 +8,14 @@ const items_div = document.querySelector('#items'),
 
 let prodotti_g;
 localStorage.removeItem('alert_t')
-//Apertura del modale
+//Apertura del modale filtro
 const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
 const myInput = document.getElementById('filtro_b')
 myInput.addEventListener('click', () => {
   myModal.show()
 })
 
-//Funzione di ricerca //IMPLEMENTARE LE FUNZIONI DI RICERCA
+//Funzione di ricerca 
 const f_cerca = () => {
     const word = document.querySelector('#nome_p').value
     hide_content('.se','#items')
