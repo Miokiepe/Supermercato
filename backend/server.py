@@ -33,16 +33,49 @@ def create(utente: User):
 @app.put('/api/update_account',status_code=200)
 def update(utente: Old_New_User):
     conn, cursor = open_db_connection()
-    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s, autenticato = %s, genere = %s, cap = %s, città = %s, via = %s, prefisso = %s, numero = %s WHERE id_utente = %s",(utente.new.nome, utente.new.cognome, utente.new.email, utente.new.password,utente.new.autenticato, utente.new.genere, utente.new.cap, utente.new.città, utente.new.via, utente.new.prefisso, utente.new.numero, utente.old.id_utente))
+    if utente.new.password != "":
+        password = crypt(utente.new.password)
+    else:
+        password = admin.old.password
+    cursor.execute("UPDATE utenti SET nome = %s, cognome = %s, email = %s, password = %s, autenticato = %s, genere = %s, cap = %s, città = %s, via = %s, prefisso = %s, numero = %s WHERE id_utente = %s",(utente.new.nome, utente.new.cognome, utente.new.email, password,utente.new.autenticato, utente.new.genere, utente.new.cap, utente.new.città, utente.new.via, utente.new.prefisso, utente.new.numero, utente.old.id_utente))
+    cursor.execute("SELECT password FROM gestori WHERE email = %s",(utente.new.email,))
+    passs = cursor.fetchone()
     close_db_connection(conn)
+    return {
+        "password": passs
+    }
+    close_db_connection(conn)
+
+#Aggiornamento di un utente gestore
+@app.put('/api/update_account_admin',status_code=200)
+def update(admin: Old_New_Gestore):
+    conn, cursor = open_db_connection()
+    if admin.new.password != "":
+        password = crypt(admin.new.password)
+    else:
+        password = admin.old.password
+    cursor.execute("UPDATE gestori SET nome = %s, cognome = %s, email = %s, password = %s WHERE email = %s AND password = %s",(admin.new.nome, admin.new.cognome, admin.new.email, password, admin.old.email, admin.old.password))
+    cursor.execute("SELECT password FROM gestori WHERE email = %s",(admin.new.email,))
+    passs = cursor.fetchone()
+    close_db_connection(conn)
+    return {
+        "password": passs
+    }
 
 #Cancellazzione di un utente
 @app.delete('/api/delete_account',status_code=200)
 def delete(utente: User):
     conn,cursor = open_db_connection()
-    cursor.execute("DELETE FROM utenti WHERE id_utente = %s",(utente.id_utente,))
+    cursor.execute("DELETE FROM utenti WHERE email = %s AND password = %s",(utente.email, utente.password))
     close_db_connection(conn)
-    
+
+#Eliminazione di un gestore
+@app.delete('/api/delete_admin',status_code=200)
+def delete(admin: Gestore):
+    conn,cursor = open_db_connection()
+    cursor.execute("DELETE FROM gestori WHERE email = %s AND password = %s",(admin.email, admin.password))
+    close_db_connection(conn)
+
 #Restituzione dell'utente
 @app.post('/api/get_account')
 def get(utente: User_token):
@@ -52,17 +85,38 @@ def get(utente: User_token):
     user = cursor.fetchone()
     close_db_connection(conn)
     return {"user": user}
-    
+  
+#Restituzione di tutti gli utenti per il gestore
+@app.post('/api/get_users')
+def get_users(admin: User_token):
+        conn,cursor = open_db_connection()
+        cursor.execute("SELECT * FROM gestori WHERE email = %s AND password = %s AND autenticato = %s",(admin.email, admin.password, admin.token))
+        user = cursor.fetchone()
+        if user == None:
+            raise HTTPException(status_code=401)
+        cursor.execute("SELECT gestori.nome, gestori.cognome, gestori.email, gestori.password, gestori.ruolo FROM gestori")
+        gestori = cursor.fetchall()
+        cursor.execute("SELECT utenti.nome, utenti.cognome, utenti.email, utenti.password, utenti.genere, utenti.numero, utenti.prefisso, utenti.città FROM utenti")
+        utenti = cursor.fetchall()
+        close_db_connection(conn)
+        return {
+            "gestori": gestori,
+            "utenti": utenti
+        }
+
 #Eseguendo il login viene generato un token.
 @app.post('/api/login', status_code=301)
 def login(login: Login):
     conn, cursor = open_db_connection()
-    table = "utenti" if login.role == "utente" else "gestori"
-    cursor.execute(f"SELECT * FROM {table} WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    if login.role == "utente":
+        cursor.execute("SELECT * FROM utenti WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    else:
+        cursor.execute("SELECT * FROM gestori WHERE email = %s AND password = %s AND ruolo = %s",(login.email, crypt(login.password), login.role))
     exists = cursor.fetchone()
     if exists == None:
         raise HTTPException(status_code=401)
     token = generate_token()
+    table = "utenti" if login.role == "utente" else "gestori"
     cursor.execute(f"UPDATE {table} SET autenticato = %s WHERE email = %s AND password = %s", (token,login.email, crypt(login.password)))
     close_db_connection(conn)
     return {
@@ -79,7 +133,7 @@ def home(token: User_token):
     id = "id_utente" if token.role == "utente" else "id_gestore"
     cursor.execute(f"SELECT {id}, nome FROM {table} WHERE autenticato = %s AND email = %s AND password = %s",(token.token,token.email,token.password))
     user = cursor.fetchone()
-    if user[id] == None:
+    if user == None:
         raise HTTPException(status_code=301)
     if table == "utenti":
         cursor.execute("SELECT COUNT(id_utente) as n FROM carrello WHERE id_utente = %s",(user[id],))
@@ -100,7 +154,7 @@ def home(token: User_token):
 def logout(login: Login):
     table = "utenti" if login.role == "utente" else "gestori"
     conn, cursor = open_db_connection()
-    cursor.execute(f"UPDATE {table} SET autenticato = 0 WHERE email = %s AND password = %s",(login.email, crypt(login.password)))
+    cursor.execute(f"UPDATE {table} SET autenticato = 0 WHERE email = %s AND password = %s",(login.email, login.password))
     close_db_connection(conn)
 
 #Aggiunta di un prodotto
@@ -205,14 +259,14 @@ def buy(items: Cart_Items):
 @app.put('/api/update_status')
 def update(item: Order_Items):
     conn, cursor = open_db_connection()
-    cursor.execute("UPDATE ordini SET stato = %s WHERE id_ordine = %s",(item.stato, item.stato))
+    cursor.execute("UPDATE ordini SET stato = %s WHERE id_ordine = %s",(item.stato, item.id_ordine))
     close_db_connection(conn)
 
 #Restituzione di tutti gli ordini per il corriere
 @app.post('/api/get_orders',status_code=200)
 def get(corriere: User_token):
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT * FROM ordini ORDER BY gruppo ASC")
+    cursor.execute("SELECT utenti.via, utenti.cap, utenti.città, ordini.* FROM ordini JOIN utenti ON utenti.id_utente = ordini.id_utente ORDER BY GRUPPO ASC")
     items = cursor.fetchall()
     close_db_connection(conn)
     return {
@@ -226,7 +280,7 @@ def search(id: str):
     ordini = []
     ids = id.split('-')
     for char in ids:
-        cursor.execute("SELECT * FROM ordini where id_ordine = %s",(char, ))
+        cursor.execute("SELECT utenti.via, utenti.cap, utenti.città, ordini.* FROM ordini JOIN utenti ON utenti.id_utente = ordini.id_utente WHERE id_ordine = %s",(char, ))
         ordini.append(cursor.fetchone())
     close_db_connection(conn)
     if(len(ordini) > 1):
@@ -254,6 +308,22 @@ def get(user: User_token):
     close_db_connection(conn)
     return {
         "ordini": ordini
+    }
+
+#Restutuzione di statistiche per il gestore
+@app.get('/api/get_data_admin')
+def get():
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT prodotti.tipo, SUM(ordini.quantità) AS n_venduti FROM ordini JOIN prodotti ON prodotti.id_prodotto = ordini.id_prodotto WHERE prodotti.tipo != 7 GROUP BY tipo")
+    venduti = cursor.fetchall()
+    venduti_mese = []
+    for mese in range(1,13):
+        cursor.execute("SELECT SUM(quantità) AS n_venduti, creazione FROM ordini WHERE YEAR(creazione) = YEAR(CURDATE()) AND MONTH(creazione) = %s GROUP BY creazione;",(mese, ))
+        venduti_mese.append(cursor.fetchone())
+    close_db_connection(conn)
+    return {
+       "venduti_categorie": venduti,
+       "venduti_mese": venduti_mese
     }
     
 if __name__ == "__main__":
