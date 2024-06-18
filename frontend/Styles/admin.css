@@ -1,0 +1,7 @@
+.graph_container:first-child {
+    width: 38vw;
+}
+
+.graph_container:last-child {
+    width: 55vw;
+}
