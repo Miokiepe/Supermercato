@@ -25,10 +25,20 @@ def create(utente: User):
     if email != None:
         #Restituiamo 409 se la mail usata nella registrazione è gia presente nel db
         raise HTTPException(status_code=409) 
-    else:
-        cursor.execute("INSERT INTO utenti (nome, cognome, email, password, autenticato, genere, cap, città, via, prefisso, numero) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (utente.nome, utente.cognome, utente.email, crypt(utente.password), utente.autenticato, utente.genere, utente.cap, utente.città, utente.via, utente. prefisso, utente.numero))
-        close_db_connection(conn)
+    cursor.execute("INSERT INTO utenti (nome, cognome, email, password, autenticato, genere, cap, città, via, prefisso, numero) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (utente.nome, utente.cognome, utente.email, crypt(utente.password), utente.autenticato, utente.genere, utente.cap, utente.città, utente.via, utente. prefisso, utente.numero))
+    close_db_connection(conn)
 
+#Creazione di un utente gestore
+@app.post('/api/add_admin',status_code=201)
+def create(utente: Gestore):
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT * FROM gestori WHERE email = %s AND ruolo = %s", (utente.email, utente.role))
+    email = cursor.fetchone()
+    if email != None:
+        raise HTTPException(status_code=409)
+    cursor.execute("INSERT INTO gestori(nome,cognome,email,password,autenticato,ruolo) VALUES (%s, %s, %s, %s, %s, %s)",(utente.nome, utente.cognome, utente.email, crypt(utente.password), "0", utente.role))
+    close_db_connection(conn)
+    
 #Aggiornamento di un utente 
 @app.put('/api/update_account',status_code=200)
 def update(utente: Old_New_User):
@@ -301,9 +311,10 @@ def search(id: str):
 @app.post('/api/get_orders_user',status_code=200)
 def get(user: User_token):
     conn, cursor = open_db_connection()
+    
     cursor.execute("SELECT id_utente FROM utenti WHERE email = %s AND password = %s AND autenticato = %s",(user.email, user.password, user.token))
     id = cursor.fetchone()
-    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.id_ordine, ordini.quantità, ordini.stato, ordini.gruppo, ordini.creazione FROM ordini JOIN prodotti ON ordini.id_prodotto = prodotti.id_prodotto WHERE id_utente = %s",(id['id_utente'],))
+    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.id_ordine, ordini.quantità, ordini.stato, ordini.gruppo, ordini.creazione FROM ordini JOIN prodotti ON ordini.id_prodotto = prodotti.id_prodotto WHERE id_utente = %s ORDER BY ordini.creazione DESC",(id['id_utente'],))
     ordini = cursor.fetchall()
     close_db_connection(conn)
     return {
