@@ -15,31 +15,35 @@ const render_grafici = (res) => {
           hoverOffset: 4
         }]
       };
-
+      let venduti = 0
       items.forEach((item, index) => {
         data.labels.push(item.nome)
         data.datasets[0].backgroundColor.push(item.colore)
         data.datasets[0].data.push(res.venduti_categorie[index].n_venduti)
+        venduti += res.venduti_categorie[index].n_venduti
       });
-
-
-    new Chart(document.querySelector('#venduti_tipo'),{
+      //Grafico a linea
+      document.querySelector('#totale').innerHTML = `Item venduti quest'anno: ${venduti}`
+      new Chart(document.querySelector('#venduti_tipo'),{
         type: 'doughnut',
         data: data
       })
 
-    //Grafico a linea
-
+    
     const Data = {
-        labels: ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+      labels:[],
         datasets: [{
           label: 'Vendite di prodotti al mese',
           data: [],
           fill: false,
-          borderColor: 'rgb(75, 192, 192)',
+          borderColor: '#555280',
           tension: 0.1
         }]
       }
+      
+      const mesi = ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"]
+      let mese_attuale = new Date().getMonth()
+      for(let i = 0; i <= mese_attuale; i++) Data.labels.push(mesi[i])
 
       res.venduti_mese.forEach(elem => Data.datasets[0].data.push( elem == null ? 0 : elem.n_venduti))
 

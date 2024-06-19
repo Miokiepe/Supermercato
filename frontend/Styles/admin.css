@@ -1,7 +1,13 @@
 .graph_container:first-child {
-    width: 38vw;
+    width: 30vw;
 }
 
 .graph_container:last-child {
-    width: 55vw;
+    width: 50vw;
+}
+
+@media screen and (max-width: 960px) {
+    .graph_container {
+        width: 100vw;
+    }
 }

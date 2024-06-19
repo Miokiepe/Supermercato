@@ -6,7 +6,8 @@ const elimina_u = document.querySelector('#elimina_u')
 const modifica_m = new bootstrap.Modal(document.getElementById("modifica_m"));
 const elimina_m = new bootstrap.Modal(document.getElementById("elimina_m"));
 const elimina_m_u = new bootstrap.Modal(document.getElementById("elimina_m_u"));
-
+const aggiungi = document.querySelector('#add')
+const aggiungi_m = new bootstrap.Modal(document.getElementById("aggiungi_m"));
 //Mostriamo eventuali alert
 const alert = localStorage.getItem('alert')
 switch(alert) {
@@ -19,6 +20,9 @@ switch(alert) {
     case 'delete_user':
             show_error('Account selezionati eliminati','alert alert-info alert-dismissible fade show', true)
             break;
+    case 'added_admin':
+        show_error('Account aggiunto con successo','alert alert-info alert-dismissible fade show', true)
+        break;
         }
 localStorage.removeItem('alert')
 
@@ -132,37 +136,39 @@ document.querySelector('#elimina_u').addEventListener('click',() => {
 
 //Eliminazione dell'account gestore nel server
 document.querySelector('#elimina_def').addEventListener('click',async () => {
-   admin_selezionati.forEach(async admin => {
-    await fetch('http://localhost:5000/api/delete_admin',{
+   admin_selezionati.forEach(admin => {
+    fetch('http://localhost:5000/api/delete_admin',{
         method: "DELETE",
         headers: {
             "content-type" : "application/json"
         },
         body: JSON.stringify(admin)
+    }).then(() => {
+        localStorage.setItem('alert','delete_admin')
+        location.reload()
     })
    })
-   localStorage.setItem('alert','delete_admin')
-   location.reload()
 })
 
 //Eliminazione dell'account utente nel server
 document.querySelector('#elimina_def_utenti').addEventListener('click',async () => {
-    utenti_selezionati.forEach(async user => {
+    utenti_selezionati.forEach(user => {
      user.id_utente = 0
      user.via = "" 
      user.autenticato = ""
      user.cap = "" 
      console.log(user)
-     await fetch('http://localhost:5000/api/delete_account',{
+     fetch('http://localhost:5000/api/delete_account',{
          method: "DELETE",
          headers: {
              "content-type" : "application/json"
          },
          body: JSON.stringify(user)
+     }).then(() => {
+         localStorage.setItem('alert','delete_user')
+         location.reload()
      })
     })
-    localStorage.setItem('alert','delete_user')
-    location.reload()
  })
 
 const manage_user = (user, check) => {
@@ -204,7 +210,7 @@ const render_utenti = (utenti) => {
         tr.appendChild(email)
 
         const genere = document.createElement('td')
-        genere.innerHTML = elem.genere
+        genere.innerHTML = elem.genere == 1 ? "Uomo" : elem.genere == 2 ? "Donna" : "Non specificato"
         tr.appendChild(genere)
 
         const città = document.createElement('td')
@@ -243,3 +249,68 @@ fetch('http://localhost:5000/api/get_users',{
     show_error()
     console.log(e)
   })
+
+//Mostriamo il modale per l'aggiunta di un utente
+aggiungi.addEventListener('click',() => aggiungi_m.show())
+
+const 
+    password = document.querySelector('#password_g'), 
+    iconEye = document.querySelector('#toggle'), 
+    tipo_g = document.querySelector('#tipo_g'),
+    icona_g = document.querySelector('#icona_g')
+//Mostriamo / Nascondiamo la password
+iconEye.addEventListener('click',() => {
+    if(password.type === "password") {
+        password.type = "text"
+        iconEye.innerHTML = '<i class="bi bi-eye"></i>'
+    }
+    else {
+        password.type = "password"
+        iconEye.innerHTML = '<i class="bi bi-eye-slash"></i>'
+    }
+})
+
+//Modifica dell'icona quando si clicca sul select
+tipo_g.addEventListener('change', () => {
+    icona_g.innerHTML = badges[tipo_g.value].icona
+    icona_g.style.color = badges[tipo_g.value].colore
+})
+
+//Aggiunta del nuovo account sul server
+document.querySelector('#salva_g').addEventListener('click', () => {
+    const 
+        nome = document.querySelector('#nome_g').value,
+        cognome = document.querySelector('#cognome_g').value,
+        email = document.querySelector('#email_g').value
+    
+    if(!nome || !cognome || !email || !password) {
+        show_error("Uno o più campi vuoti! Procedura annullata")
+        aggiungi_m.hide()
+        return
+    }
+
+    fetch('http://localhost:5000/api/add_admin',{
+        method: "POST",
+        headers: {
+            'content-type' : 'application/json'
+        },
+        body: JSON.stringify({
+            nome: nome,
+            cognome: cognome,
+            email: email, 
+            password: password.value,
+            role: tipo_g.value == "0" ? "Admin" : "Corriere"
+        })
+    }).then((res) => {
+        if(res.status === 409) {
+            show_error("Esiste già un gestore con la stessa email e ruolo", "alert alert-info alert-dismissible fade show", true)
+            aggiungi_m.hide()
+            return;
+        }
+        localStorage.setItem('alert','added_admin')
+        location.reload()
+    }).catch(e => {
+        console.log(e)
+        show_error()
+    })
+})

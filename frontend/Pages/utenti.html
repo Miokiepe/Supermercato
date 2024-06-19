@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../Components/admin_nav_footer.css">
     <link rel="stylesheet" href="../Styles/utenti.css">
+    <link rel="stylesheet" href="../Styles/admin_prodotti.css">
     <title>Utenti</title>
 </head>
 <body>
@@ -18,116 +19,162 @@
     </div>
     <div class="alert alert-danger " role="alert" id="error"></div>
     <main>
-        <style>
-        </style>
         <h4>Gestori</h4>
-        <table class="table">
-            <thead>
-              <tr class="riga">
-                <th scope=""></th>
-                <th scope="col">Nome</th>
-                <th scope="col">Cognome</th>
-                <th scope="col">Email</th>
-                <th scope="col">Ruolo</th>
-              </tr>
-            </thead>
-            <tbody id="gestori"></tbody>
-          </table>
-          <div class="d-flex justify-content-end gap-3">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr class="riga">
+                        <th scope=""></th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Cognome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Ruolo</th>
+                    </tr>
+                </thead>
+                <tbody id="gestori"></tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-end gap-3">
             <button class="btn" style="background: linear-gradient(to left,#B7094C,#0091AD); border:none; color: white; display: none;" id="modifica_a"><i class="fa-solid fa-pen"></i> Modifica</button>
             <button class="btn btn-danger" style="display: none;" id="elimina_a"><i class="fa-solid fa-trash" id="elimina"></i> Elimina</button>
-          </div>
-          <h4 class="mt-4">Utenti</h4>
-          <table class="table">
-            <thead>
-              <tr class="riga">
-                <th scope=""></th>
-                <th scope="col">Nome</th>
-                <th scope="col">Cognome</th>
-                <th scope="col">Email</th>
-                <th scope="col">Genere</th>
-                <th scope="col">Città</th>
-                <th scope="col">Numero di telefono</th>
-              </tr>
-            </thead>
-            <tbody id="utenti"></tbody>
-          </table>
-          <div class="d-flex justify-content-end gap-3">
+        </div>
+        <h4 class="mt-4">Utenti</h4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr class="riga">
+                        <th scope=""></th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Cognome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Genere</th>
+                        <th scope="col">Città</th>
+                        <th scope="col">Numero di telefono</th>
+                    </tr>
+                </thead>
+                <tbody id="utenti"></tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-end gap-3">
             <button class="btn btn-danger" style="display: none;" id="elimina_u"><i class="fa-solid fa-trash" id="elimina"></i> Elimina</button>
-          </div>
+        </div>
+        <div id="add" role="button"><i class="fa-solid fa-plus"></i></div>
     </main>
     <footer id="footer"></footer>
+    <!--Modale per aggiungere gestori-->
+    <div class="modal" tabindex="-1" id="aggiungi_m">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aggiungi account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-row gap-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Nome</span>
+                            <input type="text" class="form-control" id="nome_g" aria-label="Nome" aria-describedby="Nome del gestore">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Cognome</span>
+                            <input type="text" class="form-control" id="cognome_g" aria-label="Cognome" aria-describedby="Cognome del gestore">
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Email</span>
+                        <input type="email" class="form-control" id="email_g" aria-label="Email" aria-describedby="Email del gestore">
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password_g" placeholder="Password" aria-label="Password dell'utente" aria-describedby="button-addon2">
+                        <span class="btn btn-outline-primary" type="button" id="toggle"><i class="bi bi-eye-slash"></i></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="icona_g"><i class="fa-solid fa-user-tie" style="color: #ad1151;"></i></span>
+                        <select class="form-select" id="tipo_g">
+                            <option value="0">Admin</option>
+                            <option value="1">Corriere</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="salva_g" class="btn btn-primary" style="background-color: #713D71; border: none;">
+                            <i class="fa-solid fa-plus"></i> Aggiungi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Modale per modificare gestori-->
     <div class="modal" tabindex="-1" id="modifica_m">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modifica account</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex flex-row gap-3">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Nome</span>
-                        <input type="text" class="form-control" id="nome_a" placeholder="Nome" aria-label="Nome" aria-describedby="Nome del gestore">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifica account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-row gap-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Nome</span>
+                            <input type="text" class="form-control" id="nome_a" placeholder="Nome" aria-label="Nome" aria-describedby="Nome del gestore">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Cognome</span>
+                            <input type="text" class="form-control" id="cognome_a" placeholder="Cognome" aria-label="Cognome" aria-describedby="Cognome del gestore">
+                        </div>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Cognome</span>
-                        <input type="text" class="form-control" id="cognome_a" placeholder="Cognome" aria-label="Cognome" aria-describedby="Cognome del gestore">
+                        <span class="input-group-text">Email</span>
+                        <input type="email" class="form-control" id="email_a" placeholder="Email" aria-label="Email" aria-describedby="Email del gestore">
+                    </div>
+                    <span class="badge mb-3" id="ruolo_a"></span>
+                    <div class="modal-footer">
+                        <button type="button" id="salva" class="btn btn-primary" style="background-color: #713D71; border: none;">
+                            <i class="fa-solid fa-floppy-disk"></i> Salva
+                        </button>
                     </div>
                 </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Email</span>
-                    <input type="email" class="form-control" id="email_a" placeholder="Email" aria-label="Email" aria-describedby="Email del gestore">
-                </div>
-                <span class="badge mb-3" id="ruolo_a"></span>
-                <div class="modal-footer">
-                  <button type="button" id="salva" class="btn btn-primary" style="background-color: #713D71; border: none;">
-                    <i class="fa-solid fa-floppy-disk"></i> Salva
-                </button>
-                </div>
             </div>
-          </div>
         </div>
     </div>
     <!--Modale per eliminare gestori-->
     <div class="modal" tabindex="-1" id="elimina_m">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Eliminazione account</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Stai per eliminare <b id="xaccount"></b> account. Questa azione è irreversibile</p>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" id="elimina_def">
-                    Elimina
-                </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminazione account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Stai per eliminare <b id="xaccount"></b> account. Questa azione è irreversibile</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="elimina_def">
+                            Elimina
+                        </button>
+                    </div>
                 </div>
             </div>
-          </div>
         </div>
     </div>
     <!--Modale per eliminare utenti-->
     <div class="modal" tabindex="-1" id="elimina_m_u">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Eliminazione account</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <p>Stai per eliminare <b id="xaccount_u"></b> account. Questa azione è irreversibile</p>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="elimina_def_utenti">
-                  Elimina
-              </button>
-              </div>
-          </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminazione account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Stai per eliminare <b id="xaccount_u"></b> account. Questa azione è irreversibile</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="elimina_def_utenti">
+                            Elimina
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-  </div>
+    </div>
 </body>
 <script src="../script/admin_check_au.js"></script>
 <script src="../script/admin_navbar_footer.js"></script>

@@ -1,7 +1,7 @@
 const password = document.querySelector('#password')
 
 const iconEye = document.querySelector('#toggle')
-iconEye.addEventListener('click',()=>{
+iconEye.addEventListener('click',() => {
         if(password.type === "password") {
             password.type = "text"
             iconEye.innerHTML = '<i class="bi bi-eye"></i>'
