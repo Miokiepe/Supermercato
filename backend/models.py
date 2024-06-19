@@ -15,6 +15,17 @@ class User(BaseModel):
     prefisso: str
     numero: str
 
+class Gestore(BaseModel):
+    nome: str
+    cognome: str
+    email: str
+    password: str    
+    ruolo: str
+    
+class Old_New_Gestore(BaseModel):
+    old: Gestore
+    new: Gestore
+
 class Login(BaseModel):
     email: str
     password: str
