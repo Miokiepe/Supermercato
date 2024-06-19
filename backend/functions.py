@@ -11,7 +11,7 @@ config = {
 #Creazione della connessione al db
 def open_db_connection():
     conn = mysql.connector.connect(**config)
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
     return conn, cursor
     
 #Chiusura della connessione al db
