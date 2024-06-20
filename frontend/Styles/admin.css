@@ -11,3 +11,12 @@
         width: 100vw;
     }
 }
+
+.fa-ellipsis-vertical {
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.graph_container:hover .fa-ellipsis-vertical {
+    visibility: visible;
+}

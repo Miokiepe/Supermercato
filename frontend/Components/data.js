@@ -148,6 +148,56 @@ export const prefixes = [
     { prefisso: '964', emoji: '🇮🇶' }    // Iraq
   ];
 
+export const mesi = [
+    {   nome: "Gennaio",
+        giorni: 31
+    },
+    {
+        nome: "Febbraio",
+        giorni: 28
+    },
+    {
+        nome: "Marzo",
+        giorni: 31
+    },
+    {
+        nome: "Aprile",
+        giorni: 30
+    },
+    {
+        nome: "Maggio",
+        giorni: 31
+    },
+    {
+        nome: "Giugno",
+        giorni: 30
+    },
+    {
+        nome: "Luglio",
+        giorni: 31
+    },
+    {
+        nome: "Agosto",
+        giorni: 31
+    },
+    {
+        nome: "Settembre",
+        giorni: 30
+    },
+    {
+        nome: "Ottobre",
+        giorni: 31
+    },
+    {
+        nome: "Novembre",
+        giorni: 30
+    },
+    {
+        nome: "Dicembre",
+        giorni: 31
+    }
+]
+
 export const show_error = (message = "Impossibile connettersi al server", className = "", dismissible = false) => {
     const error = document.querySelector('#error')
     if(className !== "") error.className = className

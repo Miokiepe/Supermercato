@@ -26,13 +26,32 @@
             <div class="graph_container">
                 <canvas id="venduti_tipo"></canvas>
             </div>
-            <div class="graph_container">
+            <div class="graph_container d-flex flex-row">
                 <canvas id="venduti_mese"></canvas>
+                <i class="fa-solid fa-ellipsis-vertical" id="open_gl"></i>
             </div>
         </div>       
     </main>
     <footer id="footer"></footer>
 </body>
+<!--Modale di filtro per il grafico a linea-->
+<div class="modal" tabindex="-1" id="modal_gl">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifica vista</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="filtri"></div>
+        <div class="modal-footer">
+            <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;">
+                <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> 
+                Applica
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
 <script src="../script/admin_navbar_footer.js"></script>
 <script src="../script/admin_check_au.js"></script>
 <script src="../script/admin.js" type="module"></script>
