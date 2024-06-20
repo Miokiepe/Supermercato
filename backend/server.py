@@ -2,6 +2,7 @@ from fastapi import FastAPI,HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from datetime import datetime
 from models import *
 from functions import *
 
@@ -335,6 +336,21 @@ def get():
     return {
        "venduti_categorie": venduti,
        "venduti_mese": venduti_mese
+    }
+
+@app.get('/api/get_data/{mese}')
+def get(mese: int):
+    conn, cursor = open_db_connection()
+    venduti_mese = []
+    for i in range(1, mesi[mese]["giorni"] + 1):
+        cursor.execute("SELECT SUM(quantità) AS n_venduti, creazione FROM ordini WHERE YEAR(creazione) = YEAR(CURDATE()) AND MONTH(creazione) = %s AND DAY(creazione) = %s GROUP BY creazione;",(mese + 1, i))
+        venduti_mese.append(cursor.fetchone())
+    if bisestile(datetime.now().year) and mese == 1:
+        cursor.execute("SELECT SUM(quantità) AS n_venduti, creazione FROM ordini WHERE YEAR(creazione) = YEAR(CURDATE()) AND MONTH(creazione) = %s AND DAY(creazione) = %s GROUP BY creazione;",(mese + 1, 29))
+        venduti_mese.append(cursor.fetchone())
+    close_db_connection(conn)
+    return {
+        "venduti_mese": venduti_mese
     }
     
 if __name__ == "__main__":
