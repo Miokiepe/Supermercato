@@ -33,3 +33,58 @@ def generate_token() -> str:
     hash_object.update(str(random.randint(0,100) + random.random()).encode())
     # restituisce la password in cifre esadecimali
     return hash_object.hexdigest()
+
+mesi = [
+    {
+        "nome": "Gennaio",
+        "giorni": 31
+    },
+    {
+        "nome": "Febbraio",
+        "giorni": 28
+    },
+    {
+        "nome": "Marzo",
+        "giorni": 31
+    },
+    {
+        "nome": "Aprile",
+        "giorni": 30
+    },
+    {
+        "nome": "Maggio",
+        "giorni": 31
+    },
+    {
+        "nome": "Giugno",
+        "giorni": 30
+    },
+    {
+        "nome": "Luglio",
+        "giorni": 31
+    },
+    {
+        "nome": "Agosto",
+        "giorni": 31
+    },
+    {
+        "nome": "Settembre",
+        "giorni": 30
+    },
+    {
+        "nome": "Ottobre",
+        "giorni": 31
+    },
+    {
+        "nome": "Novembre",
+        "giorni": 30
+    },
+    {
+        "nome": "Dicembre",
+        "giorni": 31
+    }
+]
+
+
+def bisestile(anno) -> bool:
+    return anno % 4 == 0 and anno % 400 == 0
