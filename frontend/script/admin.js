@@ -132,8 +132,8 @@ document.querySelector('#app').addEventListener('click',() => {
           datasets: [{
             label: `Vendite di prodotti a ${mesi[i].nome}`,
             data: [],
-            fill: false,
-            borderColor: '#555280',
+            backgroundColor: ["#B20D4F","#058DAA"],
+            borderColor: '',
             tension: 0.1
           }]
         }
@@ -164,7 +164,7 @@ document.querySelector('#app').addEventListener('click',() => {
         })
         
         document.querySelector('#totale').innerHTML = `Totale item venduti a ${mesi[i].nome} ${total_items}`
-        //Modificare i colori per la estetica
+        //Modificare i colori delle barre del grafico per l'estetica
         modale.hide()
     })
     .catch((e) => {
