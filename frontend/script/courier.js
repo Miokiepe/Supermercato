@@ -22,6 +22,7 @@ fetch('http://localhost:5000/api/get_data_courier')
             type: 'doughnut',
             data: data
         })
+        document.querySelector('#totale').innerHTML = "Spedizioni totali: " + data.datasets[0].data.reduce((somma, elem) => somma += elem)
         show_content()
     })
     .catch((e) => {

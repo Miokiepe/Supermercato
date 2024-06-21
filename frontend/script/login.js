@@ -68,7 +68,7 @@ button.addEventListener('click',() => {
         localStorage.setItem('id',re.id_utente)
         if(role == "utente") window.location.replace("./Pages/home.html")
         else if(role == "admin") window.location.replace("./Pages/admin.html")
-             else window.location.replace('./Pages/corriere.html')
+             else window.location.replace('./Pages/courier.html')
     })
     .catch(e => {
         console.error('Error:', e);

@@ -52,6 +52,25 @@ const render_grafici = (res) => {
         type: 'line',
         data: Data
       })
+
+      const Utenti = {
+        labels: ["admin","corriere","utente"],
+        datasets: [{
+          label: 'Numero utenza',
+          data: [res.utenza.gestori[0].n_items, res.utenza.gestori[1].n_items, res.utenza.utenti.n_item],
+          backgroundColor: ["#B30B4E","#058EAB","#006466"],
+          hoverOffset: 4
+        }]
+      };
+
+      //Grafico utenza
+      new Chart(document.querySelector('#utenza'), {
+        type: 'doughnut',
+        data: Utenti
+      })
+  
+      document.querySelector('#totale_utenza').innerHTML = "Utenza totale: " + Utenti.datasets[0].data.reduce((somma, elem) => somma += elem)
+
 }
 
 //Otteniamo i dati dal server

@@ -11,7 +11,9 @@
         width: 100vw;
     }
 }
-
+.due {
+    width: 30vw !important;
+}
 .fa-ellipsis-vertical {
     visibility: hidden;
     cursor: pointer;
