@@ -338,6 +338,7 @@ def get():
        "venduti_mese": venduti_mese
     }
 
+#Restituzione delle vendite dato un mese
 @app.get('/api/get_data/{mese}')
 def get(mese: int):
     conn, cursor = open_db_connection()
@@ -352,6 +353,37 @@ def get(mese: int):
     return {
         "venduti_mese": venduti_mese
     }
+   
+#Restituzione di statistiche per il corriere
+@app.get('/api/get_data_courier')
+def get():
+       conn, cursor = open_db_connection()
+       cursor.execute("SELECT COUNT(stato) AS n_item, stato FROM ordini GROUP BY stato;")
+       items = cursor.fetchall()
+       close_db_connection(conn)
+       return {
+           "spedizioni" : items
+       }
+
+#Restituzione delle transazioni degli utenti
+@app.get('/api/get_transazioni')
+def get():
+    conn, cursor = open_db_connection()
+    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.creazione, ordini.id_ordine FROM ordini JOIN prodotti ON prodotti.id_prodotto = ordini.id_prodotto ORDER BY ordini.id_ordine ASC")
+    transazioni = cursor.fetchall()
+    close_db_connection(conn)
+    return {
+        "transazioni": transazioni
+    }
+
+#Restituzione di una transazione dato l'id
+@app.get('/api/get_transazione/{id}')
+def get(id):
+       conn, cursor = open_db_connection()
+       cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.creazione, ordini.id_ordine FROM ordini JOIN prodotti ON prodotti.id_prodotto = ordini.id_prodotto WHERE ordini.id_ordine = %s",(id, ))
+       transazione = cursor.fetchone()
+       close_db_connection(conn)
+       return transazione
     
 if __name__ == "__main__":
     uvicorn.run("server:app", port=5000, log_level="info")
