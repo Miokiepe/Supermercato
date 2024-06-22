@@ -73,11 +73,18 @@ def update(admin: Old_New_Gestore):
         "password": passs
     }
 
-#Cancellazzione di un utente
+#Eliminazione di un utente
 @app.delete('/api/delete_account',status_code=200)
 def delete(utente: User):
     conn,cursor = open_db_connection()
-    cursor.execute("DELETE FROM utenti WHERE email = %s AND password = %s",(utente.email, utente.password))
+    #cursor.execute("DELETE FROM utenti WHERE email = %s AND password = %s",(utente.email, utente.password))
+    cursor.execute("SELECT COUNT(id_utente) as ordini FROM ordini WHERE id_utente = %s AND stato != 7",(utente.id_utente, ))
+    ordini_incompleti = cursor.fetchone()
+    if ordini_incompleti["ordini"] != 0:
+        raise HTTPException(status_code=400, detail=ordini_incompleti)
+    else:
+        cursor.execute("DELETE FROM ordini WHERE id_utente = %s",(utente.id_utente, ))
+        cursor.execute("DELETE FROM utenti WHERE id_utente = %s",(utente.id_utente, ))
     close_db_connection(conn)
 
 #Eliminazione di un gestore
@@ -186,14 +193,15 @@ def update(item: Old_New_Item):
 @app.delete('/api/delete_item', status_code=200)
 def delete(item: Item):
     conn, cursor = open_db_connection()
-    cursor.execute("DELETE FROM prodotti WHERE id_prodotto = '%s'", (item.id_prodotto,))
+    #Contrassegnare l'item con un nome riservato, in modo da considerarlo come eliminato. 
+    cursor.execute("UPDATE prodotti SET tipo = 5 WHERE id_prodotto = %s",(item.id_prodotto, ))
     close_db_connection(conn)
 
 #Restituzione di tutti prodotti 
 @app.get('/api/get_items/{n}')
 def get(n):
     conn, cursor = open_db_connection()
-    cursor.execute(f"SELECT * FROM prodotti ORDER BY creazione DESC LIMIT {n}")
+    cursor.execute(f"SELECT * FROM prodotti WHERE tipo != 5 ORDER BY creazione DESC LIMIT {n}")
     items = cursor.fetchall()
     close_db_connection(conn)
     return {"items": items}         
@@ -268,7 +276,7 @@ def buy(items: Cart_Items):
 
 #Modifica dello stato dell'ordine
 @app.put('/api/update_status')
-def update(item: Order_Items):
+def update(item: Order_Items | Order):
     conn, cursor = open_db_connection()
     cursor.execute("UPDATE ordini SET stato = %s WHERE id_ordine = %s",(item.stato, item.id_ordine))
     close_db_connection(conn)
