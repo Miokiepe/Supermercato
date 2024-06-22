@@ -15,6 +15,17 @@ class User(BaseModel):
     prefisso: str
     numero: str
 
+class Gestore(BaseModel):
+    nome: str
+    cognome: str
+    email: str
+    password: str    
+    ruolo: str
+    
+class Old_New_Gestore(BaseModel):
+    old: Gestore
+    new: Gestore
+
 class Login(BaseModel):
     email: str
     password: str
@@ -52,6 +63,15 @@ class Order_Items(BaseModel):
     stato: int
     gruppo: int
     
+class Order(BaseModel):
+    id_ordine: int
+    gruppo: int
+    nome: str
+    creazione: str
+    stato: int
+    tipo: int
+    quantità: int
+    costo: float
 
 class User_id(BaseModel):
     id_utente: int
