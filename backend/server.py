@@ -332,10 +332,18 @@ def get():
     for mese in range(1,13):
         cursor.execute("SELECT SUM(quantità) AS n_venduti, creazione FROM ordini WHERE YEAR(creazione) = YEAR(CURDATE()) AND MONTH(creazione) = %s GROUP BY creazione;",(mese, ))
         venduti_mese.append(cursor.fetchone())
+    cursor.execute("SELECT COUNT(id_utente) AS n_item FROM utenti")
+    utenti = cursor.fetchone()
+    cursor.execute("SELECT ruolo, COUNT(ruolo) as n_items from gestori GROUP BY ruolo;")
+    gestori = cursor.fetchall()
     close_db_connection(conn)
     return {
        "venduti_categorie": venduti,
-       "venduti_mese": venduti_mese
+       "venduti_mese": venduti_mese,
+       "utenza": {
+           "utenti": utenti,
+           "gestori": gestori
+       } 
     }
 
 #Restituzione delle vendite dato un mese
