@@ -1,12 +1,15 @@
-Admin: mario10@libro.it - Mario 1234  
+# Backend side
+Indice  
+1. Struttura del Database "supermercato"
+    1. utenti
+    2. prodotti
+    3. carrello
+    4. Ordini
+    5. Gestori
+2. Strutture del server python
+    1. functions.py
+    2. models.py
+    3. server.py  
 
-Corriere: luigi@no.com - Luigi1234 (non ricordo, forse anche luigi1234)   
-
-Utente: mario@example.com - 1234   
-(Cliccare sull'editor per vedere le classi del tagi i
-Ci sono diverse catogorie di prodotti:
-- Arredamento <i class="fa-solid fa-couch"></i>  Colore: #f6511d
-- Alimentari  <i class="fa-solid fa-burger"></i> colore: #ffb400
-- Elettronica <i class="fa-solid fa-mobile"></i> Colore: #00a6ed
-- Indumenti   <i class="fa-solid fa-shirt"></i>  Colore: #7fb800
-- Sport <i class="fa-solid fa-volleyball"></i>   Colore: #0d2c54 
+### 1.1 - Tabella utenti  
+La tabella utenti ha 12 campi
