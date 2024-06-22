@@ -1,8 +1,8 @@
 import {show_content, show_error, prefixes} from '../Components/data.js'
 const iconEye = document.querySelector('#toggle')
-const error = document.querySelector('#error')
 const modifica = document.querySelector('#modifica')
 const myModal = new bootstrap.Modal(document.getElementById("modal"));
+const elimina_err = new bootstrap.Modal(document.getElementById("elimina_err"));
 let old_user;
 
 const prefissi = document.querySelector('#prefisso')
@@ -12,7 +12,7 @@ prefixes.forEach(prefix => {
     opt.innerHTML =prefix.emoji +  " +" + prefix.prefisso
     prefissi.appendChild(opt)
 })
-
+//Alterniamo l'input type text e password quando si clicca l'icona dell'occhio
 iconEye.addEventListener('click',() => {
     const password = document.querySelector('#password')
         if(password.type === "password") {
@@ -25,6 +25,7 @@ iconEye.addEventListener('click',() => {
         }
 })
 
+//Log-out
 document.querySelector('#logout').addEventListener('click',() => {
     fetch('http://localhost:5000/api/logout',{
         method: "POST",
@@ -46,6 +47,7 @@ document.querySelector('#logout').addEventListener('click',() => {
 
 document.querySelector('#delete').addEventListener('click', () => myModal.show())
 
+//Eliminazione dell'account
 document.querySelector('#delete_BBB').addEventListener('click',() => {
     fetch('http://localhost:5000/api/delete_account', {
         method: "DELETE",
@@ -53,16 +55,24 @@ document.querySelector('#delete_BBB').addEventListener('click',() => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(old_user.user)
-    }).then(() => {
-        localStorage.clear()
-        location.replace('../index.html')
+    }).then(async res => {
+        if(res.status === 400) {
+            myModal.hide()
+            const n = await res.json(); 
+            elimina_err.show()
+            document.querySelector('#n_or').innerHTML = n.detail.ordini
+        }
+        else {
+            localStorage.clear()
+            location.replace('../index.html')
+        }
     })
       .catch(() => show_error("Server non raggiungibile! Operazione anullata"))
-      console.log(old_user.user)
 })
 
 const IDs = ["nome","cognome","città","cap","via","genere","prefisso","numero","email"]
 
+//Modifica del profilo nel server
 modifica.addEventListener('click',() => {
     if(modifica.innerHTML.includes("Modifica")) {
         IDs.forEach(elem => document.querySelector('#' + elem).disabled = false)
@@ -103,6 +113,7 @@ modifica.addEventListener('click',() => {
     }
 })
 
+//Otteniamo l'account
 fetch('http://localhost:5000/api/get_account',{
     method: "POST",
     headers: {

@@ -47,8 +47,13 @@ const render_transazioni = (items_t) => {
         tran.querySelector('.data').innerHTML = item.creazione
         tran.querySelector('.nome').innerHTML = item.nome
 
-        tran.querySelector('.categoria').style.color = items[item.tipo].colore
-        tran.querySelector('.categoria').innerHTML = items[item.tipo].icona + " " + items[item.tipo].nome
+        if(item.tipo == 5) {
+            tran.querySelector('.categoria').innerHTML = "Anullato e rimborsato"
+        }
+        else {
+            tran.querySelector('.categoria').style.color = items[item.tipo].colore
+            tran.querySelector('.categoria').innerHTML = items[item.tipo].icona + " " + items[item.tipo].nome
+        }
 
         tran.querySelector('.quantità').innerHTML = "Quantità: " + item.quantità
         tran.querySelector('.costo').innerHTML = "€" + item.costo * item.quantità

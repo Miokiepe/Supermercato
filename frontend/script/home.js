@@ -8,7 +8,8 @@ const
     token = localStorage.getItem('token'), 
     role = localStorage.getItem('role'), 
     id = localStorage.getItem('id'), 
-    alert_t = localStorage.getItem('alert_t')
+    alert_t = localStorage.getItem('alert_t'),
+    annulla_m = new bootstrap.Modal(document.getElementById("annulla_m"));
 let ordini_g;
 //Mostra eventuali messaggi
 if(alert_t) {
@@ -16,6 +17,8 @@ if(alert_t) {
         case 'cart':
             show_error('Elemento aggiunto al carrello!','alert alert-success alert-dismissible fade show',true)
             break;
+        case 'annullato':
+            show_error('Ordine annullato correttamente','alert alert-info alert-dismissible fade show',true)
     }
     localStorage.removeItem('alert_t')
 }
@@ -78,7 +81,8 @@ const render_ordini = (gruppi) => {
                                                                     </span>`
                 ordine.querySelector('.ddesc').innerHTML = "Quantità: "  + elem.quantità
                 ordine.querySelector('.costo').innerHTML = '€' + elem.costo
-                
+                if(elem.stato != 4 && elem.stato != 7) ordine.querySelector('.update').addEventListener('click',() => show_annulla_ordine(elem))
+                else ordine.querySelector('.update').style.visibility = 'hidden'
                 const btn = ordine.querySelector('.btn')
                 const stato = stati[elem.stato]
                 btn.innerHTML = stato.icona
@@ -175,7 +179,7 @@ fetch('http://localhost:5000/api/get_orders_user', {
         }).then(res => res.json())
           .then(res => {
             const container = document.querySelector('#ordini_cards')
-            if(!res.ordini) {
+            if(res.ordini.length === 0) {
                 container.innerHTML = "Nessun ordine effetuato"
                 return;
             }
@@ -200,7 +204,7 @@ fetch('http://localhost:5000/api/get_orders_user', {
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
         const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     })
-        .catch((e) => show_error(),console.log(e))
+        .catch(() => show_error())
 
 
 //Apertura del modale di filtro
@@ -268,3 +272,26 @@ document.querySelector('#app').addEventListener('click',() => {
     myModal.hide()
     render_ordini(filtered_array)    
 })  
+
+//Annullamento dell'ordine
+const show_annulla_ordine = (ordine) => {
+    annulla_m.show()
+    document.querySelector('#ann').addEventListener('click',() => annulla_ordine(ordine))
+}
+
+const annulla_ordine = (ordine) => {
+    let o = {...ordine}
+    o.stato = 7
+    fetch('http://localhost:5000/api/update_status', {
+        method: "PUT",
+        headers: {
+            'content-type' : 'application/json'
+        },
+        body: JSON.stringify(o)
+    })
+        .then(() => {
+            localStorage.setItem('alert_t','annullato')
+            location.reload()
+        })
+        .catch(() => show_error())
+}
