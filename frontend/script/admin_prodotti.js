@@ -33,7 +33,9 @@ const delete_item = (prodotto) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(prodotto)
-    }).then(location.reload()).catch(() => show_error("Server non disponibile! Operazione anullata"))
+    })
+        .then(() => location.reload())
+        .catch(() => show_error("Server non disponibile! Operazione anullata"))
 }
 
 //Apertura del modale filtro
@@ -46,6 +48,7 @@ myInput.addEventListener('click', () => {
 //Funzione di ricerca prodotti
 const search = () => {
     const nome = document.querySelector('#nome_o').value
+    if(nome == "") location.reload()
     hide_content('.se','#prodotti')
     fetch(`http://localhost:5000/api/search_items/${nome}`)
         .then(res => res.json())
@@ -201,5 +204,5 @@ document.querySelector('#add_item').addEventListener('click',() => {
             disponibilità: parseInt(disponibilità),
             creazione: "0"
         })
-    }).then(window.location.reload())
+    }).then(() => location.reload())
 })

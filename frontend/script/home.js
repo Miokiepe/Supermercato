@@ -4,25 +4,24 @@ const
     card_t = document.querySelectorAll('template')[0],
     ordini_t = document.querySelectorAll('template')[1], 
     email = localStorage.getItem('email'), 
-    password = localStorage.getItem('password'), 
-    error = document.querySelector('#error'), 
+    password = localStorage.getItem('password'),  
     token = localStorage.getItem('token'), 
     role = localStorage.getItem('role'), 
     id = localStorage.getItem('id'), 
-    alert_t = localStorage.getItem('alert')
-localStorage.removeItem('alert')
+    alert_t = localStorage.getItem('alert_t')
 let ordini_g;
 //Mostra eventuali messaggi
 if(alert_t) {
-    error.style.display = "block"
     switch(alert_t) {
         case 'cart':
-            show_error('Elemento aggiunto al carrello! <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>','alert alert-success alert-dismissible fade show')
+            show_error('Elemento aggiunto al carrello!','alert alert-success alert-dismissible fade show',true)
             break;
     }
+    localStorage.removeItem('alert_t')
 }
 
 document.querySelector('#title').innerHTML = "Benvenuto " + localStorage.getItem('nome')
+
 //Aggiunta di un elemento al carrello
 const add_cart = (prodotto) => {
     fetch('http://localhost:5000/api/add_cart',{
@@ -34,20 +33,91 @@ const add_cart = (prodotto) => {
             id_utente: parseInt(id),
             id_prodotto: prodotto.id_prodotto,
             quantità: parseInt(document.querySelector('#u' + prodotto.id_prodotto).value)
-            })
-    }).then((res) => {
+        })
+    })
+    .then((res) => {
         if(res.status === 201) {
             localStorage.setItem('alert_t','cart')
             location.reload()
-            }
-            else show_error()
+        }
+        else show_error()
+        })
+    .catch(() => show_error())
+}
+
+//Renderizzazzione degli ordini
+const render_ordini = (gruppi) => {
+        const ordini = document.querySelector('#ordini')
+        ordini.innerHTML = ""
+        let n_ordine, data;
+        gruppi.forEach(array => {
+            
+            const container = document.createElement('div')
+            container.style = "background-color: white; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px; display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; flex-direction: column; padding: 10px; border-radius: 12px;"
+            
+            const container_ordine = document.createElement('div')
+            container_ordine.style = "display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap;"
+            
+            n_ordine = document.createElement('h3')
+            n_ordine.innerHTML = "N. ordine #"
+            container.appendChild(n_ordine)
+    
+            let item_consegnati = 0
+            array.forEach(elem => {
+    
+                const ordine = ordini_t.content.cloneNode(true)
+                ordine.querySelector('.card-title').innerHTML = elem.nome
+                if(elem.tipo == 5) {
+                    ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: red'>
+                                                                        <i class="fa-solid fa-trash"></i> Eliminato
+                                                                    </span>`
+                }
+                else 
+                ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: ${items[elem.tipo].colore}'>
+                                                                        ${items[elem.tipo].icona} ${items[elem.tipo].nome}
+                                                                    </span>`
+                ordine.querySelector('.ddesc').innerHTML = "Quantità: "  + elem.quantità
+                ordine.querySelector('.costo').innerHTML = '€' + elem.costo
+                
+                const btn = ordine.querySelector('.btn')
+                const stato = stati[elem.stato]
+                btn.innerHTML = stato.icona
+                btn.setAttribute('data-bs-title', stato.titolo)
+                btn.setAttribute('data-bs-content', stato.desc)
+                btn.setAttribute('data-bs-toggle','popover')
+                btn.className = "btn btn-" + (stato.colore ? stato.colore : 'primary')
+    
+                ordine.querySelector('.nome').innerHTML = stato.nome
+                ordine.querySelector('.progress-bar').style.width = stato.perc
+                ordine.querySelector('.progress-bar').innerHTML = stato.perc
+                ordine.querySelector('.progress-bar').classList.add("bg-" + (stato.colore ? stato.colore : 'primary'))
+                
+                if(elem.stato == 4 || elem.stato == 7) {
+                    ordine.querySelector('.progress-bar').classList.remove("progress-bar-animated")
+                    ordine.querySelector('.progress-bar').classList.remove("progress-bar-striped")
+                    item_consegnati++
+                }
+    
+                container_ordine.appendChild(ordine)
+                n_ordine.innerHTML += elem.id_ordine
+                container.appendChild(container_ordine)
+                
+                if(item_consegnati == array.length) {
+                    const consegnato = document.createElement('div')
+                    consegnato.innerHTML = '<i class="fa-solid fa-circle-check"></i> Consegnato'
+                    consegnato.style.color = "green"
+                    container.appendChild(consegnato)
+                }
+                data = elem.creazione
             })
-            .catch(() => show_error())
+            n_ordine.innerHTML = `<div class='d-flex flex-row justify-content-between'>${n_ordine.innerHTML} <span>${data}</span></div>`
+            ordini.appendChild(container)
+            })
 }
 
 //Renderizzazzione degli ultimi 10 item disponibili
 fetch('http://localhost:5000/api/get_items/10')
-    .then(res => res.json())
+.then(res => res.json())
     .then(res => {
         show_content()
         console.log(res)
@@ -109,14 +179,10 @@ fetch('http://localhost:5000/api/get_orders_user', {
                 container.innerHTML = "Nessun ordine effetuato"
                 return;
             }
-
-            //riordinare l'arry in base al tipo
-            let res_sorted = res.ordini.sort((a, b) => a.gruppo - b.gruppo)
             //Creazione di x array per quanti sono i gruppi ordine
             const gruppi = [];
-            let gruppo = [], n_gruppo = res_sorted[0].gruppo;
-    
-            res_sorted.forEach(elem => {
+            let gruppo = [], n_gruppo = res.ordini[0].gruppo;
+            res.ordini.forEach(elem => {
                 if(n_gruppo != elem.gruppo) {
                     gruppi.push(gruppo)
                     gruppo = []
@@ -134,77 +200,16 @@ fetch('http://localhost:5000/api/get_orders_user', {
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
         const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
     })
-        .catch(() => show_error())
+        .catch((e) => show_error(),console.log(e))
 
-//Renderizzazzione degli ordini
-const render_ordini = (gruppi) => {
-        const ordini = document.querySelector('#ordini')
-        ordini.innerHTML = ""
-        let n_ordine, data;
-        gruppi.forEach(array => {
-            const container = document.createElement('div')
-            container.style = "background-color: white; box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px; display: flex; flex-wrap: wrap; margin-bottom: 20px; gap: 10px; flex-direction: column; padding: 10px; border-radius: 12px;"
-            
-            const container_ordine = document.createElement('div')
-            container_ordine.style = "display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap;"
-            
-            n_ordine = document.createElement('h3')
-            n_ordine.innerHTML = "N. ordine #"
-            container.appendChild(n_ordine)
-    
-            let item_consegnati = 0
-            array.forEach(elem => {
-    
-                const ordine = ordini_t.content.cloneNode(true)
-                ordine.querySelector('.card-title').innerHTML = elem.nome
-                ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: ${items[elem.tipo].colore}'>
-                                                                        ${items[elem.tipo].icona} ${items[elem.tipo].nome}
-                                                                    </span>`
-                ordine.querySelector('.ddesc').innerHTML = "Quantità: "  + elem.quantità
-                ordine.querySelector('.costo').innerHTML = '€' + elem.costo
-                
-                const btn = ordine.querySelector('.btn')
-                const stato = stati[elem.stato]
-                btn.innerHTML = stato.icona
-                btn.setAttribute('data-bs-title', stato.titolo)
-                btn.setAttribute('data-bs-content', stato.desc)
-                btn.setAttribute('data-bs-toggle','popover')
-                btn.className = "btn btn-" + (stato.colore ? stato.colore : 'primary')
-    
-                ordine.querySelector('.nome').innerHTML = stato.nome
-                ordine.querySelector('.progress-bar').style.width = stato.perc
-                ordine.querySelector('.progress-bar').innerHTML = stato.perc
-                ordine.querySelector('.progress-bar').classList.add("bg-" + (stato.colore ? stato.colore : 'primary'))
-                
-                if(elem.stato == 4 || elem.stato == 7) {
-                    ordine.querySelector('.progress-bar').classList.remove("progress-bar-animated")
-                    ordine.querySelector('.progress-bar').classList.remove("progress-bar-striped")
-                    item_consegnati++
-                }
-    
-                container_ordine.appendChild(ordine)
-                n_ordine.innerHTML += elem.id_ordine
-                container.appendChild(container_ordine)
-                
-                if(item_consegnati == array.length) {
-                    const consegnato = document.createElement('div')
-                    consegnato.innerHTML = '<i class="fa-solid fa-circle-check"></i> Consegnato'
-                    consegnato.style.color = "green"
-                    container.appendChild(consegnato)
-                }
-                data = elem.creazione
-            })
-            n_ordine.innerHTML = `<div class='d-flex flex-row justify-content-between'>${n_ordine.innerHTML} <span>${data}</span></div>`
-            ordini.appendChild(container)
-            })
-}
 
-//Apertura del modale
+//Apertura del modale di filtro
 const myModal = new bootstrap.Modal(document.getElementById("filtro_m"));
 const myInput = document.getElementById('filtro_b')
 myInput.addEventListener('click', () => {
   myModal.show()
 })
+
 //Filtraggio degli ordini 
 document.querySelector('#app').addEventListener('click',() => {
     let filtered_array = [...ordini_g], non_disp = [...ordini_g];

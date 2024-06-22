@@ -1,25 +1,29 @@
-export const items = [{
+//Categorie di prodotti
+export const items = [
+    {
     nome: "Arredamento",
     colore: "#f6511d",
     icona: '<i class="fa-solid fa-couch"></i>'
-}, {
+    }, {
     nome: "Alimentari",
     colore: "#ffb400",
     icona: '<i class="fa-solid fa-burger"></i>'
-}, {
+    }, {
     nome: "Elettronica",
     colore: "#00a6ed",
     icona: ' <i class="fa-solid fa-mobile"></i>'
-}, {
+    }, {
     nome: "Indumenti",
     colore: "#7fb800",
     icona: '<i class="fa-solid fa-shirt"></i>'
-}, {
+    }, {
     nome: "Sport",
     colore: "#0d2c54 ",
     icona: '<i class="fa-solid fa-volleyball"></i>'
-}]
+    }
+]
 
+//Stati della spedizione
 export const stati = [
     {
         icona: '<i class="fa-solid fa-hourglass-start"></i>',
@@ -83,6 +87,7 @@ export const stati = [
     }
 ]
 
+//Badges indicanti i ruoli del gestore
 export const badges = [
     {
         nome: "Admin",
@@ -96,6 +101,7 @@ export const badges = [
     }
 ]
 
+//Prefissi telefonici utilizzati nella creazione e modifica dell'acconut
 export const prefixes = [
     { prefisso: '1', emoji: '🇺🇸' },     // Stati Uniti
     { prefisso: '20', emoji: '🇪🇬' },    // Egitto
@@ -198,6 +204,7 @@ export const mesi = [
     }
 ]
 
+//Mostra un messaggio di errore
 export const show_error = (message = "Impossibile connettersi al server", className = "", dismissible = false) => {
     const error = document.querySelector('#error')
     if(className !== "") error.className = className
@@ -207,11 +214,13 @@ export const show_error = (message = "Impossibile connettersi al server", classN
     document.querySelector('.spinner-border').style.display = 'none'
 }
 
+//Nasconde lo spinner e fa apparire il contenuto del main
 export const show_content = (spinner = '.spinner-border', content = 'main') => {
     document.querySelector(spinner).style.display = 'none'
     document.querySelector(content).style.visibility = 'visible'
 }
 
+//Fa apparire lo spinner e nasconde il contenuto del main
 export const hide_content = (spinner = '.spinner-border', content = 'main') => {
     document.querySelector(spinner).style.display = 'block'
     document.querySelector(content).style.visibility = 'hidden'

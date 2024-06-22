@@ -4,6 +4,7 @@ const card_t = document.querySelector('template')
 const container = document.querySelector('#prodotti')
 let items_g;
 
+//Acquisto del prodotto
 document.querySelector('#acquista').addEventListener('click',() => {
     const cart_item = {items: []}
     items_g.items.forEach(elem => {
@@ -28,6 +29,7 @@ document.querySelector('#acquista').addEventListener('click',() => {
     }).catch(() => show_error())
 })
 
+//Cancellazione del prodotto dal carrello
 const delete_item = (prodotto) => {
     fetch('http://localhost:5000/api/delete_cart', {
         method: "DELETE",
@@ -39,6 +41,7 @@ const delete_item = (prodotto) => {
       .catch(() => show_error("Impossibile connettersi al server. Operazione annullata"))
 }
 
+//Aggioranemnto della quantità
 const update_item = (prodotto, nuova_quantità) => {
     prodotto.quantità_richiesta = nuova_quantità
     fetch('http://localhost:5000/api/update_cart',{
@@ -55,13 +58,14 @@ const update_item = (prodotto, nuova_quantità) => {
       .catch(() => show_error())
 }
 
+//Mostriamo eventuali messaggi
 const alert = JSON.parse(localStorage.getItem('alert'))
 if(alert) {
     show_error(alert.message, alert.className)
     localStorage.removeItem('alert')
 }
 
-
+//Otteniamo gli item
 fetch('http://localhost:5000/api/get_cart', {
     method: "POST",
     headers: {
@@ -82,15 +86,20 @@ fetch('http://localhost:5000/api/get_cart', {
         }
     items_g = res
     res.items.forEach(elem => {
+        let costo;
         const card = card_t.content.cloneNode(true)
-        card.querySelector('.card-title').innerHTML = elem.nome
-        card.querySelector(".card-subtitle").innerHTML = 
-                `<span style='color: ${items[elem.tipo].colore}'>
-                    ${items[elem.tipo].icona} ${items[elem.tipo].nome}
-                </span>`
-        const costo = elem.quantità_richiesta * elem.costo
-        //TODO Se l'elemnto non è disponibile, utilizzare un alert-info, non contarlo nel prezzo, disabilitare il bottone
-        if(elem.disponibilità == 0) {
+        if(elem.tipo == 5) 
+            card.querySelector('.card-title').innerHTML = "Item eliminato"
+        else {
+            card.querySelector('.card-title').innerHTML = elem.nome
+            card.querySelector(".card-subtitle").innerHTML = 
+                    `<span style='color: ${items[elem.tipo].colore}'>
+                        ${items[elem.tipo].icona} ${items[elem.tipo].nome}
+                    </span>`
+            costo = elem.quantità_richiesta * elem.costo
+            card.querySelector('.costo_d').innerHTML = "€" + costo
+        }
+        if(elem.disponibilità == 0 || elem.tipo == 5) {
             show_error("Uno o più elementi non sono più disponibili","alert alert-info")
             card.querySelector('.quantità').innerHTML = "<i>Non disponibile<i>"
             card.querySelector('.quantità').style.color = "red"
@@ -114,7 +123,6 @@ fetch('http://localhost:5000/api/get_cart', {
             n_elementi += elem.quantità_richiesta
             }
         card.querySelector('.delete').onclick = () => delete_item({id_utente: elem.id_utente, id_prodotto: elem.id_prodotto, quantità: elem.quantità_richiesta})
-        card.querySelector('.costo_d').innerHTML = "€" + costo
         container.appendChild(card)
     })
     document.querySelector('#n_item').innerHTML =  n_elementi
