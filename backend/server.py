@@ -189,7 +189,7 @@ def update(item: Old_New_Item):
     cursor.execute("UPDATE prodotti SET nome = %s, tipo = %s, costo = %s, disponibilità = %s WHERE id_prodotto = %s",(item.new.nome, item.new.tipo, item.new.costo, item.new.disponibilità, item.old.id_prodotto))
     close_db_connection(conn)
 
-#Cancellazzione di un prodotto
+#Cancellazione di un prodotto
 @app.delete('/api/delete_item', status_code=200)
 def delete(item: Item):
     conn, cursor = open_db_connection()
@@ -221,7 +221,7 @@ def search(nome):
 @app.post('/api/add_cart', status_code=201)
 def add(item: Cart_Item):
     conn, cursor = open_db_connection()
-    #Se l'elemento non esiste aggiungilo, altrimenti incerementa la quantità esistente
+    #Se l'elemento non esiste aggiungilo, altrimenti incrementa la quantità esistente
     cursor.execute("SELECT * FROM carrello WHERE id_prodotto = %s AND id_utente = %s", (item.id_prodotto, item.id_utente))
     value = cursor.fetchone()
     if value == None:
@@ -330,7 +330,7 @@ def get(user: User_token):
         "ordini": ordini
     }
 
-#Restutuzione di statistiche per il gestore
+#Restituzione di statistiche per il gestore
 @app.get('/api/get_data_admin')
 def get():
     conn, cursor = open_db_connection()
