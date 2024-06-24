@@ -186,13 +186,13 @@ Questo modello è composto da
 - token: str
 - role: str
 
-Viene utilizzato per verificare che la sessione sia attiva. Se la sessione è scaduta, si è rediretti alla pagina di login
+Viene impiegato per verificare che la sessione sia attiva. Se la sessione è scaduta, si è rediretti alla pagina di login
 
 ### 2.2.7 - Modello User_id
 Questo modello è composto da
 - id_utente: int
 
-Viene utilizzato per la restituzione degli elementi nel carrello di un utente
+Viene impiegato per la restituzione degli elementi nel carrello di un utente
 
 ### 2.2.8 - Modello Item
 Questo modello è composto da
@@ -203,4 +203,159 @@ Questo modello è composto da
 - disponibilità: int
 - creazione: str | None
 
-Viene utilizzato per l'aggiunta e cancellazione di un prodotto
+Viene impiegato per l'aggiunta e cancellazione di un prodotto
+
+### 2.2.9 - Modello Old_New_Item
+Questo modello è composto da
+- old: Item
+- new: Item
+
+Viene impiegato per la modifica di un prodotto
+
+### 2.2.10 - Modello Cart_Item
+Questo modello è composto da
+- id_utente: int
+- id_prodotto: int
+- quantità: int
+
+Viene impiegato per l'aggiunta di un prodotto al carrello, la modifica di un prodotto nel carrello e la rimozione di un prodotto nel carrello
+
+### 2.2.11 - Modello Cart_Items
+Questo modello è composto da
+- items: List[Cart_Item]  
+Viene impiegato per l'acquisto dei prodotti nel carrello
+
+### 2.2.12 - Modello Order_Items
+Questo modello è composto da
+- id_ordine: int | None
+- id_utente: int
+- id_prodotto: int
+- quantità: int
+- stato: int
+- gruppo: int  
+Viene impiegato per la modifica dello stato dell' ordine da parte del corriere
+
+### 2.2.13 - Modello Order
+Questo modello è composto da
+- id_ordine: int
+- gruppo: int
+- nome: str
+- creazione: str
+- stato: int
+- tipo: int
+- quantità: int
+- costo: float  
+Viene impiegato per annullare l'ordine da parte dell'utente
+
+### 2.3.1 - Gestione utenti
+#### Creazione dell'utente
+`@app.post('/api/create_account', status_code=201) 
+def create(utente: User): ...`  
+
+#### Modifica dell'utente
+`@app.put('/api/update_account',status_code=200)
+def update(utente: Old_New_User):`
+
+#### Eliminazione dell'utente
+`@app.delete('/api
+/delete_account'status_code=200)
+def delete(utente: User):`
+
+#### Restituzione dell'account per la modifica
+`@app.post('/api/get_account')
+def get(utente: User_token):`  
+
+### 2.3.2 - Gestione prodotti
+#### Aggiunta di un prodotto
+`@app.post('/api/add_item', status_code=201)
+def add(item: Item):`
+
+#### Modifica di un prodotto
+`@app.put('/api/update_item', status_code=200)
+def update(item: Old_New_Item)`
+
+#### Eliminazione di un prodotto
+`@app.delete('/api/delete_item', status_code=200)
+def delete(item: Item):`  
+N.B: l'item viene cancellato logicamente, in quanto deve essere ancora visualizzabile in caso un utente lo abbia acquistato e un admin lo abbia eliminato
+
+#### Restituzione dei prodotti
+`@app.get('/api/get_items/{n}')
+def get(n)`  
+n indica il numero di item da restituire
+
+#### Ricerca di un prodotto
+`#Ricerca di un prodotto per nome
+@app.get('/api/search_items/{nome}')
+def search(nome)`
+
+### 2.3.3 - Gestione carrello
+#### Aggiunta di un prodotto al carrello
+`@app.post('/api/add_cart', status_code=201)
+def add(item: Cart_Item):`
+
+#### Modifica della quantità di un prodotto nel carrello
+`@app.put("/api/update_cart")
+def update(item: Cart_Item):`
+
+#### Eliminazione di un prodotto dal carrello
+`@app.delete('/api/delete_cart', status_code=200)
+def delete(item: Cart_Item):`
+
+#### Restituzione degli elementi nel carrello di un utente
+`@app.post('/api/get_cart')
+def get(user_id: User_id):`
+
+### 2.3.4 - Acquisto di prodotti
+`@app.put('/api/buy_cart', status_code=200)
+def buy(items: Cart_Items):`
+Gli elementi salvati nel carrello sono raggruppati da un numero gestito dal server. Grazie a questo numero nella riga "gruppo" è possibile raggruppare gli ordini
+
+### 2.3.5 - Gestione degli ordini
+#### Modifica dello stato dell' ordine
+`@app.put('/api/update_status')
+def update(item: Order_Items | Order):`
+Questa rotta viene chiamata sia dal corriere e sia dall'utente
+
+#### Restituzione degli ordini per il corriere
+`@app.post('/api/get_orders',status_code=200)
+def get(corriere: User_token):`
+
+#### Ricerca di un ordine
+`@app.get('/api/search_orders/{id}',status_code=200)
+def search(id: str):`
+
+#### Restituzione degli ordini per l'utente
+`@app.post('/api/get_orders_user',status_code=200)
+def get(user: User_token):`
+
+### 2.3.6 - Login e Logout
+#### Log-in
+`@app.post('/api/login', status_code=301)
+def login(login: Login):`
+Al login viene generato un token che definisce la sessione
+
+#### Log-out
+`@app.post('/api/logout', status_code=301)
+def logout(login: Login):`
+Il token viene eliminato e definisce una sessione scaduta
+
+### 2.3.7 - Home
+`@app.post('/api/home', status_code=200)
+def home(token: User_token):`  
+Questa rotta verifica il token. Se non è corretto o scaduto, l'utente viene reindirizzato alla pagina di login. Questa rotta viene chiamata quando l'utente o il gestore naviga in ogni pagina del sito
+
+### 2.3.8 - Statistiche per i gestori
+#### Rotte per il gestore
+`@app.get('/api/get_data_admin')
+def get():`
+`@app.get('/api/get_data/{mese}')
+def get(mese: int):`
+`@app.get('/api/get_transazioni')
+def get():`
+`@app.get('/api/get_transazione/{id}')
+def get(id):`
+
+#### Rotte per il corriere
+`@app.get('/api/get_data_courier')
+def get():`
