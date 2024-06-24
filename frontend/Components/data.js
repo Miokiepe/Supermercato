@@ -79,9 +79,9 @@ export const stati = [
     },
     {   
         icona: '<i class="fa-solid fa-xmark"></i>',
-        nome: "Anullato",
+        nome: "Annullato",
         perc: "100%",
-        titolo: "Spedizione anullata",
+        titolo: "Spedizione annullata",
         desc: "Dopo due tentativi di consegna fallimentari, abbiamo anullato l'ordine. Otterrai il rimborso nelle prossime ore.",
         colore: "secondary"
     }
