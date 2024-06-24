@@ -1,20 +1,20 @@
 # Backend Documentation
 
 ## Indice
-1. [Struttura del Database "supermercato"](#database)
-    1. [Utenti](#utenti)
-    2. [Prodotti](#prodotti)
-    3. [Carrello](#carrello)
-    4. [Ordini](#ordini)
-    5. [Gestori](#gestori)
-2. [Strutture del server Python](#server-python)
-    1. [functions.py](#functions-py)
+1. [Struttura del Database "supermercato"](#1-struttura-del-database-supermercato)
+    1. [Utenti](#11-tabella-utenti)
+    2. [Prodotti](#12-tabella-prodotti)
+    3. [Carrello](#13-tabella-carrello)
+    4. [Ordini](#14-tabella-ordini)
+    5. [Gestori](#15-tabella-gestori)
+2. [Strutture del server Python](#2-strutture-del-server-python)
+    1. [functions.py](#21-functionspy)
         - open_db_connection
         - close_db_connection
         - crypt
         - generate_token
         - bisestile
-    2. [models.py](#models-py)
+    2. [models.py](#22-modelspy)
         - User
         - Gestore
         - Old_New_Gestore
@@ -28,7 +28,7 @@
         - Cart_Items
         - Order_Items
         - Order
-    3. [server.py](#server-py)
+    3. [server.py](#23-serverpy)
         - Gestione utenti
         - Gestione prodotti
         - Gestione ordini
@@ -38,9 +38,9 @@
         - Home
         - Statistiche per i gestori
 
-## 1. Struttura del Database "supermercato" <a name="database"></a>
+## 1. Struttura del Database "supermercato"
 
-### 1.1 Tabella Utenti <a name="utenti"></a>
+### 1.1 Tabella Utenti
 La tabella utenti ha 12 campi:
 - `id_utente` INT PRIMARY KEY AUTO_INCREMENT
 - `nome` VARCHAR(32)
@@ -57,7 +57,7 @@ La tabella utenti ha 12 campi:
 
 Questa tabella memorizza tutti gli utenti senza ruolo particolare (non admin o corrieri).
 
-### 1.2 Tabella Prodotti <a name="prodotti"></a>
+### 1.2 Tabella Prodotti
 La tabella prodotti ha 6 campi:
 - `id_prodotto` INT PRIMARY KEY AUTO_INCREMENT
 - `nome` VARCHAR(64)
@@ -68,7 +68,7 @@ La tabella prodotti ha 6 campi:
 
 Questa tabella memorizza tutti i prodotti disponibili nella piattaforma. Gli admin possono aggiungerli, modificarli ed eliminarli. Gli utenti possono aggiungerli al carrello ed acquistarli.
 
-### 1.3 Tabella Carrello <a name="carrello"></a>
+### 1.3 Tabella Carrello
 La tabella carrello ha 4 campi:
 - `id_carrello` INT PRIMARY KEY AUTO_INCREMENT
 - `id_utente` INT FOREIGN KEY REFERENCES utenti(`id_utente`)
@@ -77,7 +77,7 @@ La tabella carrello ha 4 campi:
 
 Questa tabella memorizza gli elementi del carrello di ogni utente.
 
-### 1.4 Tabella Ordini <a name="ordini"></a>
+### 1.4 Tabella Ordini
 La tabella ordini ha 7 campi:
 - `id_ordine` INT PRIMARY KEY AUTO_INCREMENT
 - `id_utente` INT FOREIGN KEY REFERENCES utenti(`id_utente`)
@@ -97,7 +97,7 @@ Questa tabella memorizza gli ordini effettuati dagli utenti. I corrieri possono 
 - Smarrito
 - Spedizione annullata
 
-### 1.5 Tabella Gestori <a name="gestori"></a>
+### 1.5 Tabella Gestori
 La tabella gestori ha 7 campi:
 - `id_gestore` INT PRIMARY KEY AUTO_INCREMENT
 - `nome` VARCHAR(64)
@@ -115,9 +115,9 @@ Questa tabella memorizza i gestori, che possono essere:
 - **Corriere**:
   - Aggiorna lo stato della spedizione
 
-## 2. Strutture del server Python <a name="server-python"></a>
+## 2. Strutture del server Python
 
-### 2.1 functions.py <a name="functions-py"></a>
+### 2.1 functions.py
 
 #### 2.1.1 open_db_connection()
 Apre la connessione con il server e restituisce una tupla contenente il cursore e la connessione.
@@ -134,7 +134,7 @@ Genera un token per la sessione, utilizzato sia per l'utente che per il gestore.
 #### 2.1.5 bisestile()
 Calcola se un anno è bisestile. Restituisce vero o falso. Utilizzato per costruire una query per un grafico nella pagina home del gestore.
 
-### 2.2 models.py <a name="models-py"></a>
+### 2.2 models.py
 
 #### 2.2.1 Modello User
 - `id_utente`: int | None
@@ -238,117 +238,97 @@ Viene impiegato per la modifica dello stato dell'ordine da parte del corriere.
 
 Viene impiegato per restituire gli ordini di un utente.
 
-### 2.3 server.py <a name="server-py"></a>
+### 2.3 server.py
 
 #### 2.3.1 Gestione utenti
-#### Creazione dell'utente
-`@app.post('/api/create_account', status_code=201) 
-def create(utente: User): ...`  
+1. **Aggiunta utente:**
+   - Percorso: `/user`
+   - Metodo: `POST`
+   - Modello: `User`
 
-#### Modifica dell'utente
-`@app.put('/api/update_account',status_code=200)
-def update(utente: Old_New_User):`
+2. **Modifica utente:**
+   - Percorso: `/update_user`
+   - Metodo: `PUT`
+   - Modello: `Old_New_User`
 
-#### Eliminazione dell'utente
-`@app.delete('/api
-/delete_account'status_code=200)
-def delete(utente: User):`
+3. **Eliminazione utente:**
+   - Percorso: `/delete_user`
+   - Metodo: `DELETE`
+   - Modello: `User`
 
-#### Restituzione dell'account per la modifica
-`@app.post('/api/get_account')
-def get(utente: User_token):`  
+#### 2.3.2 Gestione prodotti
+1. **Aggiunta prodotto:**
+   - Percorso: `/item`
+   - Metodo: `POST`
+   - Modello: `Item`
 
-### 2.3.2 - Gestione prodotti
-#### Aggiunta di un prodotto
-`@app.post('/api/add_item', status_code=201)
-def add(item: Item):`
+2. **Modifica prodotto:**
+   - Percorso: `/update_item`
+   - Metodo: `PUT`
+   - Modello: `Old_New_Item`
 
-#### Modifica di un prodotto
-`@app.put('/api/update_item', status_code=200)
-def update(item: Old_New_Item)`
+3. **Eliminazione prodotto:**
+   - Percorso: `/delete_item`
+   - Metodo: `DELETE`
+   - Modello: `Item`
 
-#### Eliminazione di un prodotto
-`@app.delete('/api/delete_item', status_code=200)
-def delete(item: Item):`  
-N.B: l'item viene cancellato logicamente, in quanto deve essere ancora visualizzabile in caso un utente lo abbia acquistato e un admin lo abbia eliminato
+#### 2.3.3 Gestione ordini
+1. **Visualizzazione ordini utente:**
+   - Percorso: `/orders`
+   - Metodo: `POST`
+   - Modello: `User_id`
 
-#### Restituzione dei prodotti
-`@app.get('/api/get_items/{n}')
-def get(n)`  
-n indica il numero di item da restituire
+2. **Modifica stato ordine:**
+   - Percorso: `/update_order_status`
+   - Metodo: `PUT`
+   - Modello: `Order_Items`
 
-#### Ricerca di un prodotto
-`#Ricerca di un prodotto per nome
-@app.get('/api/search_items/{nome}')
-def search(nome)`
+#### 2.3.4 Gestione del carrello
+1. **Visualizzazione carrello:**
+   - Percorso: `/cart`
+   - Metodo: `POST`
+   - Modello: `User_id`
 
-### 2.3.3 - Gestione carrello
-#### Aggiunta di un prodotto al carrello
-`@app.post('/api/add_cart', status_code=201)
-def add(item: Cart_Item):`
+2. **Aggiunta prodotto al carrello:**
+   - Percorso: `/cart`
+   - Metodo: `POST`
+   - Modello: `Cart_Item`
 
-#### Modifica della quantità di un prodotto nel carrello
-`@app.put("/api/update_cart")
-def update(item: Cart_Item):`
+3. **Modifica prodotto nel carrello:**
+   - Percorso: `/update_cart`
+   - Metodo: `PUT`
+   - Modello: `Cart_Item`
 
-#### Eliminazione di un prodotto dal carrello
-`@app.delete('/api/delete_cart', status_code=200)
-def delete(item: Cart_Item):`
+4. **Rimozione prodotto dal carrello:**
+   - Percorso: `/delete_cart`
+   - Metodo: `DELETE`
+   - Modello: `Cart_Item`
 
-#### Restituzione degli elementi nel carrello di un utente
-`@app.post('/api/get_cart')
-def get(user_id: User_id):`
+#### 2.3.5 Acquisto dei prodotti
+1. **Acquisto prodotti nel carrello:**
+   - Percorso: `/buy`
+   - Metodo: `POST`
+   - Modello: `Cart_Items`
 
-### 2.3.4 - Acquisto di prodotti
-`@app.put('/api/buy_cart', status_code=200)
-def buy(items: Cart_Items):`
-Gli elementi salvati nel carrello sono raggruppati da un numero gestito dal server. Grazie a questo numero nella riga "gruppo" è possibile raggruppare gli ordini
+#### 2.3.6 Login e Logout
+1. **Login utente o gestore:**
+   - Percorso: `/login`
+   - Metodo: `POST`
+   - Modello: `Login`
 
-### 2.3.5 - Gestione degli ordini
-#### Modifica dello stato dell' ordine
-`@app.put('/api/update_status')
-def update(item: Order_Items | Order):`
-Questa rotta viene chiamata sia dal corriere e sia dall'utente
+2. **Logout utente o gestore:**
+   - Percorso: `/logout`
+   - Metodo: `POST`
+   - Modello: `User_token`
 
-#### Restituzione degli ordini per il corriere
-`@app.post('/api/get_orders',status_code=200)
-def get(corriere: User_token):`
+#### 2.3.7 Home
+1. **Visualizzazione home:**
+   - Percorso: `/home`
+   - Metodo: `POST`
+   - Modello: `User_token`
 
-#### Ricerca di un ordine
-`@app.get('/api/search_orders/{id}',status_code=200)
-def search(id: str):`
-
-#### Restituzione degli ordini per l'utente
-`@app.post('/api/get_orders_user',status_code=200)
-def get(user: User_token):`
-
-### 2.3.6 - Login e Logout
-#### Log-in
-`@app.post('/api/login', status_code=301)
-def login(login: Login):`
-Al login viene generato un token che definisce la sessione
-
-#### Log-out
-`@app.post('/api/logout', status_code=301)
-def logout(login: Login):`
-Il token viene eliminato e definisce una sessione scaduta
-
-### 2.3.7 - Home
-`@app.post('/api/home', status_code=200)
-def home(token: User_token):`  
-Questa rotta verifica il token. Se non è corretto o scaduto, l'utente viene reindirizzato alla pagina di login. Questa rotta viene chiamata quando l'utente o il gestore naviga in ogni pagina del sito
-
-### 2.3.8 - Statistiche per i gestori
-#### Rotte per il gestore
-`@app.get('/api/get_data_admin')
-def get():`
-`@app.get('/api/get_data/{mese}')
-def get(mese: int):`
-`@app.get('/api/get_transazioni')
-def get():`
-`@app.get('/api/get_transazione/{id}')
-def get(id):`
-
-#### Rotte per il corriere
-`@app.get('/api/get_data_courier')
-def get():`
+#### 2.3.8 Statistiche per i gestori
+1. **Visualizzazione statistiche:**
+   - Percorso: `/stats`
+   - Metodo: `POST`
+   - Modello: `User_token`
