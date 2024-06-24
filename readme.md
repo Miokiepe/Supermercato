@@ -1,4 +1,4 @@
-# Backend Documentation
+# Backend
 
 ## Indice
 1. [Struttura del Database "supermercato"](#1-struttura-del-database-supermercato)
