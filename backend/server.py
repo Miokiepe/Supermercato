@@ -385,7 +385,7 @@ def get():
 @app.get('/api/get_transazioni')
 def get():
     conn, cursor = open_db_connection()
-    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.creazione, ordini.id_ordine FROM ordini JOIN prodotti ON prodotti.id_prodotto = ordini.id_prodotto ORDER BY ordini.id_ordine ASC")
+    cursor.execute("SELECT prodotti.nome, prodotti.tipo, prodotti.costo, ordini.quantità, ordini.creazione, ordini.id_ordine FROM ordini JOIN prodotti ON prodotti.id_prodotto = ordini.id_prodotto ORDER BY ordini.id_ordine DESC")
     transazioni = cursor.fetchall()
     close_db_connection(conn)
     return {
