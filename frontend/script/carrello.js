@@ -97,7 +97,7 @@ fetch('http://localhost:5000/api/get_cart', {
                         ${items[elem.tipo].icona} ${items[elem.tipo].nome}
                     </span>`
             costo = elem.quantità_richiesta * elem.costo
-            card.querySelector('.costo_d').innerHTML = "€" + costo
+            card.querySelector('.costo_d').innerHTML = "€" +  costo.toFixed(2)
         }
         if(elem.disponibilità == 0 || elem.tipo == 5) {
             show_error("Uno o più elementi non sono più disponibili","alert alert-info")

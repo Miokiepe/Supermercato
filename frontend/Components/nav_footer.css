@@ -16,6 +16,10 @@ body {
   z-index: 100;
 }
 
+.alert {
+  width: 100vw !important;
+}
+
 main {
   visibility: hidden;
   margin-left: 30px;

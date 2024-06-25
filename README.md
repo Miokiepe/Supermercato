@@ -84,7 +84,7 @@ Questa pagina permette di inserire prodotti all'interno del db. L'admin può anc
 Questa pagina permette di visualizzare tutte le transazioni eseguite dagli utenti. È possibile cercarle, filtrarle per tipo di prodotto acquistato, prezzo e data di acquisto.
 
 ##### 1.3.11 - utenti.html
-Questa pagine permette l'aggiunta di un nuovo gestore (admin o corriere). Infatti i gestori possono essere creati solo da admin (il primo admin verrà salvato manualmente nel db). L'admin può anche modificare alcune informazioni degli utenti, ed eventualmente eliminarli dalla piattaforma.
+Questa pagine permette l'aggiunta di un nuovo gestore (admin o corriere). Infatti i gestori possono essere creati solo da admin (il primo admin verrà salvato manualmente nel db). L'admin può anche modificare alcune informazioni dei gestori, ed eventualmente eliminarli dalla piattaforma. Anche gli utenti classici possono essere eliminati in caso violino le politiche del sito
 
 ##### 1.3.12 - admin_profilo.html
 Questa pagina permette di visualizzare il proprio profilo, modificarlo, cancellarlo ed eseguire il logout.

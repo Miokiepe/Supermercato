@@ -74,6 +74,7 @@ const render_ordini = (gruppi) => {
                     ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: red'>
                                                                         <i class="fa-solid fa-trash"></i> Eliminato
                                                                     </span>`
+                    ordine.querySelector('.update').style.display = "none"
                 }
                 else 
                 ordine.querySelector('.card-subtitle').innerHTML = `<span style='color: ${items[elem.tipo].colore}'>
@@ -119,12 +120,11 @@ const render_ordini = (gruppi) => {
             })
 }
 
-//Renderizzazzione degli ultimi 10 item disponibili
+//Renderizzazione degli ultimi 10 item disponibili
 fetch('http://localhost:5000/api/get_items/10')
 .then(res => res.json())
     .then(res => {
         show_content()
-        console.log(res)
         if(!res.items) {
             prodotti_r.innerHTML = "<i>Nessun prodotto disponibile</i>"
             return
@@ -226,7 +226,6 @@ document.querySelector('#app').addEventListener('click',() => {
         m5 = document.querySelector('#m5').checked
     
     if(!con) {
-        console.log(m5)
         const indici = [];
         ordini_g.forEach((array, i) => {
             let consegnati = 0;
@@ -273,12 +272,12 @@ document.querySelector('#app').addEventListener('click',() => {
     render_ordini(filtered_array)    
 })  
 
-//Annullamento dell'ordine
+//Mostriamo il modale per annullare l'ordine
 const show_annulla_ordine = (ordine) => {
     annulla_m.show()
     document.querySelector('#ann').addEventListener('click',() => annulla_ordine(ordine))
 }
-
+//Annullamento dell'ordine nel server
 const annulla_ordine = (ordine) => {
     let o = {...ordine}
     o.stato = 7

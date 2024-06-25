@@ -3,7 +3,7 @@ const admin_selezionati = [], utenti_selezionati = []
 const elimina = document.querySelector('#elimina_a')
 const modifica = document.querySelector('#modifica_a')
 const elimina_u = document.querySelector('#elimina_u')
-const modifica_m = bootstrap.Modal(document.getElementById("modifica_m"));
+const modifica_m = new bootstrap.Modal(document.getElementById("modifica_m"));
 const elimina_m = new bootstrap.Modal(document.getElementById("elimina_m"));
 const elimina_m_u = new bootstrap.Modal(document.getElementById("elimina_m_u"));
 const aggiungi = document.querySelector('#add')

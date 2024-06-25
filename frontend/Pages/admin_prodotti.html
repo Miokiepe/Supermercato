@@ -42,58 +42,27 @@
         </div>
       </div>
       </div>
-      <div id="prodotti" class="d-flex flex-wrap flex-row gap-2 mb-3"></div>
+      <div id="prodotti" class="d-flex flex-wrap flex-row gap-2 mb-3 overflow-auto"></div>
       <div class="spinner-border se" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
       <div id="add" role="button"><i class="fa-solid fa-plus"></i></div>
     </main>
     <footer id="footer"></footer>
-    <!--Modale di aggiunta prodotto-->
-    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Aggiungi prodotto</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="form-control mb-3" id="nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
-                    <select id="categoria" class="form-select">
-                      <option value="0" selected>Arredamento</option>
-                      <option value="1">Alimentari</option>
-                      <option value="2">Elettronica</option>
-                      <option value="3">Indumenti</option>
-                      <option value="4">Sport</option>
-                    </select>     
-                </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">€</span>
-                        <input type="number" id="costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
-                    </div>
-                    <input type="number" id="disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
-                </div>
-            <div class="modal-footer">
-              <button type="button" id="add_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-plus"></i> Aggiungi</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    <!--Modale di modifica-->
-    <div class="modal fade " id="mod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  </body>
+  <!--Modale di aggiunta prodotto-->
+  <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modifica prodotto</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Aggiungi prodotto</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <input type="text" class="form-control mb-3" id="m_nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
+              <input type="text" class="form-control mb-3" id="nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
               <div class="input-group mb-3">
-                  <span class="input-group-text" id="m_icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
-                  <select id="m_categoria" class="form-select">
+                  <span class="input-group-text" id="icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
+                  <select id="categoria" class="form-select">
                     <option value="0" selected>Arredamento</option>
                     <option value="1">Alimentari</option>
                     <option value="2">Elettronica</option>
@@ -103,83 +72,114 @@
               </div>
                   <div class="input-group mb-3">
                       <span class="input-group-text" id="basic-addon1">€</span>
-                      <input type="number" id="m_costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
+                      <input type="number" id="costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
                   </div>
-                  <input type="number" id="m_disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
+                  <input type="number" id="disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
               </div>
           <div class="modal-footer">
-            <button type="button" id="mod_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-pen"></i> Modifica</button>
+            <button type="button" id="add_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-plus"></i> Aggiungi</button>
           </div>
         </div>
       </div>
-    </div>
-   <!--Modale di filtro-->
-   <div class="modal fade" tabindex="-1" id="filtro_m">
+  </div>
+  <!--Modale di modifica-->
+  <div class="modal fade " id="mod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Filtri</h5>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modifica prodotto</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input class="form-check-input check" checked type="checkbox" id="dis">
-          <label class="form-check-label" for="dis">
-            Non disponibili
-          </label><br>
-          <input class="form-check-input check" checked type="checkbox" id="nuovo">
-          <label class="form-check-label" for="nuovo">
-            Nuovi items
-          </label>
-          <div class="mt-1">
-            <b>Categorie</b><br>
-            <input class="form-check-input check" checked type="checkbox" id="arr">
-            <label class="form-check-label" for="arr">
-              Arredamento
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="ali">
-            <label class="form-check-label" for="ali">
-              Alimentari
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="ele">
-            <label class="form-check-label" for="ele">
-              Elettronica
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="ind">
-            <label class="form-check-label" for="ind">
-              Indumenti
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="spo">
-            <label class="form-check-label" for="spo">
-              Sport
-            </label><br>
-            <b>Prezzo</b><br>
-            <input class="form-check-input check" checked type="checkbox" id="r1">
-            <label class="form-check-label" for="r1">
-              0.01€ - 9.99€
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="r2">
-            <label class="form-check-label" for="r2">
-              10.00€ - 24.99€
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="r3">
-            <label class="form-check-label" for="r3">
-              25.00€ - 49.99€
-            </label><br>
-            <input class="form-check-input check" checked type="checkbox" id="r4">
-            <label class="form-check-label" for="r4">
-              50.00€ - illimitato
-            </label><br>
-          </div>
-        </div>
+            <input type="text" class="form-control mb-3" id="m_nome" placeholder="Nome prodotto" aria-label="Nome prodotto" aria-describedby="Nome del prodotto">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="m_icona"><i class="fa-solid fa-couch" style="color:#f6511d"></i></span>
+                <select id="m_categoria" class="form-select">
+                  <option value="0" selected>Arredamento</option>
+                  <option value="1">Alimentari</option>
+                  <option value="2">Elettronica</option>
+                  <option value="3">Indumenti</option>
+                  <option value="4">Sport</option>
+                </select>     
+            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">€</span>
+                    <input type="number" id="m_costo" class="form-control" placeholder="Costo" aria-label="Costo prodotto" aria-describedby="Costo del prodotto">    
+                </div>
+                <input type="number" id="m_disponibilità" class="form-control" placeholder="Disponibilità" aria-label="Disponibilità prodotto" aria-describedby="Disponibilità del prodotto">     
+            </div>
         <div class="modal-footer">
-          <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
+          <button type="button" id="mod_item" class="btn btn-primary" data-bs-dismiss="modal"><i class="fa-solid fa-pen"></i> Modifica</button>
         </div>
       </div>
     </div>
   </div>
-  </body>
+  <!--Modale di filtro-->
+  <div class="modal fade" tabindex="-1" id="filtro_m">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filtri</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input class="form-check-input check" checked type="checkbox" id="dis">
+        <label class="form-check-label" for="dis">
+          Non disponibili
+        </label><br>
+        <input class="form-check-input check" checked type="checkbox" id="nuovo">
+        <label class="form-check-label" for="nuovo">
+          Nuovi items
+        </label>
+        <div class="mt-1">
+          <b>Categorie</b><br>
+          <input class="form-check-input check" checked type="checkbox" id="arr">
+          <label class="form-check-label" for="arr">
+            Arredamento
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="ali">
+          <label class="form-check-label" for="ali">
+            Alimentari
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="ele">
+          <label class="form-check-label" for="ele">
+            Elettronica
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="ind">
+          <label class="form-check-label" for="ind">
+            Indumenti
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="spo">
+          <label class="form-check-label" for="spo">
+            Sport
+          </label><br>
+          <b>Prezzo</b><br>
+          <input class="form-check-input check" checked type="checkbox" id="r1">
+          <label class="form-check-label" for="r1">
+            0.01€ - 9.99€
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="r2">
+          <label class="form-check-label" for="r2">
+            10.00€ - 24.99€
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="r3">
+          <label class="form-check-label" for="r3">
+            25.00€ - 49.99€
+          </label><br>
+          <input class="form-check-input check" checked type="checkbox" id="r4">
+          <label class="form-check-label" for="r4">
+            50.00€ - illimitato
+          </label><br>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="app" class="btn btn-primary" style="background-color: #283c59; border-color: #283c59;"><i class="fa-solid fa-floppy-disk"></i> Applica</button>
+      </div>
+    </div>
+  </div>
+  </div>
   <!--Template prodotto-->
-   <template>
+  <template>
       <div class="card" style="width: 20rem; flex: 0 0 auto; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);">
         <div class="card-body">
           <div class="d-flex align-baseline  justify-content-between ">
@@ -199,7 +199,7 @@
             </div>
         </div>
       </div>
-    </template>
+  </template>
 <script src="../script/admin_navbar_footer.js"></script>
 <script src="../script/admin_check_au.js"></script>
 <script src="../script/admin_prodotti.js" type="module"></script>

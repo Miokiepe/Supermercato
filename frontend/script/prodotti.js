@@ -55,7 +55,6 @@ const filtra = () => {
     if(!r2) filtered_array = filtered_array.filter(elem => elem.costo < 10.00 || elem.costo > 24.99)
     if(!r3) filtered_array = filtered_array.filter(elem => elem.costo < 25.00 || elem.costo > 49.99 )
     if(!r4) filtered_array = filtered_array.filter(elem => elem.costo < 50.00)
-    console.log(filtered_array)
     myModal.hide()
     return filtered_array;
 }
@@ -94,7 +93,6 @@ const add_cart = (prodotto) => {
 
 //Funzione che renderizza i prodotti
 const render_prodotti = (prodotti) => {
-    console.log(prodotti)
     items_div.innerHTML = ""
     if(prodotti.length == 0) {
         items_div.innerHTML = "<i>Nessun prodotto trovato</i>"

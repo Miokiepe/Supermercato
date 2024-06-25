@@ -1,5 +1,5 @@
 const password = document.querySelector('#password')
-
+//Alterniamo il field password tra tipo password e tipo text
 const iconEye = document.querySelector('#toggle')
 iconEye.addEventListener('click',() => {
         if(password.type === "password") {
@@ -15,7 +15,7 @@ iconEye.addEventListener('click',() => {
 const toggler = document.querySelector('#toggler')
 const image = document.querySelector('#image')
 const select = document.querySelector('#select')
-
+//Cambiamo lo sfondo in base allo stato dello switch
 toggler.addEventListener('click',() => {
     if(toggler.classList.contains('checked')) {
         toggler.classList.remove('checked')
@@ -32,7 +32,7 @@ toggler.addEventListener('click',() => {
 const button = document.querySelector('#submit')
 const loader = document.querySelector('#loader')
 const error = document.querySelector('#message')
-
+//Eseguiamo il login
 button.addEventListener('click',() => {
     button.disabled = true;
     const email = document.querySelector('#email').value;

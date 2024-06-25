@@ -56,7 +56,7 @@ const render_transazioni = (items_t) => {
         }
 
         tran.querySelector('.quantità').innerHTML = "Quantità: " + item.quantità
-        tran.querySelector('.costo').innerHTML = "€" + item.costo * item.quantità
+        tran.querySelector('.costo').innerHTML = "€" + (item.costo * item.quantità).toFixed(2)
         container.appendChild(tran)
     })
 }
