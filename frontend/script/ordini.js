@@ -133,7 +133,7 @@ const render_ordini = (gruppi) => {
         })
         n_ordine.innerHTML = n_ordine.innerHTML.substring(0, n_ordine.innerHTML.length - 1)
         n_ordine.innerHTML = `
-            <div class='d-flex flex-row justify-content-between'>
+            <div class='d-flex flex-lg-row flex-column justify-content-between'>
                 <div class='d-flex flex-column'>
                     ${n_ordine.innerHTML}
                     <i style='color: gray; font-size: smaller;'>${luogo[0]} - ${luogo[1]} - ${luogo[2]}</i>
