@@ -41,7 +41,7 @@ document.querySelector('#logout').addEventListener('click',() => {
         localStorage.clear()
         location.replace('../index.html')
     }).catch(() => {
-        show_error("Server non raggiungibile! Operazione anullata")
+        show_error("Server non raggiungibile! Operazione annullata")
     })
 })
 
@@ -67,7 +67,7 @@ document.querySelector('#delete_BBB').addEventListener('click',() => {
             location.replace('../index.html')
         }
     })
-      .catch(() => show_error("Server non raggiungibile! Operazione anullata"))
+      .catch(() => show_error("Server non raggiungibile! Operazione annullata"))
 })
 
 const IDs = ["nome","cognome","città","cap","via","genere","prefisso","numero","email"]

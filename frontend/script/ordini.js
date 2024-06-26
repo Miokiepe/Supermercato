@@ -164,9 +164,7 @@ fetch('http://localhost:5000/api/get_orders',{
             return
         }
 
-        //Ordinamento per gruppo
-        const res_sorted = res.items.sort((a, b) => a.gruppo - b.gruppo)
-        
+        const res_sorted = res.items
         //Creazione di x array per quanti sono i gruppi ordine
         const gruppi = [];
         let gruppo = [], n_gruppo = res_sorted[0].gruppo;
