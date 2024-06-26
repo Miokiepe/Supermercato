@@ -1,0 +1,54 @@
+#image {
+    background:linear-gradient(45deg, #4D194D, #006466);
+    width: 40vw;
+    height: 100vh;
+}
+#login {
+    background-color: whitesmoke;
+    width: 60vw;
+    height: 100vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 999px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5555559b;
+  }
+
+#select {
+    display: none;
+}
+
+#message {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    #image {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 0;
+    }
+    #login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        z-index: 1;
+        color: white;
+        margin-left: 25%;
+    }
+}

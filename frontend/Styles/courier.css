@@ -1,0 +1,12 @@
+.graph_container {
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 960px) {
+    .graph_container {
+        width: 80vw;
+    }
+}

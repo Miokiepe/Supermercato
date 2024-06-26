@@ -1,0 +1,7 @@
+.se {
+    position: absolute;
+    left: calc(50vw - 12px);
+    top: calc(50vh - 12px);
+    color:#442250;
+    display: none;
+}

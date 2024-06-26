@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Inizio Favicon-->
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+    <link rel="mask-icon" href="../favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+    <!--Fine favicon-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/74498d2afa.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../Components/nav_footer.css">
+    <link rel="stylesheet" href="../Styles/registrati.css">
+    <link rel="stylesheet" href="../Styles/profilo.css">
+    <title>Profilo</title>
+</head>
+<body>
+    <nav id="nav"></nav>
+    <div class="spinner-border" role="status" id="loader">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div id="error" class="alert alert-danger"></div>
+    <main>
+        <h1>Impostazione profilo</h1>
+            <h5>Dati anagrafici</h5>
+            <div class="d-flex gap-3 flex-column">
+                <div class="d-flex gap-3 flex-lg-row flex-column">
+                    <div class="input-group">
+                        <span class="input-group-text">Nome</span>
+                        <input type="text" id="nome" disabled aria-label="Nome" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Cognome</span>
+                        <input type="text" id="cognome" disabled aria-label="ognome" class="form-control">
+                    </div>
+                </div>
+                <div class="d-flex gap-3 flex-lg-row flex-column">
+                    <div class="input-group">
+                        <span class="input-group-text">Città</span>
+                        <input type="text" id="città" disabled aria-label="città" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Cap</span>
+                        <input type="text" id="cap" disabled aria-label="cap" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Via</span>
+                        <input type="text" id="via" disabled aria-label="via" class="form-control">
+                    </div>
+                </div>
+                <div class="d-flex flex-lg-row flex-column gap-3 align-items-baseline">
+                    <div class="input-group">
+                        <span class="input-group-text">Genere</span>
+                        <select id="genere" class="form-select" disabled>
+                            <option value="0">Genere</option>
+                            <option value="1">Uomo</option>
+                            <option value="2">Donna</option>
+                            <option value="3">Non specificato</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select id="prefisso" disabled></select>
+                        <input type="tel" class="form-control" id="numero" disabled aria-label="Numero telefonico dell'utente" aria-describedby="button-addon2">
+                    </div>
+                </div>
+            </div>
+            <h5>Dati digitali</h5>
+            <div class="input-group">
+                <span class="input-group-text">Email</span>
+                <input type="text" id="email" disabled aria-label="First name" class="form-control">
+            </div>
+            <br>
+            <label for="password">In caso tu voglia cambiare password, questo è il posto giusto</label>
+            <div class="input-group">
+                <span class="input-group-text d-none d-lg-block">Nuova password</span>
+                <input type="password" id="password" disabled class="form-control" id="password" aria-label="Password dell'utente" aria-describedby="button-addon2">
+                <span class="btn btn-outline-primary" type="button" role="button" id="toggle"><i class="bi bi-eye-slash"></i></span>
+            </div>
+            <div class="d-flex flex-lg-row flex-column justify-content-end mt-3 mb-3 gap-3">
+                <button class="btn btn-primary" id="logout" style="background-color: #491d4f; border: none">Log-out</button>
+                <button class="btn btn-danger" id="delete">Cancella account</button>
+                <button class="btn btn-primary" id="modifica" style="background-color: #026265; border: none"><i class="fa-solid fa-pen"></i> Modifica</button>
+            </div>
+    </main>
+    <footer id="footer"></footer>
+    <!--Modale che chiede certezza quando si elimina l'account-->
+    <div class="modal" tabindex="-1" id="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Eliminazione account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Attenzione! Questa operazione è irreversibile</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" id="delete_BBB">Elimina permanentemente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Modale di errore di mancata cancellazzione account-->
+      <div class="modal" tabindex="-1" id="elimina_err">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Impossibile eliminare l'account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Hai ancora <span id="n_or"></span> ordini non consegnati. Attendi la loro consegna o annullali prima di procedere ad eliminare l'account</p>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+<script src="../script/check_au.js"></script>
+<script src="../script/navbar_footer.js"></script>
+<script src="../script/profilo.js" type="module"></script>
+</html>

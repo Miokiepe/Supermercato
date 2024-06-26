@@ -1,0 +1,24 @@
+.graph_container:first-child {
+    width: 30vw;
+}
+
+.graph_container:last-child {
+    width: 50vw;
+}
+
+@media screen and (max-width: 960px) {
+    .graph_container {
+        width: 100vw;
+    }
+}
+.due {
+    width: 30vw !important;
+}
+.fa-ellipsis-vertical {
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.graph_container:hover .fa-ellipsis-vertical {
+    visibility: visible;
+}

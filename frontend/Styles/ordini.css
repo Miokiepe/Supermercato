@@ -1,0 +1,9 @@
+.fa-box {
+    display: none;
+    color: gray;
+}
+
+.card:hover .fa-box {
+    display: block;
+    cursor: pointer;
+}
