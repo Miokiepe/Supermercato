@@ -1,3 +1,4 @@
+![](./frontend/favicon/android-chrome-512x512.png "")   
 # WebSpin
 
 Benvenuto nella documentazione della piattaforma WebSpin.
@@ -26,7 +27,8 @@ Benvenuto nella documentazione della piattaforma WebSpin.
 
 ### 1 - Chi siamo
 
-Siamo un piccolo supermercato nella Puglia che ha deciso di espandere i suoi orizzonti nel mondo del web. Vendiamo un vasto tipo di prodotti: arredamento, alimentari, abbigliamento, elettronica e sport.
+Siamo un piccolo supermercato nella Puglia che ha deciso di espandere i suoi orizzonti nel mondo del web.  
+Vendiamo un vasto tipo di prodotti: arredamento, alimentari, abbigliamento, elettronica e sport.
 
 ### 2 - Guida della piattaforma
 
