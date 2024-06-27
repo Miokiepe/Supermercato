@@ -1,6 +1,7 @@
-![](./frontend/favicon/android-chrome-512x512.png "")   
-# WebSpin
+<img src="./frontend/favicon/android-chrome-512x512.png" width="129px">  
+<img src="./frontend/admin_favicon/android-chrome-512x512.png" width="128px">  
 
+# WebSpin 
 Benvenuto nella documentazione della piattaforma WebSpin.
 
 ## Indice
@@ -34,8 +35,9 @@ Vendiamo un vasto tipo di prodotti: arredamento, alimentari, abbigliamento, elet
 
 #### 2.1 - Log-in
 
-Questa è la pagina di login. Grazie ad essa puoi accedere alla piattaforma. Se lo switch è disabilitato accederai come utente, se è attivo accederai come gestore. Se scegli la seconda opzione devi selezionare anche il ruolo: admin o corriere.
-
+Questa è la pagina di login. Grazie ad essa puoi accedere alla piattaforma. Se lo switch è disabilitato accederai come utente, se è attivo accederai come gestore. Se scegli la seconda opzione devi selezionare anche il ruolo: admin o corriere.  
+<img src="./Images/LoginUtente.png" width="512px">
+<img src="./Images/LoginUtenteMobile.png" width="192px">
 **Nota**: Per accedere alla piattaforma è necessario che l'account esista.
 
 #### 2.2 - Registrazione
