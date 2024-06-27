@@ -201,6 +201,6 @@ Questa pagina visualizza le informazioni relative al tuo profilo. Puoi modificar
 
 ### 3 - Conclusioni
 
-Questa è la fine della documentazione. Speriamo che la lettura di essa ti abbia fatto venire voglia di registrarti alla piattaforma ed iniziare ad usarla subito, compiendo il tuo primo ordine.
+Questa è la fine della documentazione. Speriamo che la lettura di essa ti abbia fatto venire voglia di registrarti alla piattaforma ed iniziarla ad usarla subito, compiendo il tuo primo ordine.
 
 **Sito interamente realizzato da Mazzola Francesco come progetto finale del corso NextGeneration**
