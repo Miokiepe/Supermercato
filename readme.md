@@ -71,6 +71,7 @@ Questa pagina visualizza tutti i prodotti disponibili sulla piattaforma. Selezio
 <img src="./Images/ProdottiUtenteMobile.png" width="192px">   
 
 Se cerci un prodotto specifico puoi cercarlo, oppure selezionare quelli di una determinata categoria tramite i filtri presenti. 
+
 <img src="./Images/FiltroProdottiUtente.png" width="760px">
 <img src="./Images/FiltroProdottiUtenteMobile.png" width="192px">   
 
@@ -88,7 +89,8 @@ Questa è la pagina che mostra tutti i prodotti nel carrello. Da qui puoi aggior
 <img src="./Images/Carrello.png" width="760px">
 <img src="./Images/CarrelloMobile.png" width="192px">   
 
-Clicca sul pulsante "Acquista" per acquistare tutti i prodotti nel carrello. Una volta tornati alla home visualizzerai il tuo ordine. 
+Clicca sul pulsante "Acquista" per acquistare tutti i prodotti nel carrello. Una volta tornati alla home visualizzerai il tuo ordine.  
+
 <img src="./Images/ItemAggiunto.png" width="760px">
 
 #### 2.4 - Navigazione corriere
@@ -136,10 +138,18 @@ Questa pagina visualizza le informazioni relative al tuo profilo. Puoi modificar
 
 ##### 2.5.1 - Home
 
-Questa pagina mostra una serie di grafici che permettono di farti capire l'andatura delle tue vendite. Puoi anche cliccare sul primo grafico a destra per visualizzare le vendite di un mese specifico.  
+Questa pagina mostra una serie di grafici che permettono di farti capire l'andatura delle tue vendite. 
 
 <img src="./Images/HomeAdmin.png" width="760px">
-<img src="./Images/HomeAdminMobile.png" width="192px">  
+<img src="./Images/HomeAdminMobile.png" width="192px">   
+
+Puoi anche cliccare sul primo grafico a destra per visualizzare le vendite di un mese specifico.   
+
+<img src="./Images/FiltroHomeAdmin.png" width="760px">
+<img src="./Images/FiltroHomeAdminMobile.png" width="192px"> 
+
+<img src="./Images/FiltratoAdmin.png" width="760px">
+<img src="./Images/FiltratoAdminMobile.png" width="192px"> 
 
 ##### 2.5.2 - Gestione prodotti
 
