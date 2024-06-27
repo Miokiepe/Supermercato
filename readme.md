@@ -36,7 +36,7 @@ Vendiamo un vasto tipo di prodotti: arredamento, alimentari, abbigliamento, elet
 #### 2.1 - Log-in
 
 Questa è la pagina di login. Grazie ad essa puoi accedere alla piattaforma. Se lo switch è disabilitato accederai come utente, se è attivo accederai come gestore. Se scegli la seconda opzione devi selezionare anche il ruolo: admin o corriere.  
-<img src="./Images/LoginUtente.png" width="860px">
+<img src="./Images/LoginUtente.png" width="760px">
 <img src="./Images/LoginUtenteMobile.png" width="192px">  
 
 **Nota**: Per accedere alla piattaforma è necessario che l'account esista.
