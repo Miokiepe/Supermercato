@@ -141,6 +141,7 @@ Questa pagina visualizza le informazioni relative al tuo profilo. Puoi modificar
 Questa pagina mostra una serie di grafici che permettono di farti capire l'andatura delle tue vendite. 
 
 <img src="./Images/HomeAdmin.png" width="760px">
+<img src="./Images/HomeAdmin2.png" width="760px">
 <img src="./Images/HomeAdminMobile.png" width="192px">   
 
 Puoi anche cliccare sul primo grafico a destra per visualizzare le vendite di un mese specifico.   
